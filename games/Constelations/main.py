@@ -2,7 +2,6 @@ import pygame
 import random
 import time
 import math
-import asyncio
 
 # Inicializar pygame
 pygame.init()
@@ -102,16 +101,73 @@ class Slider:
 
 class Punto:
     def __init__(self):
+        # Generar punto en una posición aleatoria de la pantalla
         self.x = random.randint(0, ANCHO)
         self.y = random.randint(0, ALTO)
+
+        # Generar un ángulo aleatorio en cualquier dirección
         angulo = random.uniform(0, 2*math.pi)
+
+        # Calcular velocidad x e y basada en el ángulo
         self.velocidad_x = VELOCIDAD * math.cos(angulo)
         self.velocidad_y = VELOCIDAD * math.sin(angulo)
         self.radio = 3
+        
+        # Tiempos de animación
+        self.tiempo_creacion = time.time()
+        self.tiempo_vida = random.uniform(4, 10)  # Tiempo de vida entre 4 y 10 segundos
+        self.tiempo_aparicion = 1.0  # 1 segundo para aparecer
+        self.tiempo_desaparicion = 1.0  # 1 segundo para desaparecer
+
+        # Crear superficie para el punto con canal alfa
         self.superficie = pygame.Surface((self.radio * 2, self.radio * 2), pygame.SRCALPHA)
         pygame.draw.circle(self.superficie, BEIGE, (self.radio, self.radio), self.radio)
+
+    def actualizar_velocidad(self, nueva_velocidad):
+        # Calcular la proporción de la velocidad actual
+        proporcion = math.sqrt(self.velocidad_x**2 + self.velocidad_y**2) / VELOCIDAD
+        # Actualizar la velocidad manteniendo la dirección
+        self.velocidad_x = nueva_velocidad * (self.velocidad_x / (proporcion * VELOCIDAD))
+        self.velocidad_y = nueva_velocidad * (self.velocidad_y / (proporcion * VELOCIDAD))
+
+    def mover(self):
+        self.x += self.velocidad_x
+        self.y += self.velocidad_y
+
+    def esta_fuera(self):
+        return (self.x < -self.radio or self.x > ANCHO + self.radio or 
+                self.y < -self.radio or self.y > ALTO)
+
+    def debe_destruir(self):
+        tiempo_actual = time.time()
+        return tiempo_actual - self.tiempo_creacion > self.tiempo_vida
+
+    def get_opacidad(self):
+        tiempo_actual = time.time()
+        tiempo_transcurrido = tiempo_actual - self.tiempo_creacion
+        
+        # Si está en fase de aparición
+        if tiempo_transcurrido < self.tiempo_aparicion:
+            return int((tiempo_transcurrido / self.tiempo_aparicion) * 255)
+        
+        # Si está en fase de desaparición
+        tiempo_restante = self.tiempo_vida - tiempo_transcurrido
+        if tiempo_restante < self.tiempo_desaparicion:
+            return int((tiempo_restante / self.tiempo_desaparicion) * 255)
+        
+        # Si está en fase normal
+        return 255
+
     def dibujar(self, pantalla):
-        pantalla.blit(self.superficie, (int(self.x - self.radio), int(self.y - self.radio)))
+        # Crear una copia de la superficie con la opacidad actual
+        superficie_actual = self.superficie.copy()
+        superficie_actual.set_alpha(self.get_opacidad())
+        
+        # Dibujar la superficie en la pantalla
+        pantalla.blit(superficie_actual, (int(self.x - self.radio), int(self.y - self.radio)))
+
+    def distancia_a(self, otro_punto):
+        return math.sqrt((self.x - otro_punto.x)**2 + (self.y - otro_punto.y)**2)
 
 def dibujar_lineas(pantalla, puntos):
     # Crear una superficie para las líneas con canal alfa
@@ -197,11 +253,10 @@ sliders = [
     )
 ]
 
-async def main():
-    global VELOCIDAD, NUMERO_PUNTOS
+def main():
+    global VELOCIDAD, NUMERO_PUNTOS, DISTANCIA_MAXIMA, panel_visible
     print("Entrando en main()")
-    puntos = [Punto() for _ in range(NUMERO_PUNTOS)]
-    print("Puntos iniciales:", len(puntos))
+    puntos = []
     corriendo = True
     reloj = pygame.time.Clock()
     boton_rect = None
@@ -231,8 +286,7 @@ async def main():
         if VELOCIDAD != sliders[0].valor:
             VELOCIDAD = sliders[0].valor
             for punto in puntos:
-                punto.velocidad_x = VELOCIDAD * math.cos(math.atan2(punto.velocidad_y, punto.velocidad_x))
-                punto.velocidad_y = VELOCIDAD * math.sin(math.atan2(punto.velocidad_y, punto.velocidad_x))
+                punto.actualizar_velocidad(VELOCIDAD)
 
         if NUMERO_PUNTOS != int(sliders[1].valor):
             NUMERO_PUNTOS = int(sliders[1].valor)
@@ -248,10 +302,8 @@ async def main():
         # Actualizar puntos
         puntos_a_eliminar = []
         for punto in puntos:
-            punto.x += punto.velocidad_x
-            punto.y += punto.velocidad_y
-            if (punto.x < -punto.radio or punto.x > ANCHO + punto.radio or 
-                punto.y < -punto.radio or punto.y > ALTO):
+            punto.mover()
+            if punto.debe_destruir() or punto.esta_fuera():
                 puntos_a_eliminar.append(punto)
 
         # Eliminar puntos que deben ser destruidos
@@ -272,10 +324,8 @@ async def main():
         
         pygame.display.flip()
         reloj.tick(60)  # 60 FPS
-        await asyncio.sleep(0)  # Cede el control al navegador
 
-    # Salir
     pygame.quit()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
