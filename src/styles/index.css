@@ -1,0 +1,17 @@
+@import './base.css';
+@import './variables.css';
+
+/* Estilos específicos de la aplicación que no están en base.css */
+body {
+  display: flex;
+  place-items: center;
+}
+
+@media (prefers-color-scheme: light) {
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} 

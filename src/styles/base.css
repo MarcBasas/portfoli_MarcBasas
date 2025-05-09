@@ -1,0 +1,83 @@
+@import './variables.css';
+
+/* Reset y estilos base */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+body {
+  font-family: var(--font-cabinet);
+  font-size: var(--font-size-lg);
+  line-height: 1.5;
+  font-weight: var(--font-weight-medium);
+  min-width: 320px;
+  min-height: 100vh;
+  display: flex;
+  place-items: center;
+  color: var(--color-text);
+  background-color: var(--color-background);
+}
+
+/* Estilos para header y footer */
+header, footer {
+  color: var(--color-menu);
+  font-family: var(--font-degular-display);
+}
+
+/* Estilos para páginas de proyecto */
+.project-page {
+  background-color: var(--color-background);
+}
+
+/* Soporte para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: var(--color-text-light);
+    background-color: var(--color-background-dark);
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: var(--color-text-dark);
+    background-color: var(--color-background-light);
+  }
+  
+  a:hover {
+    color: #747bff;
+  }
+  
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+} 

@@ -1,0 +1,81 @@
+:root {
+  /* ===== GRID UNITS ===== */
+  --grid-unit-w: calc(100vw / 192);
+  --grid-unit-h: calc(100vh / 108);
+
+  /* ===== COLORS ===== */
+  --color-background: #dbd9c3;  /* beige */
+  --color-menu: #e5ff70;        /* fluor */
+  --color-text: #1b1b1b;        /* negro */
+
+  /* ===== TYPOGRAPHY ===== */
+  /* Font Families */
+  --font-degular-display: "Degular Display", sans-serif;
+  --font-degular: "Degular", sans-serif;
+  --font-cabinet: "Cabinet Grotesk", sans-serif;
+
+  /* Font Weights */
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+
+  /* Font Sizes */
+  --font-size-xxl: 2rem;    /* 32px */
+  --font-size-xl: 1.625rem; /* 26px */
+  --font-size-lg: 1.25rem;  /* 20px */
+
+  /* ===== TYPOGRAPHY STYLES ===== */
+  /*  fix-menu
+   * - Font: Degular Display
+   * - Size: xxl (2rem)
+   * - Color: fluor (#e5ff70)
+   * - Use: Menu links in header
+   */
+
+  /*  landing-project-title
+   * - Font: Degular
+   * - Size: xl (1.625rem)
+   * - Weight: Bold
+   * - Color: fluor (#e5ff70)
+   * - Use: Project titles in landing page
+   */
+
+  /*  contact-text
+   * - Font: Degular
+   * - Size: xl (1.625rem)
+   * - Weight: Medium
+   * - Color: fluor (#e5ff70)
+   * - Use: Contact section text
+   */
+
+  /*  projectPage-title
+   * - Font: Cabinet Grotesk
+   * - Size: xl (1.625rem)
+   * - Weight: Medium
+   * - Color: negro (#1b1b1b)
+   * - Use: Titles in project pages
+   */
+
+  /*  general-text
+   * - Font: Cabinet Grotesk
+   * - Size: lg (1.25rem)
+   * - Weight: Medium
+   * - Color: negro (#1b1b1b)
+   * - Use: General text content
+   */
+
+  /* ===== SPACING ===== */
+  --spacing-xs: 0.5rem;
+  --spacing-sm: 1rem;
+  --spacing-md: 1.5rem;
+  --spacing-lg: 2rem;
+  --spacing-xl: 2.5rem;
+  --spacing-xxl: 4rem;
+
+  /* ===== BREAKPOINTS ===== */
+  --breakpoint-sm: 480px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+
+  /* ===== TRANSITIONS ===== */
+  --transition-fast: 0.3s ease;
+} 

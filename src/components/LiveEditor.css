@@ -1,0 +1,281 @@
+@import '../styles/variables.css';
+
+/* Contenedor principal */
+.live-editor-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  min-height: calc(50 * var(--grid-unit-h));
+  max-height: calc(70 * var(--grid-unit-h));
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* Estilos globales para la barra de scroll */
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: none;
+}
+
+/* IE y Edge */
+* {
+  -ms-overflow-style: none;
+}
+
+/* Barra superior del editor */
+.editor-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: calc(1 * var(--grid-unit-h)) calc(2 * var(--grid-unit-w));
+  border-bottom: 1px solid var(--color-text);
+  font-family: var(--font-cabinet);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  flex-shrink: 0;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+}
+
+.tab-button {
+  padding: calc(1 * var(--grid-unit-h)) calc(2 * var(--grid-unit-w));
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-button:hover {
+  color: var(--color-menu);
+}
+
+.tab-button.active {
+  color: var(--color-menu);
+}
+
+/* Controles del editor */
+.editor-controls {
+  display: flex;
+  align-items: center;
+}
+
+.view-buttons {
+  display: flex;
+}
+
+.view-button {
+  padding: calc(1 * var(--grid-unit-h)) calc(1 * var(--grid-unit-w));
+  border: none;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.view-button .material-icons {
+  font-size: var(--font-size-lg);
+}
+
+.view-button:hover {
+  color: var(--color-menu);
+}
+
+.view-button.active {
+  color: var(--color-menu);
+}
+
+/* Botón externo */
+.external-button {
+  padding: calc(1 * var(--grid-unit-h)) calc(1 * var(--grid-unit-w));
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.external-button:hover {
+  color: var(--color-menu);
+}
+
+/* Contenedor del editor */
+.editor-wrapper {
+  display: flex;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+/* Columnas del editor */
+.editor-column {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 20%;
+  max-width: 80%;
+}
+
+.editor-box {
+  flex: 1;
+  overflow: hidden;
+}
+
+.preview-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: var(--color-background);
+  min-width: 20%;
+}
+
+/* Contenedor de previsualización */
+.preview-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--color-background);
+  overflow: auto;
+}
+
+/* Frame de previsualización */
+.preview-frame {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: var(--color-background);
+}
+
+/* Vista móvil */
+.preview-frame.mobile-view {
+  max-width: 375px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  margin: 0 auto;
+}
+
+/* Vista escritorio */
+.preview-frame.desktop-view {
+  width: 100%;
+}
+
+/* Ajustes para el contenido dentro del iframe */
+.preview-frame.desktop-view body {
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  height: 100% !important;
+}
+
+.preview-frame.desktop-view img {
+  max-width: 100%;
+  height: auto;
+  height: 100% !important;
+}
+
+.preview-frame.desktop-view .hero {
+  width: 100%;
+  max-width: 100%;
+  background-size: cover;
+  background-position: center;
+  height: 100% !important;
+}
+
+/* Divisor de columnas */
+.column-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0;
+  border-left: 1px solid var(--color-text);
+  cursor: col-resize;
+  z-index: 1000;
+  transition: background-color 0.2s;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.column-divider::before {
+  content: "↔";
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  background-color: var(--color-background);
+  border-radius: 50%;
+  border: 1px solid var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--color-text);
+  transition: all 0.2s ease;
+}
+
+.column-divider:hover::before {
+  background-color: var(--color-menu);
+}
+
+.column-divider.dragging::before {
+  background-color: var(--color-menu);
+}
+
+/* Estilos del editor CodeMirror */
+.cm-editor {
+  background-color: var(--color-background);
+  height: 100%;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cm-line {
+  padding: 0 !important;
+}
+
+.cm-gutters {
+  background: var(--color-background);
+  border-right: 1px solid var(--color-text);
+  color: var(--color-text);
+}
+
+.cm-activeLineGutter {
+  background-color: var(--color-background);
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.cm-activeLine {
+  background-color: var(--color-menu);
+}
+
+.cm-scroller {
+  overflow: auto;
+}
+  
