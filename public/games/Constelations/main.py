@@ -2,7 +2,6 @@ import pygame
 import random
 import time
 import math
-import asyncio
 
 # Inicializar pygame
 pygame.init()
@@ -254,11 +253,10 @@ sliders = [
     )
 ]
 
-async def main():
-    # Lista de puntos
+def main():
+    global VELOCIDAD, NUMERO_PUNTOS, DISTANCIA_MAXIMA, panel_visible
+    print("Entrando en main()")
     puntos = []
-
-    # Bucle principal
     corriendo = True
     reloj = pygame.time.Clock()
     boton_rect = None
@@ -326,10 +324,8 @@ async def main():
         
         pygame.display.flip()
         reloj.tick(60)  # 60 FPS
-        await asyncio.sleep(0)  # Cede el control al navegador
 
-    # Salir
     pygame.quit()
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
