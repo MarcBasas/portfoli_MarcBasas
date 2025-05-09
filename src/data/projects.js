@@ -9,7 +9,7 @@ export const projects = {
       slug: "webFinal1-html",
       webType: "final",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/pruebaWebFinal1-preview.webp",
+      previewImage: import.meta.env.BASE_URL + "/img/pruebaWebFinal1-preview.webp",
       images: [
         "/img/pruebaWebFinal1-desktop.webp",
         "/img/pruebaWebFinal1-mobile.webp"
@@ -22,7 +22,7 @@ export const projects = {
       slug: "cinevision-studios",
       webType: "demo",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/cinevision-preview.webp",
+      previewImage: import.meta.env.BASE_URL + "/img/cinevision-preview.webp",
       files: cinevisionDemo
     },
     {
@@ -31,7 +31,7 @@ export const projects = {
       slug: "portfolio-demo",
       webType: "demo",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/portfolio-preview.webp",
+      previewImage: import.meta.env.BASE_URL + "/img/portfolio-preview.webp",
       files: portfolioDemo
     }
   ],
@@ -41,24 +41,24 @@ export const projects = {
       title: "Space Shooter",
       slug: "space-shooter",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/space-preview.webp",
-      url: "/games/Constelations/build/web/index.html"
+      previewImage: import.meta.env.BASE_URL + "/img/space-preview.webp",
+      url: import.meta.env.BASE_URL + "/games/Constelations/build/web/index.html"
     },
     {
       id: 5,
       title: "Flappy Blob",
       slug: "flappy-blob",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/flappy-preview.webp",
-      url: "/games/flappy-blob/index.html"
+      previewImage: import.meta.env.BASE_URL + "/img/flappy-preview.webp",
+      url: import.meta.env.BASE_URL + "/games/flappy-blob/index.html"
     },
     {
       id: 6,
       title: "Brick Breaker",
       slug: "brick-breaker",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: "/img/brickbreaker-preview.webp",
-      url: "/games/brick-breaker/index.html"
+      previewImage: import.meta.env.BASE_URL + "/img/brickbreaker-preview.webp",
+      url: import.meta.env.BASE_URL + "/games/brick-breaker/index.html"
     }
   ]
 };

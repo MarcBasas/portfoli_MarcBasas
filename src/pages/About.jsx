@@ -87,7 +87,7 @@ const About = () => {
 
         <div className="about-image-container">
           <img 
-            src="../../public/img/About_img.webp" 
+            src={import.meta.env.BASE_URL + "/img/About_img.webp"} 
             alt="Marco Vilarrubias - Professional Portrait"
             className="about-image"
             itemProp="image"
