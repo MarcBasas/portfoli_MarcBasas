@@ -1,0 +1,94 @@
+@import '../styles/variables.css';
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.landing-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  position: relative;
+}
+
+.column {
+  width: 50%;
+  height: 100vh;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Ocultar scrollbar pero mantener funcionalidad */
+.column::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.column {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.project-card {
+  height: 100vh;
+  position: relative;
+  box-sizing: border-box;
+}
+
+.left-column {
+  transform: rotate(180deg);
+}
+
+.left-column .project-card {
+  transform: rotate(180deg);
+}
+
+/* Media Queries para Responsive Design */
+@media (max-width: var(--breakpoint-lg)) {
+  .landing-container {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .column {
+    width: 100%;
+    height: 50vh;
+  }
+}
+
+@media (max-width: var(--breakpoint-md)) {
+  .column {
+    height: 45vh;
+  }
+}
+
+@media (max-width: var(--breakpoint-sm)) {
+  .column {
+    height: 40vh;
+  }
+}
+
+/* Soporte para modo oscuro */
+@media (prefers-color-scheme: dark) {
+  .landing-container {
+    background-color: var(--color-background-dark);
+  }
+}
+
+/* Mantener la rotación del scroll incluso en modo reducido de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  .left-column {
+    transform: rotate(180deg);
+  }
+  
+  .left-column .project-card {
+    transform: rotate(180deg);
+  }
+}
