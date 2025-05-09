@@ -50,7 +50,7 @@ export const projects = {
       slug: "flappy-blob",
       description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
       previewImage: import.meta.env.BASE_URL + "/img/flappy-preview.webp",
-      url: import.meta.env.BASE_URL + "/games/flappy-blob/index.html"
+      url: import.meta.env.BASE_URL + "/games/ProbaWeb/build/web/index.html"
     },
     {
       id: 6,
