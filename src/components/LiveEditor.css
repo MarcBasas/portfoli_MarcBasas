@@ -9,6 +9,7 @@
   min-height: calc(50 * var(--grid-unit-h));
   max-height: calc(70 * var(--grid-unit-h));
   font-family: 'Consolas', 'Monaco', monospace;
+  border: 1px solid var(--color-text);
 }
 
 /* Estilos globales para la barra de scroll */
