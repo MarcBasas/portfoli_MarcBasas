@@ -13,7 +13,7 @@ import About from "./pages/About";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HelmetProvider>
-    <BrowserRouter>
+    <BrowserRouter basename="/portfoli_MarcBasas">
     <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
