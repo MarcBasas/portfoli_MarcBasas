@@ -6,7 +6,7 @@
   display: flex;
   align-items: stretch;
   justify-content: stretch;
-  background: #000; /* Opcional, para fondo negro */
+  border: 1px solid var(--color-background-general);
 }
 
 .game-frame {
