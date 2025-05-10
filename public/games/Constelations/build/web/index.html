@@ -62,9 +62,7 @@ async def custom_site():
     import embed
 
 
-
-    platform.document.body.style.margin = "0"
-    platform.document.body.style.border = "none"
+    platform.document.body.style.background = "#dbd9c3"
 
     import pygame
 
@@ -171,7 +169,7 @@ async def custom_site():
 
         # now make a prompt
         fnt = pygame.sysfont.SysFont("freesans",  uy(80) )
-        prompt = fnt.render("Click to start !", True, "blue")
+        prompt = fnt.render("Click to start!", True, "blue")
         pg_bar(track.len)
         screen.blit(prompt, ( marginx+ ux(80), marginy - uy(10) ) )
         compose()
@@ -269,6 +267,7 @@ config = {
     
     <script src="https://pygame-web.github.io/archives/0.9//browserfs.min.js"></script>
 
+
     <style>
         html, body, #html {
             margin: 0 !important;
@@ -281,7 +280,7 @@ config = {
             display: inline-block;
             vertical-align: top;
             font-weight: bold;
-            color: transparent;
+            color: #dbd9c3;
         }
 
         #progress {
@@ -296,8 +295,9 @@ config = {
         /* average size of droid screen 470dp x 320dp  */
         canvas.emscripten {
             display: block;
+
             border: 0px none;
-            background-color: grey;
+            background-color: #dbd9c3;
             width: 1024px !important;
             height: 576px !important;
             z-index: 5;
