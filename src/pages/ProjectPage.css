@@ -17,7 +17,7 @@
 .project-title {
   margin-top: calc(11 * var(--grid-unit-h));
   margin-left: calc(2 * var(--grid-unit-w));
-  font-family: var(--font-cabinet);
+  font-family: var(--font-arimo);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
@@ -29,7 +29,7 @@
   width: calc(80 * var(--grid-unit-w));
   min-width: calc(80 * var(--grid-unit-w));
   max-width: calc(80 * var(--grid-unit-w));
-  font-family: var(--font-cabinet);
+  font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);

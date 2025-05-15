@@ -32,9 +32,11 @@
   margin: 0;
 }
 .footer_contact {
-  font-family: var(--font-degular-display);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
   font-size: var(--font-size-xxl);
   color: var(--color-menu);
+  font-weight: var(--font-weight-extraBold);
   text-decoration: none;
   cursor: pointer;
   background: none;
@@ -43,9 +45,11 @@
 }
 
 .footer__copyright {
-  font-family: var(--font-degular-display);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
   font-size: var(--font-size-xxl);
   color: var(--color-menu);
+  font-weight: var(--font-weight-extraBold);
   text-decoration: none;
   background: none;
   border: none;
@@ -71,7 +75,8 @@
 }
 
 .contact-content {
-  font-family: var(--font-degular);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-medium);
   color: var(--color-menu);

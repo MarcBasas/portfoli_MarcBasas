@@ -16,9 +16,11 @@
 }
 
 .header__link {
-  font-family: var(--font-degular-display);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
   font-size: var(--font-size-xxl);
   color: var(--color-menu);
+  font-weight: var(--font-weight-extraBold);
   text-decoration: none;
   background: none;
   border: none;
@@ -62,9 +64,10 @@
 }
 
 .header__project-link {
-  font-family: var(--font-degular);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-extraBold);
   color: var(--color-menu);
   text-decoration: none;
   text-align: right;
