@@ -26,19 +26,37 @@
 .project-description {
   margin-top: calc(1 * var(--grid-unit-h));
   margin-left: calc(2 * var(--grid-unit-w));
-  width: calc(80 * var(--grid-unit-w));
+  width: calc(100 * var(--grid-unit-w));
   min-width: calc(80 * var(--grid-unit-w));
-  max-width: calc(80 * var(--grid-unit-w));
+  max-width: calc(100 * var(--grid-unit-w));
   font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
   line-height: 1.5;
   text-align: left;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+}
+
+/* Para pantallas medianas (tablets) */
+@media (max-width: 900px) {
+  .project-description {
+    min-width: 90vw;
+    max-width: 95vw;
+    width: 95vw;
+    -webkit-line-clamp: 6;
+  }
+}
+
+/* Para pantallas pequeñas (móviles) */
+@media (max-width: 600px) {
+  .project-description {
+    min-width: 98vw;
+    max-width: 99vw;
+    width: 99vw;
+    -webkit-line-clamp: unset; /* Muestra toda la descripción */
+    display: block;            /* Quita el recorte de líneas */
+    overflow: visible;
+  }
 }
 
 /* Contenedor para elementos dinámicos */

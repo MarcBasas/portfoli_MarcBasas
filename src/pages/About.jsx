@@ -43,16 +43,16 @@ const About = () => {
               About me
             </h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-              Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+              I’m a web developer who builds straightforward, dependable sites using the basics: HTML, CSS and JavaScript, and popular tools like React, Angular or Vue when they make sense.
+              </p>
+              <p>
+              In my free time I play around with small games in Unity, Pygame or plain JavaScript just for the fun of it. so I know what happens behind the scenes.
+              </p>
+            <p>
+              I also spent two years at a consulting firm working. One of them developing on Java back-end systems, and the other one working on a web app using React and Node.js with Figma designs.
             </p>
             <p>
-              Ut enim ad minim veniam, quis nostrud exercitation ullamco 
-              laboris nisi ut aliquip ex ea commodo consequat.
-            </p>
-            <p>
-              Duis aute irure dolor in reprehenderit in voluptate velit 
-              esse cillum dolore eu fugiat nulla pariatur.
+              Now, as a freelancer, I focus on practical solutions to help businesses and creatives get their projects off the ground.
             </p>
           </section>
 
@@ -65,22 +65,21 @@ const About = () => {
               id="experience-title"
               itemProp="jobTitle"
             >
-              Experience
+              Education and Experience
             </h2>
             <p>
               2024–2025, Currently working freelance as a fullstack developer.
             </p>
             <p>
-              2024, Trabajo 03<br/>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut enim ad minima veniam, quis nostrum
+              2023-2024, NTTDATA<br/>
+              Backend & Frontend Developer            </p>
+            <p>
+              2021–2023, Universitat Oberta de Catalunya<br/>
+              Master’s degree in Video Game Design and Programming.
             </p>
             <p>
-              2022–2024, Trabajo 02<br/>
-              Duis aute irure dolor in reprehenderit in voluptate velit.
-            </p>
-            <p>
-              2021, Trabajo 01<br/>
-              Velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla.
+              2015 - 2019, Universitat de Vic<br/>
+              Multimedia. Apps and Games Degree.
             </p>
           </section>
         </div>
