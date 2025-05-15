@@ -81,7 +81,13 @@ const Footer = () => {
               Marco Vilarrubias - Contact Information - Portfolio Details - Web Developer - REACT Developer - FrontEnd Developer - Web Designer
             </h2>
             <p itemProp="description">For inquiries & commisions:<br/>
-            
+            <p><br/></p>
+            <a 
+                href="https://github.com/MarcBasas"
+                itemProp="GitHub"
+              >
+                https://github.com/MarcBasas <br />
+              </a>
               <a 
                 href="mailto:marcvilarrubiasbasas@gmail.com"
                 itemProp="email"

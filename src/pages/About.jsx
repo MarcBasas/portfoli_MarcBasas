@@ -46,7 +46,7 @@ const About = () => {
               I’m a web developer who builds straightforward, dependable sites using the basics: HTML, CSS and JavaScript, and popular tools like React, Angular or Vue when they make sense.
               </p>
               <p>
-              In my free time I play around with small games in Unity, Pygame or plain JavaScript just for the fun of it. so I know what happens behind the scenes.
+              In my free time I play around with small games in Unity, Pygame or plain JavaScript just for the fun of it.
               </p>
             <p>
               I also spent two years at a consulting firm working. One of them developing on Java back-end systems, and the other one working on a web app using React and Node.js with Figma designs.
