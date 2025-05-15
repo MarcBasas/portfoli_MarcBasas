@@ -10,45 +10,52 @@
 
   /* ===== TYPOGRAPHY ===== */
   /* Font Families */
-  --font-degular-display: "Degular Display", sans-serif;
-  --font-degular: "Degular", sans-serif;
-  --font-cabinet: "Cabinet Grotesk", sans-serif;
+  --font-inter: "Inter", sans-serif;
+  --font-arimo: "Arimo", sans-serif;
 
   /* Font Weights */
   --font-weight-medium: 500;
   --font-weight-bold: 700;
+  --font-weight-extraBold: 800;
 
   /* Font Sizes */
-  --font-size-xxl: 2rem;    /* 32px */
-  --font-size-xl: 1.625rem; /* 26px */
-  --font-size-lg: 1.25rem;  /* 20px */
+  --font-size-xxl: 2.5rem;    /* 40px */
+  --font-size-xl: 1.625rem;   /* 26px */
+  --font-size-lg: 1.25rem;    /* 20px */
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.05em;
 
   /* ===== TYPOGRAPHY STYLES ===== */
   /*  fix-menu
-   * - Font: Degular Display
-   * - Size: xxl (2rem)
+   * - Font: Inter
+   * - Size: xxl (2.5rem)
    * - Color: fluor (#e5ff70)
+   * - Weight: Extra Bold
+   * - Letter Spacing: Tight (-0.05em)
    * - Use: Menu links in header
    */
 
   /*  landing-project-title
-   * - Font: Degular
-   * - Size: xl (1.625rem)
+   * - Font: Inter
+    * - Size: xl (1.625rem)
    * - Weight: Bold
+   * - Letter Spacing: Tight (-0.05em)
    * - Color: fluor (#e5ff70)
    * - Use: Project titles in landing page
    */
 
   /*  contact-text
-   * - Font: Degular
+   * - Font: Inter
    * - Size: xl (1.625rem)
    * - Weight: Medium
+   * - Letter Spacing: Tight (-0.05em)
    * - Color: fluor (#e5ff70)
    * - Use: Contact section text
    */
 
   /*  projectPage-title
-   * - Font: Cabinet Grotesk
+   * - Font: Arimo
    * - Size: xl (1.625rem)
    * - Weight: Medium
    * - Color: negro (#1b1b1b)
@@ -56,7 +63,7 @@
    */
 
   /*  general-text
-   * - Font: Cabinet Grotesk
+   * - Font: Arimo
    * - Size: lg (1.25rem)
    * - Weight: Medium
    * - Color: negro (#1b1b1b)

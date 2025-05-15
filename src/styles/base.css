@@ -26,7 +26,7 @@ html::-webkit-scrollbar {
 }
 
 body {
-  font-family: var(--font-cabinet);
+  font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
   line-height: 1.5;
   font-weight: var(--font-weight-medium);
@@ -41,7 +41,9 @@ body {
 /* Estilos para header y footer */
 header, footer {
   color: var(--color-menu);
-  font-family: var(--font-degular-display);
+  font-family: var(--font-inter);
+  letter-spacing: var(--letter-spacing-tight);
+  font-weight: var(--font-weight-extraBold);
 }
 
 /* Estilos para páginas de proyecto */

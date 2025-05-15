@@ -26,7 +26,7 @@
 }
 
 .about-section h2 {
-  font-family: var(--font-cabinet);
+  font-family: var(--font-arimo);
   font-size: var(--font-size-xl);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
@@ -35,7 +35,7 @@
 }
 
 .about-section p {
-  font-family: var(--font-cabinet);
+  font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-medium);
   color: var(--color-text);
