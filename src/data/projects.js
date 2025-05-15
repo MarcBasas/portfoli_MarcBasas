@@ -38,9 +38,9 @@ export const projects = {
   games: [
     {
       id: 4,
-      title: "Space Shooter",
-      slug: "space-shooter",
-      description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      title: "Constelations",
+      slug: "Constelations",
+      description: "Constelations is a small Pygame demo that draws moving dots and connects those within a certain distance, with an interactive control panel to adjust speed, number of points, and connection distance. With Pygbag, it can run in modern browsers as a WebAssembly application.",
       previewImage: import.meta.env.BASE_URL + "/img/space-preview.webp",
       url: import.meta.env.BASE_URL + "/games/Constelations/build/web/index.html"
     },
