@@ -59,6 +59,22 @@ ProjectLink.propTypes = {
   url: PropTypes.string.isRequired,
 };
 
+const ProjectGitLink = ({ gitUrl }) => (
+  <a
+    href={gitUrl}
+    target="_blank"
+    rel="noopener noreferrer"
+    className="project-link"
+    style={{ marginLeft: 12 }}
+  >
+    Check the code in GitHub
+  </a>
+);
+
+ProjectGitLink.propTypes = {
+  gitUrl: PropTypes.string.isRequired,
+};
+
 const ProjectPreview = ({ project }) => {
   if (project.webType !== "final") return null;
 
@@ -71,9 +87,14 @@ const ProjectPreview = ({ project }) => {
         className="project-preview-image"
       />
       <ProjectImages images={project.images} title={project.title} />
-      {project.websiteUrl && (
-        <ProjectLink url={project.websiteUrl} />
-      )}
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+        {project.websiteUrl && (
+          <ProjectLink url={project.websiteUrl} />
+        )}
+        {project.gitUrl && project.gitUrl !== "" && (
+          <ProjectGitLink gitUrl={project.gitUrl} />
+        )}
+      </div>
     </div>
   );
 };
@@ -84,6 +105,7 @@ ProjectPreview.propTypes = {
     previewImage: PropTypes.string,
     images: PropTypes.arrayOf(PropTypes.string),
     websiteUrl: PropTypes.string,
+    gitUrl: PropTypes.string,
     title: PropTypes.string,
   }).isRequired,
 };
@@ -200,6 +222,11 @@ const ProjectPage = () => {
           {project.url && <GameFrame title={project.title} url={project.url} />}
           <ProjectPreview project={project} />
           <ProjectComponent project={project} />
+          {project.webType !== "final" && project.gitUrl && project.gitUrl !== "" && (
+            <div style={{ marginTop: 16 }}>
+              <ProjectGitLink gitUrl={project.gitUrl} />
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -216,6 +243,7 @@ ProjectPage.propTypes = {
     websiteUrl: PropTypes.string,
     url: PropTypes.string,
     componentName: PropTypes.string,
+    gitUrl: PropTypes.string,
   }),
 };
 
