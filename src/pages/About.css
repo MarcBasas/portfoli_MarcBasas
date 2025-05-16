@@ -28,7 +28,7 @@
 .about-section h2 {
   font-family: var(--font-arimo);
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   color: var(--color-text);
   margin-bottom: calc(var(--grid-unit-h) * 2);
   text-align: left;
@@ -37,7 +37,7 @@
 .about-section p {
   font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   color: var(--color-text);
   margin-bottom: var(--spacing-sm);
   line-height: 1.4;

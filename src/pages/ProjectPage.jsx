@@ -6,43 +6,15 @@ import PropTypes from "prop-types";
 import { projects } from "../data/projects";
 import LiveEditor from "../components/LiveEditor";
 import GameFrame from "../components/GameFrame";
+import VideoPlayer from "../components/projectComponents/VideoPlayer";
 import "./ProjectPage.css";
+import NotFoundPage from "./NotFoundPage";
 
 const componentModules = import.meta.glob("../components/projectComponents/*.{jsx,js}");
 
 const LoadingFallback = () => (
   <div className="loading-fallback">Cargando componente…</div>
 );
-
-const ProjectNotFound = () => (
-  <div className="project-content">
-    <h1>Proyecto no encontrado</h1>
-    <p>Lo sentimos, el proyecto que buscas no existe o ha sido eliminado.</p>
-  </div>
-);
-
-const ProjectImages = ({ images, title }) => {
-  if (!images?.length) return null;
-
-  return (
-    <div className="project-images-grid">
-      {images.map((img, i) => (
-        <img
-          key={i}
-          src={img}
-          alt={`Captura ${i + 1} del proyecto ${title}`}
-          loading="lazy"
-          className="project-image"
-        />
-      ))}
-    </div>
-  );
-};
-
-ProjectImages.propTypes = {
-  images: PropTypes.arrayOf(PropTypes.string),
-  title: PropTypes.string.isRequired,
-};
 
 const ProjectLink = ({ url }) => (
   <a
@@ -51,7 +23,7 @@ const ProjectLink = ({ url }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Ver sitio web
+    Visit ↗
   </a>
 );
 
@@ -59,9 +31,9 @@ ProjectLink.propTypes = {
   url: PropTypes.string.isRequired,
 };
 
-const ProjectGitLink = ({ gitUrl }) => (
+const ProjectGitLink = ({ git }) => (
   <a
-    href={gitUrl}
+    href={git}
     target="_blank"
     rel="noopener noreferrer"
     className="project-link"
@@ -72,97 +44,7 @@ const ProjectGitLink = ({ gitUrl }) => (
 );
 
 ProjectGitLink.propTypes = {
-  gitUrl: PropTypes.string.isRequired,
-};
-
-const ProjectPreview = ({ project }) => {
-  if (project.webType !== "final") return null;
-
-  return (
-    <div>
-      <img
-        src={project.previewImage}
-        alt={`Vista previa del proyecto ${project.title}`}
-        loading="lazy"
-        className="project-preview-image"
-      />
-      <ProjectImages images={project.images} title={project.title} />
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        {project.websiteUrl && (
-          <ProjectLink url={project.websiteUrl} />
-        )}
-        {project.gitUrl && project.gitUrl !== "" && (
-          <ProjectGitLink gitUrl={project.gitUrl} />
-        )}
-      </div>
-    </div>
-  );
-};
-
-ProjectPreview.propTypes = {
-  project: PropTypes.shape({
-    webType: PropTypes.string,
-    previewImage: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    websiteUrl: PropTypes.string,
-    gitUrl: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
-};
-
-const ProjectComponent = ({ project }) => {
-  const ComponentPreview = useMemo(() => {
-    if (project.webType !== "component") return null;
-
-    const modulePaths = Object.keys(componentModules);
-    const match = modulePaths.find(
-      (path) =>
-        path.endsWith(`/${project.componentName}.jsx`) ||
-        path.endsWith(`/${project.componentName}.js`)
-    );
-
-    if (!match) {
-      console.error(`Componente no encontrado: ${project.componentName}`, modulePaths);
-      return null;
-    }
-
-    return lazy(componentModules[match]);
-  }, [project.componentName, project.webType]);
-
-  if (!ComponentPreview || project.webType !== "component") return null;
-
-  return (
-    <Suspense fallback={<LoadingFallback />}>
-      <ComponentPreview />
-    </Suspense>
-  );
-};
-
-ProjectComponent.propTypes = {
-  project: PropTypes.shape({
-    webType: PropTypes.string,
-    componentName: PropTypes.string,
-  }).isRequired,
-};
-
-const ProjectIframe = ({ project }) => {
-  if (!project.url) return null;
-
-  return (
-    <iframe
-      src={project.url}
-      title={project.title}
-      className="project-iframe"
-      allowFullScreen
-    />
-  );
-};
-
-ProjectIframe.propTypes = {
-  project: PropTypes.shape({
-    url: PropTypes.string,
-    title: PropTypes.string,
-  }).isRequired,
+  git: PropTypes.string.isRequired,
 };
 
 const ProjectPage = () => {
@@ -172,7 +54,7 @@ const ProjectPage = () => {
     return allProjects.find((p) => p.slug === slug);
   }, [slug]);
 
-  if (!project) return <ProjectNotFound />;
+  if (!project) return <NotFoundPage />;
 
   return (
     <div 
@@ -218,33 +100,25 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
-          {project.webType === "demo" && <LiveEditor project={project} />}
-          {project.url && <GameFrame title={project.title} url={project.url} />}
-          <ProjectPreview project={project} />
-          <ProjectComponent project={project} />
-          {project.webType !== "final" && project.gitUrl && project.gitUrl !== "" && (
-            <div style={{ marginTop: 16 }}>
-              <ProjectGitLink gitUrl={project.gitUrl} />
-            </div>
+          {/* WEB DEMO */}
+          {project.category === "demo" && project.files && <LiveEditor project={project} />}
+          {/* WEB FINAL */}
+          {project.category === "final" && project.video && (
+            <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
           )}
+          {/* GAMES */}
+          {project.url && project.slug && project.category !== "demo" && project.category !== "final" && (
+            <GameFrame title={project.title} url={project.url} />
+          )}
+          {/* LINKS */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
+            {project.url && <ProjectLink url={project.url} />}
+            {project.git && <ProjectGitLink git={project.git} />}
+          </div>
         </div>
       </div>
     </div>
   );
-};
-
-ProjectPage.propTypes = {
-  project: PropTypes.shape({
-    title: PropTypes.string,
-    description: PropTypes.string,
-    webType: PropTypes.string,
-    previewImage: PropTypes.string,
-    images: PropTypes.arrayOf(PropTypes.string),
-    websiteUrl: PropTypes.string,
-    url: PropTypes.string,
-    componentName: PropTypes.string,
-    gitUrl: PropTypes.string,
-  }),
 };
 
 export default React.memo(ProjectPage);

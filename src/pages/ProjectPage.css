@@ -19,19 +19,19 @@
   margin-left: calc(2 * var(--grid-unit-w));
   font-family: var(--font-arimo);
   font-size: var(--font-size-xl);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   color: var(--color-text);
 }
 
 .project-description {
   margin-top: calc(1 * var(--grid-unit-h));
   margin-left: calc(2 * var(--grid-unit-w));
-  width: calc(100 * var(--grid-unit-w));
+  width: calc(80 * var(--grid-unit-w));
   min-width: calc(80 * var(--grid-unit-w));
-  max-width: calc(100 * var(--grid-unit-w));
+  max-width: calc(80 * var(--grid-unit-w));
   font-family: var(--font-arimo);
   font-size: var(--font-size-lg);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   color: var(--color-text);
   line-height: 1.5;
   text-align: left;
