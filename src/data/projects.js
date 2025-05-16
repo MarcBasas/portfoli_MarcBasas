@@ -26,16 +26,16 @@ export const projects = {
     },
     {
       id: 3,
-      title: "Prueba web final 1",
-      slug: "webFinal1-html",
+      title: "Kumo Creative Project",
+      slug: "kumo-creative-project",
       webType: "final",
-      description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+      description:"Kumo Creative is a video producer. For this project, I was asked to help with the responsive development of the website. The site was already built, so I focused on making it look good on all devices.",
       previewImage: import.meta.env.BASE_URL + "/img/pruebaWebFinal1-preview.webp",
       images: [
         "/img/pruebaWebFinal1-desktop.webp",
         "/img/pruebaWebFinal1-mobile.webp"
       ],
-      websiteUrl: "https://webfinal1.com",
+      websiteUrl: "https://kumocreativeproject.com",
       gitUrl: ""
     }
   ],
