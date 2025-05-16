@@ -1,0 +1,25 @@
+.notfound-container {
+  min-height: 100vh;
+  width: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-background);
+  text-align: center;
+}
+
+.notfound-title {
+  font-family: var(--font-arimo);
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+  margin-bottom: var(--spacing-md);
+}
+
+.notfound-text {
+  font-family: var(--font-arimo);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+} 

@@ -38,14 +38,6 @@
   transform: translateX(-50%);
 }
 
-.header__link:hover,
-.header__link:focus,
-.header__link:active {
-  opacity: 0.8;
-  color: var(--color-menu);
-  text-decoration: none;
-  outline: none;
-}
 
 .header__projects-container {
   position: relative;

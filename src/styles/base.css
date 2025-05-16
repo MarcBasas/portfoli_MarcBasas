@@ -64,11 +64,7 @@ header, footer {
     color: var(--color-text-dark);
     background-color: var(--color-background-light);
   }
-  
-  a:hover {
-    color: #747bff;
-  }
-  
+    
   button {
     background-color: #f9f9f9;
   }
