@@ -100,18 +100,18 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
-          {/* WEB DEMO */}
-          {project.category === "demo" && project.files && <LiveEditor project={project} />}
-          {/* WEB FINAL */}
-          {project.category === "final" && project.video && (
+          {/* VIDEO */}
+          {project.video && (
             <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
           )}
+          {/* WEB DEMO */}
+          {project.category === "demo" && project.files && <LiveEditor project={project} />}
           {/* GAMES */}
           {project.url && project.slug && project.category !== "demo" && project.category !== "final" && (
             <GameFrame title={project.title} url={project.url} />
           )}
           {/* LINKS */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 16 }}>
+          <div className="project-links-row">
             {project.url && <ProjectLink url={project.url} />}
             {project.git && <ProjectGitLink git={project.git} />}
           </div>
