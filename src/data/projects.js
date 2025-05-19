@@ -46,11 +46,13 @@ export const projects = {
     },
     {
       id: 5,
-      title: "FLAPPY BLOB",
-      slug: "flappy-blob",
-      description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-      previewImage: import.meta.env.BASE_URL + "/img/flappy-preview.webp",
-      url: import.meta.env.BASE_URL + "/games/ProbaWeb/build/web/index.html"
+      title: "CHESSEXCEL",
+      slug: "chessExcel",
+      description: "ChessExcel is an Excel-based chess game developed in VBA that lets users move pieces by clicking cells, enforces rules like check and checkmate, and features visual highlights and move history tracking. Packaged as a workbook, it demonstrates automated logic, UI, and Excel’s capabilities.",
+      previewImage: import.meta.env.BASE_URL + "/vids/PosterChessExcel.webp",
+      video: import.meta.env.BASE_URL + "/vids/ChessExcell.webm",
+      poster: import.meta.env.BASE_URL + "/vids/PosterChessExcel.webp",
+      git: "https://github.com/MarcBasas/ChessExcel"
     },
     {
       id: 6,

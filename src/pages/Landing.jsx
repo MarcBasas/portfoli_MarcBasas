@@ -108,39 +108,39 @@ const Landing = () => {
 
       <div id="smooth-wrapper-landing">
         <div id="smooth-content-landing">
-          <div 
-            className="landing-container"
-            role="main"
-            aria-label="Lista de proyectos"
-          >
-            <div
-              className="column left-column"
-              ref={leftColumnRef}
-              role="region"
-              aria-label="Proyectos web"
-            >
-              {visibleWebProjects.map((project, index) => (
-                <ProjectCard 
-                  key={`web-${index}`} 
-                  data={project}
-                  aria-label={`Proyecto web: ${project.title}`}
-                />
-              ))}
-            </div>
+      <div 
+        className="landing-container"
+        role="main"
+        aria-label="Lista de proyectos"
+      >
+        <div
+          className="column left-column"
+          ref={leftColumnRef}
+          role="region"
+          aria-label="Proyectos web"
+        >
+          {visibleWebProjects.map((project, index) => (
+            <ProjectCard 
+              key={`web-${index}`} 
+              data={project}
+              aria-label={`Proyecto web: ${project.title}`}
+            />
+          ))}
+        </div>
 
-            <div
-              className="column right-column"
-              ref={rightColumnRef}
-              role="region"
-              aria-label="Proyectos de videojuegos"
-            >
-              {visibleGameProjects.map((project, index) => (
-                <ProjectCard 
-                  key={`game-${index}`} 
-                  data={project}
-                  aria-label={`Proyecto de videojuego: ${project.title}`}
-                />
-              ))}
+        <div
+          className="column right-column"
+          ref={rightColumnRef}
+          role="region"
+          aria-label="Proyectos de videojuegos"
+        >
+          {visibleGameProjects.map((project, index) => (
+            <ProjectCard 
+              key={`game-${index}`} 
+              data={project}
+              aria-label={`Proyecto de videojuego: ${project.title}`}
+            />
+          ))}
             </div>
           </div>
         </div>

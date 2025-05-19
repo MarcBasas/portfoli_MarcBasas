@@ -94,17 +94,13 @@
 }
 
 .project-link {
-  display: inline-block;
-  margin-top: var(--spacing-lg);
   padding: var(--spacing-sm) var(--spacing-md);
   color: var(--color-text-general);
   text-decoration: none;
-  border-radius: 8px;
-  transition: background-color var(--transition-fast);
 }
 
 .project-link:hover {
-  opacity: 0.8;
+  color: var(--color-menu);
 }
 
 .project-iframe {
@@ -119,4 +115,9 @@
   padding: var(--spacing-lg);
   font-size: 1.2rem;
   color: var(--color-text-general);
+}
+
+.project-links-row {
+  display: flex;
+  align-items: center;
 }
