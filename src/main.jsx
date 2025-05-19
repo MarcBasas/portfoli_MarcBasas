@@ -11,6 +11,7 @@ import Landing from "./pages/Landing";
 import ProjectPage from "./pages/ProjectPage";
 import About from "./pages/About";
 import NotFoundPage from "./pages/NotFoundPage";
+import Scroll from "./pages/Scroll";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HelmetProvider>
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="/project/:slug" element={<ProjectPage />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFoundPage />} />
+          <Route path="/scroll" element={<Scroll />} />
         </Route>
       </Routes>
     </BrowserRouter>
