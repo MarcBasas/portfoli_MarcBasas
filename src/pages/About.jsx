@@ -2,8 +2,10 @@ import React from "react";
 import { Helmet } from "react-helmet-async";
 import Footer from "../components/ui/Footer";
 import "./About.css";
+import useIsMobile from "../utils/UseIsMobile";
 
 const About = () => {
+  const isMobile = useIsMobile();
   return (
     <>
       <Helmet>
@@ -20,7 +22,7 @@ const About = () => {
       </Helmet>
 
       <main 
-        className="about-page"
+        className={`about-page${isMobile ? ' about-page--mobile' : ''}`}
         role="main"
         aria-label="About Marco Vilarrubias - Professional Background and Experience - Web Developer Portfolio"
         itemScope
@@ -43,14 +45,14 @@ const About = () => {
               About me
             </h2>
             <p>
-              I’m a web developer who builds straightforward, dependable sites using the basics: HTML, CSS and JavaScript, and popular tools like React, Angular or Vue when they make sense.
-              </p>
+              I'm a web developer who builds straightforward, dependable sites using the basics: HTML, CSS and JavaScript, and popular tools like React, Angular or Vue when they make sense.
+            </p>
             <p>
               As a freelancer, I focus on practical solutions to help businesses and creatives get their projects off the ground.
             </p>
-              <p>
+            <p>
               In my free time I play around with small games in Unity, Pygame or plain JavaScript just for the fun of it.
-              </p>
+            </p>
             <p>
               I also spent two years at a consulting firm. The first year I helped developing Java back-end systems, and the second one I worked on a web app using React and Node.js with Figma designs.
             </p>
@@ -75,7 +77,7 @@ const About = () => {
               Backend & Frontend Developer            </p>
             <p>
               2021–2023, Universitat Oberta de Catalunya<br/>
-              Master’s degree in Video Game Design and Programming.
+              Master's degree in Video Game Design and Programming.
             </p>
             <p>
               2015 - 2019, Universitat de Vic<br/>

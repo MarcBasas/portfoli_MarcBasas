@@ -21,7 +21,7 @@
   justify-content: space-between;
   align-items: center;
   padding: calc(1 * var(--grid-unit-h)) calc(2 * var(--grid-unit-w));
-  z-index: 1000;
+  z-index: 3000;
 }
 
 .footer__left {
@@ -178,11 +178,11 @@
 /* Soporte para modo oscuro */
 @media (prefers-color-scheme: dark) {
   .footer__project-title {
-    color: #F16704;
+    color: var(--color-menu);
   }
 
   .footer__project-link:hover .footer__project-title,
   .footer__project-link:focus .footer__project-title {
-    color: #fff;
+    color: var(--color-menu);
   }
 }

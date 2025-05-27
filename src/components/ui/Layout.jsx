@@ -17,7 +17,7 @@ const Layout = () => {
         <html lang="es" />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="theme-color" content="#F16704" />
+        <meta name="theme-color" content="#e5ff70" />
         <link rel="canonical" href="https://marco-portfolio.com" />
       </Helmet>
 

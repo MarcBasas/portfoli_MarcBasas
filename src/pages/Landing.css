@@ -92,3 +92,20 @@ body,
     transform: rotate(180deg);
   }
 }
+
+/* Estilos para la versión móvil (una sola columna) */
+@media (max-width: 768px) {
+  .mobile-landing-container {
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    display: block;
+    background: var(--color-background, #fff);
+  }
+  .landing-container,
+  .column,
+  .left-column,
+  .right-column {
+    display: none !important;
+  }
+}

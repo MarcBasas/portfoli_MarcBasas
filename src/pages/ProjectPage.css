@@ -11,7 +11,9 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100%;
+  height: 100vh;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 .project-title {
@@ -37,6 +39,22 @@
   text-align: left;
 }
 
+/* Contenedor para elementos dinámicos */
+.project-dynamic-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-width: calc(188 * var(--grid-unit-w));
+  max-height: calc(75 * var(--grid-unit-h));
+  overflow-y: auto;
+  margin-bottom: 80px;
+  margin-top: calc(4 * var(--grid-unit-h));
+  margin-left: calc(2 * var(--grid-unit-w));
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  width: 100%;
+}
+
 /* Para pantallas medianas (tablets) */
 @media (max-width: 900px) {
   .project-description {
@@ -49,6 +67,16 @@
 
 /* Para pantallas pequeñas (móviles) */
 @media (max-width: 600px) {
+  .project-content {
+    height: auto;
+    min-height: unset;
+  }
+  .project-dynamic-content {
+    margin-bottom: 0;
+    max-height: unset;
+    min-height: unset;
+    flex: unset;
+  }
   .project-description {
     min-width: 98vw;
     max-width: 99vw;
@@ -57,21 +85,6 @@
     display: block;            /* Quita el recorte de líneas */
     overflow: visible;
   }
-}
-
-/* Contenedor para elementos dinámicos */
-.project-dynamic-content {
-  margin-top: calc(4 * var(--grid-unit-h));
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  min-height: calc(50 * var(--grid-unit-h));
-  max-height: calc(70 * var(--grid-unit-h));
-  max-width: calc(188 * var(--grid-unit-w));
-  margin-left: auto;
-  margin-right: auto;
-  overflow-y: auto;
 }
 
 .project-preview-image {
@@ -90,11 +103,11 @@
 .project-grid-image {
   width: 45%;
   max-width: 400px;
-  border-radius: 8px;
 }
 
 .project-link {
-  padding: var(--spacing-sm) var(--spacing-md);
+  margin-top: calc(2 * var(--grid-unit-h));
+  margin-left: 0;
   color: var(--color-text-general);
   text-decoration: none;
 }

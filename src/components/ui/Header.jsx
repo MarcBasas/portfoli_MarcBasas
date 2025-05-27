@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { projects } from "../../data/projects";
+import useIsMobile from "../../utils/UseIsMobile";
 import "./Header.css";
+import MobileMenuOverlay from "./MobileMenuOverlay";
 
 /**
  * Componente de encabezado que incluye navegación y logo
@@ -14,6 +16,7 @@ const Header = () => {
   const allProjects = [...projects.web, ...projects.games];
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
+  const isMobile = useIsMobile();
 
   const handleProjectsClick = () => {
     setShowProjects(!showProjects);
@@ -37,7 +40,7 @@ const Header = () => {
 
   return (
     <header 
-      className="header"
+      className="header"  
       role="banner"
       aria-label="Portfolio header with navigation - Marco Vilarrubias Basas - Web Developer Portfolio"
     >
@@ -77,38 +80,42 @@ const Header = () => {
             ref={buttonRef}
             className="header__link"
             onClick={handleProjectsClick}
-            aria-label="Show projects list - Marco Vilarrubias Portfolio"
+            aria-label={showProjects ? "Close projects list" : "Show projects list"}
             aria-expanded={showProjects}
             aria-controls="projects-dropdown"
             itemProp="name"
           >
-            PROJECTS
+            {isMobile && showProjects ? "CLOSE" : "PROJECTS"}
           </button>
           
           {showProjects && (
-            <div 
-              ref={dropdownRef}
-              className="header__projects-dropdown"
-              id="projects-dropdown"
-              role="menu"
-              aria-label="Projects list"
-            >
-              {allProjects.map((project, index) => (
-                <Link
-                  key={project.id}
-                  to={`/project/${project.slug}`}
-                  className="header__project-link"
-                  role="menuitem"
-                  aria-label={`Go to ${project.title} project - Marco Vilarrubias Portfolio`}
-                  itemProp="itemListElement"
-                  itemScope
-                  itemType="https://schema.org/ListItem"
-                >
-                  <span itemProp="name">{project.title}</span>
-                  <meta itemProp="position" content={index + 1} />
-          </Link>
-              ))}
-            </div>
+            isMobile ? (
+              <MobileMenuOverlay allProjects={allProjects} onClose={() => setShowProjects(false)} />
+            ) : (
+              <div
+                ref={dropdownRef}
+                className="header__projects-dropdown"
+                id="projects-dropdown"
+                role="menu"
+                aria-label="Projects list"
+              >
+                {allProjects.map((project, index) => (
+                  <Link
+                    key={project.id}
+                    to={`/project/${project.slug}`}
+                    className="header__project-link"
+                    role="menuitem"
+                    aria-label={`Go to ${project.title} project - Marco Vilarrubias Portfolio`}
+                    itemProp="itemListElement"
+                    itemScope
+                    itemType="https://schema.org/ListItem"
+                  >
+                    <span itemProp="name">{project.title}</span>
+                    <meta itemProp="position" content={index + 1} />
+                  </Link>
+                ))}
+              </div>
+            )
           )}
         </div>
       </nav>

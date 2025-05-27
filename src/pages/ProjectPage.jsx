@@ -89,7 +89,7 @@ const ProjectPage = () => {
           className="project-title"
           itemProp="name"
         >
-          {project.title}
+          {project.titleMin}
         </h1>
 
         <p 
@@ -112,8 +112,9 @@ const ProjectPage = () => {
           )}
           {/* LINKS */}
           <div className="project-links-row">
-            {project.url && <ProjectLink url={project.url} />}
+            {project.git && project.url && <ProjectGitLink git={project.git} />}
             {project.git && <ProjectGitLink git={project.git} />}
+            {project.url && <ProjectLink url={project.url} />}
           </div>
         </div>
       </div>
