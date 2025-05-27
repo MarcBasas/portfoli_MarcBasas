@@ -54,6 +54,8 @@
 @media (max-width: 1024px) {
   .about-page {
     grid-template-columns: 1fr;
+    height: auto;
+    overflow: visible;
   }
 
   .about-image {

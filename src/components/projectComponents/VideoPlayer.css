@@ -1,36 +1,72 @@
 .video-player-container {
   width: 100%;
-  max-width: 66rem; /* similar a max-w-3xl */
-  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-height: calc(63 * var(--grid-unit-h));
+  margin: 0;
+  align-items: flex-start;
 }
 
 .video-wrapper {
   position: relative;
   background: var(--color-background);
+  display: flex;
+  flex: 1 1 auto;
+  height: 100%;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin: 0;
+}
+
+.video-wrapper.fullscreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
 
 .video-element {
-  width: 100%;
-  height: auto;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  max-height: calc(65 * var(--grid-unit-h));
   display: block;
   background: black;
+  z-index: 1;
+  object-fit: contain;
+  margin: 0;
+  align-self: flex-start;
+  position: relative;
 }
 
 .video-controls {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  max-width: 100%;
+  z-index: 2;
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  background: rgba(19, 19, 19, 0.254); /* color-background, semi-transparente */
+  background: rgba(19, 19, 19, 0.260); /* color-background, semi-transparente */
   padding-left: 1rem;
   padding-right: 1rem; 
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
 }
 
+.video-controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
 
 .controls-left {
   display: flex;
@@ -54,9 +90,9 @@
   transition: background var(--transition-fast);
 }
 
-
 .video-controls.fullscreen {
   background: rgba(19, 19, 19, 0.727) !important;
+  
 }
 
 .video-player-container.fullscreen .video-wrapper {
@@ -67,6 +103,40 @@
   background-color: black;
 }
 
+.video-progress-bar {
+  width: 100%;
+  height: 4px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  cursor: pointer;
+  background: transparent;
+}
 
+.video-progress-bar-inner {
+  height: 100%;
+  background: var(--color-menu);
+  transition: width 0.1s;
+  position: relative;
+  z-index: 2;
+}
 
+.video-progress-bar-bg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(19,19,19,0.3);
+  z-index: 1;
+  pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .video-btn {
+    font-size: calc(var(--font-size-lg) * 0.8);
+  }
+}
 

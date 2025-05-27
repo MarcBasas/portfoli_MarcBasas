@@ -6,6 +6,7 @@ import "./Landing.css";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollSmoother } from 'gsap/ScrollSmoother';
+import useIsMobile from "../utils/UseIsMobile";
 
 gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
@@ -21,14 +22,20 @@ const Landing = () => {
   const smootherRef = useRef(null);
   const syncingA = useRef(false);
   const syncingB = useRef(false);
+  const isMobile = useIsMobile();
 
   const initialWebProjects = [...projects.web, ...projects.web]; 
   const initialGameProjects = [...projects.games, ...projects.games];
+
+  // Para móvil: lista combinada de proyectos (web primero, luego juegos)
+  const initialMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
+  const [visibleMobileProjects, setVisibleMobileProjects] = useState(initialMobileProjects);
 
   const [visibleWebProjects, setVisibleWebProjects] = useState(initialWebProjects);
   const [visibleGameProjects, setVisibleGameProjects] = useState(initialGameProjects);
 
   useEffect(() => {
+    if (isMobile) return; // No inicializar GSAP ni sincronización en móvil
     // GSAP ScrollSmoother
     if (!smootherRef.current) {
       smootherRef.current = ScrollSmoother.create({
@@ -64,9 +71,10 @@ const Landing = () => {
       panelA.removeEventListener('scroll', handleScrollA);
       panelB.removeEventListener('scroll', handleScrollB);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
+    if (isMobile) return; // No listeners de columnas en móvil
     const left = leftColumnRef.current;
     const right = rightColumnRef.current;
 
@@ -93,7 +101,27 @@ const Landing = () => {
       if (left) left.removeEventListener("scroll", handleLeftScroll);
       if (right) right.removeEventListener("scroll", handleRightScroll);
     };
-  }, [leftColumnRef, rightColumnRef, setVisibleWebProjects, setVisibleGameProjects]);
+  }, [leftColumnRef, rightColumnRef, setVisibleWebProjects, setVisibleGameProjects, isMobile]);
+
+  // Scroll infinito para móvil
+  useEffect(() => {
+    if (!isMobile) return;
+    const handleScroll = (e) => {
+      const { scrollTop, scrollHeight, clientHeight } = e.target;
+      if (scrollTop + clientHeight >= scrollHeight * 0.7) {
+        setVisibleMobileProjects((prev) => [
+          ...prev,
+          ...projects.web,
+          ...projects.games
+        ]);
+      }
+    };
+    const container = document.getElementById("mobile-scroll-container");
+    if (container) container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      if (container) container.removeEventListener("scroll", handleScroll);
+    };
+  }, [isMobile, setVisibleMobileProjects]);
 
   return (
     <>
@@ -106,45 +134,63 @@ const Landing = () => {
         <meta property="og:type" content="website" />
       </Helmet>
 
-      <div id="smooth-wrapper-landing">
-        <div id="smooth-content-landing">
-      <div 
-        className="landing-container"
-        role="main"
-        aria-label="Lista de proyectos"
-      >
+      {isMobile ? (
         <div
-          className="column left-column"
-          ref={leftColumnRef}
-          role="region"
-          aria-label="Proyectos web"
+          id="mobile-scroll-container"
+          className="mobile-landing-container"
+          style={{ height: "100vh", overflowY: "auto", width: "100vw" }}
+          role="main"
+          aria-label="Lista de proyectos"
         >
-          {visibleWebProjects.map((project, index) => (
-            <ProjectCard 
-              key={`web-${index}`} 
+          {visibleMobileProjects.map((project, index) => (
+            <ProjectCard
+              key={`mobile-${index}`}
               data={project}
-              aria-label={`Proyecto web: ${project.title}`}
+              aria-label={`Proyecto: ${project.title}`}
             />
           ))}
         </div>
+      ) : (
+        <div id="smooth-wrapper-landing">
+          <div id="smooth-content-landing">
+            <div 
+              className="landing-container"
+              role="main"
+              aria-label="Lista de proyectos"
+            >
+              <div
+                className="column left-column"
+                ref={leftColumnRef}
+                role="region"
+                aria-label="Proyectos web"
+              >
+                {visibleWebProjects.map((project, index) => (
+                  <ProjectCard 
+                    key={`web-${index}`} 
+                    data={project}
+                    aria-label={`Proyecto web: ${project.title}`}
+                  />
+                ))}
+              </div>
 
-        <div
-          className="column right-column"
-          ref={rightColumnRef}
-          role="region"
-          aria-label="Proyectos de videojuegos"
-        >
-          {visibleGameProjects.map((project, index) => (
-            <ProjectCard 
-              key={`game-${index}`} 
-              data={project}
-              aria-label={`Proyecto de videojuego: ${project.title}`}
-            />
-          ))}
+              <div
+                className="column right-column"
+                ref={rightColumnRef}
+                role="region"
+                aria-label="Proyectos de videojuegos"
+              >
+                {visibleGameProjects.map((project, index) => (
+                  <ProjectCard 
+                    key={`game-${index}`} 
+                    data={project}
+                    aria-label={`Proyecto de videojuego: ${project.title}`}
+                  />
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
