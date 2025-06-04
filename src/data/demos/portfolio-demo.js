@@ -46,7 +46,7 @@ export const portfolioDemo = {
         <div class="mobile-projects-grid">
             <div class="mobile-project" data-work="1">
                 <h3>PROJECT 1</h3>
-                <img src="/demos/portfolio/project1/1.webp" alt="Project 1">
+                <img src="https://images.unsplash.com/photo-1737985589623-5f5a8ca121c1?q=80&w=2668&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 1">
             </div>
             <div class="mobile-project" data-work="2">
                 <h3>PROJECT 2</h3>
@@ -74,9 +74,9 @@ export const portfolioDemo = {
                 </div>
 
                 <div class="carousel">
-                    <img src="/demos/portfolio/project1/1.webp" alt="Project 1 Image 1" class="carousel-image">
-                    <img src="/demos/portfolio/project1/2.webp" alt="Project 1 Image 2" class="carousel-image hidden">
-                    <img src="/demos/portfolio/project1/3.webp" alt="Project 1 Image 3" class="carousel-image hidden">
+                    <img src="https://images.unsplash.com/photo-1737985589623-5f5a8ca121c1?q=80&w=2668&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 1 Image 1" class="carousel-image">
+                    <img src="https://images.unsplash.com/photo-1737958448097-344fecc3187b?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 1 Image 2" class="carousel-image hidden">
+                    <img src="https://images.unsplash.com/photo-1737958108322-43b24ea9bc18?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 1 Image 3" class="carousel-image hidden">
                 </div>
 
                 <div class="project-navigation">
@@ -103,9 +103,9 @@ export const portfolioDemo = {
                 </div>
 
                 <div class="carousel">
-                    <img src="/demos/portfolio/project2/1.webp" alt="Project 2 Image 1" class="carousel-image">
-                    <img src="/demos/portfolio/project2/2.webp" alt="Project 2 Image 2" class="carousel-image hidden">
-                    <img src="/demos/portfolio/project2/3.webp" alt="Project 2 Image 3" class="carousel-image hidden">
+                    <img src="https://images.unsplash.com/photo-1715341762953-d56eccc07e45?q=80&w=2665&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 2 Image 1" class="carousel-image">
+                    <img src="https://images.unsplash.com/photo-1715341762948-a3b3fdd9b352?q=80&w=2665&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 2 Image 2" class="carousel-image hidden">
+                    <img src="https://images.unsplash.com/photo-1712059201904-45cce6a36060?q=80&w=2665&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Project 2 Image 3" class="carousel-image hidden">
                 </div>
 
                 <div class="project-navigation">
