@@ -22,10 +22,15 @@
   /* Font Sizes */
   --font-size-xxl: 2.5rem;    /* 40px */
   --font-size-xl: 1.625rem;   /* 26px */
+  --font-size-lg2: 1.325rem;   /* 21px */
   --font-size-lg: 1.25rem;    /* 20px */
+  --font-size-md: 1.125rem;   /* 18px */
 
   /* Letter Spacing */
   --letter-spacing-tight: -0.05em;
+
+  /* Line Heights */
+  --line-height-tight: 1.35rem;
 
   /* ===== TYPOGRAPHY STYLES ===== */
   /*  fix-menu

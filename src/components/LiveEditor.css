@@ -282,9 +282,8 @@
 
 @media (max-width: 768px) {
   .live-editor-container {
-    min-height: 35vh;
-    height: auto;
-    max-height: 65vh;
+    height: 70vh;
+
   }
   .editor-wrapper {
     flex-direction: column;

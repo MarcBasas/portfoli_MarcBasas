@@ -65,11 +65,13 @@
   }
 }
 
-/* Para pantallas pequeñas (móviles) */
 @media (max-width: 600px) {
   .project-content {
     height: auto;
     min-height: unset;
+  }
+  .project-title {
+    font-size: var(--font-size-lg);
   }
   .project-dynamic-content {
     margin-bottom: 0;
@@ -81,9 +83,11 @@
     min-width: 98vw;
     max-width: 99vw;
     width: 99vw;
-    -webkit-line-clamp: unset; /* Muestra toda la descripción */
-    display: block;            /* Quita el recorte de líneas */
+    -webkit-line-clamp: unset; 
+    display: block;
     overflow: visible;
+    font-size: var(--font-size-md);
+    line-height: var(--line-height-tight);
   }
 }
 

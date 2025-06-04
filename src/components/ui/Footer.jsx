@@ -26,7 +26,7 @@ const Footer = () => {
       <footer 
         className="footer"
         role="contentinfo"
-        aria-label="Portfolio footer with contact information and copyright - Marco Vilarrubias Basas - Web Developer Portfolio"
+        aria-label="Portfolio footer - contact information and copyright - Marc Basas - Web Developer Portfolio"
         itemScope
         itemType="https://schema.org/WPFooter"
       >
@@ -38,7 +38,7 @@ const Footer = () => {
           <button 
             className="footer_contact" 
             onClick={handleAboutClick}
-            aria-label="Show contact information and about details - Marco Vilarrubias Portfolio"
+            aria-label="Show contact information and about details - Marc Basas Portfolio"
             aria-expanded={showContact}
             aria-controls="about-content"
             itemProp="name"
@@ -51,7 +51,7 @@ const Footer = () => {
         >
           <p 
             className="footer__copyright" 
-            aria-label="Copyright Marco Vilarrubias Portfolio 2025"
+            aria-label="Copyright Marc Basas Portfolio 2025"
             itemProp="copyrightYear"
           >
             © 2025
@@ -78,7 +78,7 @@ const Footer = () => {
               className="visually-hidden"
               itemProp="name"
             >
-              Marco Vilarrubias - Contact Information - Portfolio Details - Web Developer - REACT Developer - FrontEnd Developer - Web Designer
+              Marc Basas - Contact Information - Portfolio Details - Web Developer - REACT Developer - FrontEnd Developer - Web Designer
             </h2>
             <p itemProp="description">For inquiries & commisions:<br/>
             <p><br/></p>
@@ -89,10 +89,10 @@ const Footer = () => {
                 https://github.com/MarcBasas <br />
               </a>
               <a 
-                href="mailto:marcvilarrubiasbasas@gmail.com"
+                href="mailto:marcbasas@gmail.com"
                 itemProp="email"
               >
-                marcvilarrubiasbasas@gmail.com <br />
+                marcbasas@gmail.com <br />
               </a>
               <a
                 href="tel:+34615502988"
