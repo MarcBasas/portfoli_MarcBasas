@@ -71,7 +71,7 @@
     min-height: unset;
   }
   .project-title {
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-lg2);
   }
   .project-dynamic-content {
     margin-bottom: 0;

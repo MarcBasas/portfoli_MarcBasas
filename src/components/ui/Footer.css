@@ -159,17 +159,17 @@
 
   .footer__left {
     margin-left: calc(2 * var(--grid-unit-w));
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-xl2);
   }
 
   .footer__right {
     margin-right: calc(2 * var(--grid-unit-w));
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-xl2);
   }
 
   .footer_contact,
   .footer__copyright {
-    font-size: var(--font-size-xl);
+    font-size: var(--font-size-xl2);
   }
 
   .contact-content {
