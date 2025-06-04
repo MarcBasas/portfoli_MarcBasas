@@ -9,6 +9,8 @@ import GameFrame from "../components/GameFrame";
 import VideoPlayer from "../components/projectComponents/VideoPlayer";
 import "./ProjectPage.css";
 import NotFoundPage from "./NotFoundPage";
+import useIsMobile from "../utils/UseIsMobile";
+import ExternalLinkIcon from "../components/ExternalLinkIcon";
 
 const componentModules = import.meta.glob("../components/projectComponents/*.{jsx,js}");
 
@@ -23,7 +25,7 @@ const ProjectLink = ({ url }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Visit ↗
+    Visit <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 
@@ -39,7 +41,7 @@ const ProjectGitLink = ({ git }) => (
     className="project-link"
     style={{ marginLeft: 12 }}
   >
-    Check the code in GitHub
+    Check the code in GitHub ↗
   </a>
 );
 
@@ -53,27 +55,30 @@ const ProjectPage = () => {
     const allProjects = [...projects.web, ...projects.games];
     return allProjects.find((p) => p.slug === slug);
   }, [slug]);
+  const isMobile = useIsMobile();
 
   if (!project) return <NotFoundPage />;
+
+  const isConstelations = project.slug === "constellations";
 
   return (
     <div 
       className="project-page"
       role="main"
-      aria-label={`${project.title} - Project Details - Marco Vilarrubias Portfolio`}
+      aria-label={`${project.title} - Project Details - Marc Basas Portfolio`}
       itemScope
       itemType="https://schema.org/CreativeWork"
     >
       <Helmet>
-        <title>{project.title} | Portfolio de Marco</title>
+        <title>{project.title} | Marc Basas Portfolio</title>
         <meta name="description" content={project.description} />
-        <meta property="og:title" content={`${project.title} | Portfolio de Marco`} />
+        <meta property="og:title" content={`${project.title} | Portfolio de Marc Basas`} />
         <meta property="og:description" content={project.description} />
         {project.previewImage && (
           <meta property="og:image" content={project.previewImage} />
         )}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={`${project.title} | Portfolio de Marco`} />
+        <meta name="twitter:title" content={`${project.title} | Portfolio de Marc Basas`} />
         <meta name="twitter:description" content={project.description} />
         {project.previewImage && (
           <meta name="twitter:image" content={project.previewImage} />
@@ -100,21 +105,31 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
-          {/* VIDEO */}
-          {project.video && (
+          {/* VIDEO para Constelations solo en móvil */}
+          {isConstelations && isMobile && project.video && (
+            <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
+          )}
+          {/* VIDEO para otros proyectos */}
+          {!isConstelations && project.video && (
             <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
           )}
           {/* WEB DEMO */}
           {project.category === "demo" && project.files && <LiveEditor project={project} />}
-          {/* GAMES */}
-          {project.url && project.slug && project.category !== "demo" && project.category !== "final" && (
+          {/* GAMES: Constelations solo en escritorio, otros juegos igual que antes */}
+          {((isConstelations && !isMobile) || (!isConstelations && project.url && project.slug && project.category !== "demo" && project.category !== "final")) && (
             <GameFrame title={project.title} url={project.url} />
           )}
           {/* LINKS */}
           <div className="project-links-row">
-            {project.git && project.url && <ProjectGitLink git={project.git} />}
-            {project.git && <ProjectGitLink git={project.git} />}
-            {project.url && <ProjectLink url={project.url} />}
+            {/* Juegos: solo enlace GitHub */}
+            {project.git && project.category === undefined && (
+              <ProjectGitLink git={project.git} />
+            )}
+            {/* Web final: solo enlace al sitio */}
+            {project.category === "final" && project.url && (
+              <ProjectLink url={project.url} />
+            )}
+            {/* Web demo: ningún enlace */}
           </div>
         </div>
       </div>

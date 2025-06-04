@@ -18,7 +18,7 @@ const Layout = () => {
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#e5ff70" />
-        <link rel="canonical" href="https://marco-portfolio.com" />
+        <link rel="canonical" href="https://marcbasas.com" />
       </Helmet>
 
       <div className="layout" role="document">

@@ -93,16 +93,16 @@
     align-items: center;
     z-index: 2000;
     font-family: var(--font-inter);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-extraBold);
     letter-spacing: var(--letter-spacing-tight);
     text-align: center;
-    gap: 2rem;
+    gap: 0.4rem;
   }
   .header__mobile-menu-link {
     color: var(--color-menu);
     text-decoration: none;
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-extraBold);
     margin: 0.5rem 0;
   }
@@ -114,7 +114,7 @@
     justify-content: space-between;
     width: 90%;
     color: var(--color-menu);
-    font-size: var(--font-size-lg);
+    font-size: var(--font-size-xl);
     font-weight: var(--font-weight-extraBold);
     padding: 0 1rem;
   }
@@ -127,10 +127,10 @@
   }
 
   .header__link {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-xl);
   }
 
   .header__project-link {
-    font-size: var(--font-size-sm);
+    font-size: var(--font-size-xl);
   }
 }

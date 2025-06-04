@@ -159,30 +159,20 @@
 
   .footer__left {
     margin-left: calc(2 * var(--grid-unit-w));
+    font-size: var(--font-size-xl);
   }
 
   .footer__right {
     margin-right: calc(2 * var(--grid-unit-w));
+    font-size: var(--font-size-xl);
   }
 
   .footer_contact,
   .footer__copyright {
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-xl);
   }
 
   .contact-content {
-    font-size: var(--font-size-sm);
-  }
-}
-
-/* Soporte para modo oscuro */
-@media (prefers-color-scheme: dark) {
-  .footer__project-title {
-    color: var(--color-menu);
-  }
-
-  .footer__project-link:hover .footer__project-title,
-  .footer__project-link:focus .footer__project-title {
-    color: var(--color-menu);
+    font-size: var(--font-size-lg2);
   }
 }

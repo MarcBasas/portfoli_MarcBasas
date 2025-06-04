@@ -42,7 +42,7 @@ const Header = () => {
     <header 
       className="header"  
       role="banner"
-      aria-label="Portfolio header with navigation - Marco Vilarrubias Basas - Web Developer Portfolio"
+      aria-label="Portfolio header with navigation - Marc Basas - Web Developer Portfolio"
     >
       <nav 
         className="header__nav"
@@ -54,7 +54,7 @@ const Header = () => {
           <Link 
             to="/about" 
           className="header__link"
-          aria-label="Go to About page - Marco Vilarrubias Portfolio"
+          aria-label="Go to About page - Marc Basas Portfolio"
           aria-current={location.pathname === "/about" ? "page" : undefined}
           itemProp="url"
         >
@@ -64,7 +64,7 @@ const Header = () => {
         <Link 
           to="/" 
           className="header__link header__logo"
-          aria-label="Go to Home page - Marco Vilarrubias Portfolio"
+          aria-label="Go to Home page - Marc Basas Portfolio"
           aria-current={location.pathname === "/" ? "page" : undefined}
           itemProp="url"
         >
@@ -105,7 +105,7 @@ const Header = () => {
                     to={`/project/${project.slug}`}
                     className="header__project-link"
                     role="menuitem"
-                    aria-label={`Go to ${project.title} project - Marco Vilarrubias Portfolio`}
+                    aria-label={`Go to ${project.title} project - Marc Basas Portfolio`}
                     itemProp="itemListElement"
                     itemScope
                     itemType="https://schema.org/ListItem"

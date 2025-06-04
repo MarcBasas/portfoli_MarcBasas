@@ -9,14 +9,14 @@ const ProjectCard = ({ data }) => {
     <Link 
       to={`/project/${slug}`} 
       className="project-card" 
-      aria-label={`View ${title} project - Marco Vilarrubias Portfolio - Web Developer Portfolio`}
+      aria-label={`View ${title} project - Marc Basas Portfolio - Web Developer Portfolio`}
       itemScope
       itemType="https://schema.org/CreativeWork"
     >
       <div className="project-image-container">
         <img
           src={previewImage}
-          alt={`Preview of ${title} project - Marco Vilarrubias Portfolio - Web Developer Portfolio`}
+          alt={`Preview of ${title} project - Marc Basas Portfolio - Web Developer Portfolio`}
           loading="lazy"
           className="project-image"
           itemProp="image"

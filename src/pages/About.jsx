@@ -9,22 +9,22 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Me | Marco Vilarrubias - Web Developer Portfolio</title>
+        <title>About Me | Marc Basas - Web Developer Portfolio</title>
         <meta 
           name="description" 
-          content="Learn about Marco Vilarrubias, a fullstack developer with experience in web development. Discover his professional journey and skills."
+          content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills."
         />
         <meta 
           name="keywords" 
-          content="Marco Vilarrubias, Web Developer, Fullstack Developer, Portfolio, About Me, Experience, Web Development"
+          content="Marc Basas, Web Developer, Fullstack Developer, Portfolio, About Me, Experience, Web Development"
         />
-        <link rel="canonical" href="https://marcovilarrubias.com/about" />
+        <link rel="canonical" href="https://marcbasas.com/about" />
       </Helmet>
 
       <main 
         className={`about-page${isMobile ? ' about-page--mobile' : ''}`}
         role="main"
-        aria-label="About Marco Vilarrubias - Professional Background and Experience - Web Developer Portfolio"
+        aria-label="About Marc Basas - Professional Background and Experience - Web Developer Portfolio"
         itemScope
         itemType="https://schema.org/AboutPage"
       >
@@ -34,7 +34,7 @@ const About = () => {
           itemType="https://schema.org/Person"
         >
           <section 
-            className="about-section"
+            className="about-section1"
             aria-labelledby="about-title"
             itemProp="description"
           >
@@ -59,7 +59,7 @@ const About = () => {
           </section>
 
           <section 
-            className="about-section"
+            className="about-section2"
             aria-labelledby="experience-title"
             itemProp="knowsAbout"
           >
@@ -89,7 +89,7 @@ const About = () => {
         <div className="about-image-container">
           <img 
             src={import.meta.env.BASE_URL + "/img/About_img.webp"} 
-            alt="Marco Vilarrubias - Professional Portrait"
+            alt="Marc Basas - Professional Portrait"
             className="about-image"
             itemProp="image"
           />
