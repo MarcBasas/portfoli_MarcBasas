@@ -19,6 +19,7 @@ const About = () => {
           content="Marc Basas, Web Developer, Fullstack Developer, Portfolio, About Me, Experience, Web Development"
         />
         <link rel="canonical" href="https://marcbasas.com/about" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Helmet>
 
       <main 
@@ -89,7 +90,7 @@ const About = () => {
         <div className="about-image-container">
           <img 
             src={import.meta.env.BASE_URL + "/img/About_img.webp"} 
-            alt="Marc Basas - Professional Portrait"
+            alt=""
             className="about-image"
             itemProp="image"
           />

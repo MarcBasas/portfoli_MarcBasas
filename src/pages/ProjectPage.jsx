@@ -39,7 +39,6 @@ const ProjectGitLink = ({ git }) => (
     target="_blank"
     rel="noopener noreferrer"
     className="project-link"
-    style={{ marginLeft: 12 }}
   >
     Check the code in GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>

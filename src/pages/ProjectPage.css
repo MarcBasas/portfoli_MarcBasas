@@ -55,6 +55,13 @@
   width: 100%;
 }
 
+a.project-link {
+  margin-top: calc(2 * var(--grid-unit-h));
+  margin-left: 0;
+  color: var(--color-text-general);
+  text-decoration: none;
+}
+
 /* Para pantallas medianas (tablets) */
 @media (max-width: 900px) {
   .project-description {

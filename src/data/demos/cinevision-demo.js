@@ -69,7 +69,7 @@ export const cinevisionDemo = {
         <h2 id="portfolio-titulo">Nuestro Portfolio</h2>
         <div class="portfolio-grid">
             <article class="portfolio-item" aria-labelledby="proyecto-1">
-                <img src="/demos/cinevision/portfolio/1.webp" alt="Proyecto de video corporativo" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1493804714600-6edb1cd93080?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Proyecto de video corporativo" loading="lazy">
                 <div class="overlay">
                     <h3 id="proyecto-1">Video Corporativo</h3>
                     <p>Producción audiovisual para empresa tecnológica</p>
@@ -77,7 +77,7 @@ export const cinevisionDemo = {
                 </div>
             </article>
             <article class="portfolio-item" aria-labelledby="proyecto-2">
-                <img src="/demos/cinevision/portfolio/2.webp" alt="Sesión fotográfica de producto" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?q=80&w=1638&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"" alt="Sesión fotográfica de producto" loading="lazy">
                 <div class="overlay">
                     <h3 id="proyecto-2">Fotografía de Producto</h3>
                     <p>Sesión fotográfica para línea de cosméticos</p>
@@ -85,7 +85,7 @@ export const cinevisionDemo = {
                 </div>
             </article>
             <article class="portfolio-item" aria-labelledby="proyecto-3">
-                <img src="/demos/cinevision/portfolio/3.webp" alt="Proyecto de postproducción" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1631387019069-2ff599943f9a?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Proyecto de postproducción" loading="lazy">
                 <div class="overlay">
                     <h3 id="proyecto-3">Postproducción</h3>
                     <p>Edición y efectos visuales para cortometraje</p>
@@ -420,7 +420,6 @@ nav a:hover {
 
 .overlay h3 {
     font-size: 1.5rem;
-    margin-bottom: 0.5rem;
 }
 
 .overlay p {
@@ -430,7 +429,6 @@ nav a:hover {
 
 .portfolio-link {
     display: inline-block;
-    margin-top: 1rem;
     padding: 0.5rem 1rem;
     background: var(--primary-color);
     color: var(--white);
