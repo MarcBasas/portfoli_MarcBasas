@@ -41,7 +41,7 @@ const ProjectGitLink = ({ git }) => (
     className="project-link"
     style={{ marginLeft: 12 }}
   >
-    Check the code in GitHub ↗
+    Check the code in GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 
