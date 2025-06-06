@@ -14,7 +14,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HelmetProvider>
-    <BrowserRouter basename="/portfoli_MarcBasas">
+    <BrowserRouter basename="/">
     <ScrollToTop />
       <Routes>
         <Route element={<Layout />}>
