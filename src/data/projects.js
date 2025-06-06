@@ -22,7 +22,7 @@ export const projects = {
       titleMin: "CineVision Studios",
       slug: "cinevision-studios",
       description: "CineVision Studios is an imaginary small indie studio that makes movies and series. This is a demo of their website where you can see its code. It's a simple, classic website with a home page, a about page and a contact page.",
-      previewImage: import.meta.env.BASE_URL + "/img/cinevision-preview.webp",
+      previewImage: import.meta.env.BASE_URL + "/img/LandingPreview_CineVision.webp",
       files: cinevisionDemo
     },
     {
@@ -33,7 +33,7 @@ export const projects = {
       slug: "portfolio-demo",
       description: `This is a demo of a straightforward portfolio website. The images work as a carousel and the details are hidden in a modal.
       This solution is based on Esmeralda Devlin's portfolio.`,
-      previewImage: import.meta.env.BASE_URL + "/img/portfolio-preview.webp",
+      previewImage: import.meta.env.BASE_URL + "/img/LandingPreview_Portfolio.webp",
       files: portfolioDemo
     }
   ],

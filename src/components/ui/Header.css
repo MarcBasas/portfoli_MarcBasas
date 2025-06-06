@@ -124,6 +124,7 @@
 @media (max-width: 480px) {
   .header__nav {
     padding: calc(2 * var(--grid-unit-h)) calc(2 * var(--grid-unit-w));
+    padding-top: calc(var(--grid-unit-h) * 0);
   }
 
   .header__link {

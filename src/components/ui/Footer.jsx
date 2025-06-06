@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import "./Footer.css";
+import { Link } from "react-router-dom";
+import useIsMobile from "../../utils/UseIsMobile";
 
 /**
  * Componente de pie de página que muestra enlaces a proyectos
@@ -9,6 +11,7 @@ import "./Footer.css";
  */
 const Footer = () => {
   const [showContact, setShowContact] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleAboutClick = () => {
     setShowContact(!showContact);
@@ -49,13 +52,24 @@ const Footer = () => {
           itemScope
           itemType="https://schema.org/CreativeWork"
         >
-          <p 
-            className="footer__copyright" 
-            aria-label="Copyright Marc Basas Portfolio 2025"
-            itemProp="copyrightYear"
-          >
-            © 2025
-          </p>
+          {isMobile ? (
+            <Link 
+              to="/" 
+              className="footer__copyright"
+              aria-label="Go to Home page - Marc Basas Portfolio"
+              itemProp="url"
+            >
+              HOME
+            </Link>
+          ) : (
+            <p 
+              className="footer__copyright" 
+              aria-label="Copyright Marc Basas Portfolio 2025"
+              itemProp="copyrightYear"
+            >
+              © 2025
+            </p>
+          )}
         </div>
       </footer>
 

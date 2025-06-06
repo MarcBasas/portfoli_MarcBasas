@@ -53,23 +53,25 @@ const Header = () => {
         >
           <Link 
             to="/about" 
-          className="header__link"
-          aria-label="Go to About page - Marc Basas Portfolio"
-          aria-current={location.pathname === "/about" ? "page" : undefined}
-          itemProp="url"
-        >
-          <span itemProp="name">ABOUT</span>
+            className="header__link"
+            aria-label="Go to About page - Marc Basas Portfolio"
+            aria-current={location.pathname === "/about" ? "page" : undefined}
+            itemProp="url"
+          >
+            <span itemProp="name">ABOUT</span>
           </Link>
 
-        <Link 
-          to="/" 
-          className="header__link header__logo"
-          aria-label="Go to Home page - Marc Basas Portfolio"
-          aria-current={location.pathname === "/" ? "page" : undefined}
-          itemProp="url"
-        >
-          <span itemProp="name">◙</span>
-        </Link>
+          {!isMobile && (
+            <Link 
+              to="/" 
+              className="header__link header__logo"
+              aria-label="Go to Home page - Marc Basas Portfolio"
+              aria-current={location.pathname === "/" ? "page" : undefined}
+              itemProp="url"
+            >
+              <span itemProp="name">◙</span>
+            </Link>
+          )}
 
         <div 
           className="header__projects-container"

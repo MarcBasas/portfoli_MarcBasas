@@ -283,6 +283,7 @@
 @media (max-width: 768px) {
   .live-editor-container {
     height: 70vh;
+    margin-bottom: calc(var(--grid-unit-h) * 7);
 
   }
   .editor-wrapper {
