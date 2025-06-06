@@ -16,9 +16,9 @@
 }
 
 .about-section1, .about-section2 {
-  padding-left: calc(var(--grid-unit-w) * 2);
-  padding-right: calc(var(--grid-unit-w) * 2);
-  padding-top: calc(var(--grid-unit-h) * 11);
+  margin-left: calc(var(--grid-unit-w) * 2);
+  margin-right: calc(var(--grid-unit-w) * 2);
+  margin-top: calc(var(--grid-unit-h) * 11);
   text-align: left;
 }
 
@@ -48,10 +48,16 @@
 }
 
 /* Media Queries para Responsive Design */
-@media (max-width: 1024px) {
+@media (max-width: 768px) {
+  .about-content {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+
   .about-page {
     grid-template-columns: 1fr;
     height: auto;
+    overflow: visible;
   }
 
   .about-image {
@@ -62,58 +68,27 @@
     display: none;
   }
 
-  .about-content {
-    padding: calc(var(--grid-unit-w) * 2);
-  }
-}
 
-@media (max-width: 768px) {
-  .about-content {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
-  }
-
-  .about-section1 h2, .about-section2 h2 {
-    font-family: var(--font-arimo);
-    font-size: var(--font-size-lg2);
-    font-weight: var(--font-weight-regular);
-    color: var(--color-text);
-    margin-bottom: calc(var(--grid-unit-h) * 1);
-    text-align: left;
-  }
-  
-  .about-section1 p, .about-section2 p {
-    font-family: var(--font-arimo);
-    font-size: var(--font-size-md);
-    font-weight: var(--font-weight-regular);
-    line-height: var(--line-height-tight);
-    color: var(--color-text);
-    margin-bottom: var(--spacing-sm);
+  .about-section1, .about-section2 {
+    margin-left: calc(var(--grid-unit-w) * 4);
+    margin-right: calc(var(--grid-unit-w) * 4);
     text-align: left;
   }
 
-  .about-image {
-    display: none;
-  }
-}
-
-@media (max-width: 480px) {
-
-
-  .about-section h2 {
-    font-size: var(--font-size-md);
-  }
-
-  .about-section p {
-    font-size: var(--font-size-sm);
+  .about-section1 {
+    margin-top: calc(var(--grid-unit-h) * 9);
   }
 
   .about-section2 {
-    padding-top: 0;
-    padding-bottom: calc(var(--grid-unit-h) * 11);
+    margin-top: calc(var(--grid-unit-h) * 4);
+    margin-bottom: calc(var(--grid-unit-h) * 11);
   }
 
-  .about-image {
-    display: none;
+  .about-section1 h2, .about-section2 h2 {
+    font-size: var(--font-size-lg2);
   }
-} 
+
+  .about-section1 p, .about-section2 p {
+    font-size: var(--font-size-md);
+  }
+}
