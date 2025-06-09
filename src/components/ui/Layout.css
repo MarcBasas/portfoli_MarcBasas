@@ -32,21 +32,3 @@ main {
     padding-bottom: var(--spacing-md);
   }
 }
-
-/* Soporte para modo oscuro */
-@media (prefers-color-scheme: dark) {
-  .layout {
-    background-color: var(--color-background-dark);
-    color: var(--color-text-light);
-  }
-}
-
-/* Mejoras de accesibilidad */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
-} 

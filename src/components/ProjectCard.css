@@ -92,13 +92,3 @@
   }
 }
 
-/* Soporte para modo oscuro */
-@media (prefers-color-scheme: dark) {
-  .project-text h3 {
-    color: #FF8C42;
-  }
-  
-  .project-text p {
-    color: #fff;
-  }
-}
