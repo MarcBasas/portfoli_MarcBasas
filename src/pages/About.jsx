@@ -9,7 +9,7 @@ const About = () => {
   return (
     <>
       <Helmet>
-        <title>About Me | Marc Basas - Web Developer Portfolio</title>
+        <title>About | Marc Basas - Web Developer Portfolio</title>
         <meta 
           name="description" 
           content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills."
@@ -89,7 +89,7 @@ const About = () => {
 
         <div className="about-image-container">
           <img 
-            src={import.meta.env.BASE_URL + "/img/About_img.webp"} 
+            src="/img/About_img.webp"
             alt=""
             className="about-image"
             itemProp="image"

@@ -69,7 +69,7 @@ const ProjectPage = () => {
       itemType="https://schema.org/CreativeWork"
     >
       <Helmet>
-        <title>{project.title} | Marc Basas Portfolio</title>
+        <title>{project.title} | Marc Basas</title>
         <meta name="description" content={project.description} />
         <meta property="og:title" content={`${project.title} | Portfolio de Marc Basas`} />
         <meta property="og:description" content={project.description} />
