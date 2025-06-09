@@ -126,10 +126,10 @@ const Landing = () => {
   return (
     <>
       <Helmet>
-        <title>Inicio | Portfolio de Marc Basas</title>
+        <title>Marc Basas - Web Developer</title>
         <meta name="description" content="Bienvenido al portfolio de Marc Basas. Proyectos web y videojuegos interactivos." />
-        <meta name="keywords" content="portfolio, desarrollo web, videojuegos, proyectos, Marc Basas, REACT, FrontEnd, Web Developer" />
-        <meta property="og:title" content="Portfolio de Marc Basas - Desarrollo Web y Videojuegos" />
+        <meta name="keywords" content="portfolio, desarrollo web, programación, coding, programación web, videojuegos, proyectos, Marc Basas, MarcBasas REACT, FrontEnd, Web Developer" />
+        <meta property="og:title" content="Marc Basas - Web Developer" />
         <meta property="og:description" content="Explora mis proyectos de desarrollo web y videojuegos interactivos." />
         <meta property="og:type" content="website" />
       </Helmet>
