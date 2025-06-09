@@ -69,7 +69,7 @@ const Header = () => {
               aria-current={location.pathname === "/" ? "page" : undefined}
               itemProp="url"
             >
-              <span itemProp="name">◙</span>
+              <img src="/img/Logo.png" alt="Logo" style={{ width: '64px', marginTop: '10px' }} />
             </Link>
           )}
 
