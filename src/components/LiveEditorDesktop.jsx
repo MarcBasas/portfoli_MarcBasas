@@ -165,6 +165,9 @@ const LiveEditorDesktop = ({ project }) => {
   }, [isDragging, handleDrag, handleDragEnd]);
 
   useEffect(() => {
+    // Reset initialization when project changes
+    initializedRef.current = false;
+    
     if (initializedRef.current) return;
     initializedRef.current = true;
     const createEditor = (initialCode, language, parentId, ref) => {
@@ -188,6 +191,16 @@ const LiveEditorDesktop = ({ project }) => {
     createEditor(project.files.css, css(), "css-editor", cssRef);
     createEditor(project.files.js, javascript(), "js-editor", jsRef);
     setTimeout(updateIframe, 100);
+
+    // Cleanup function to destroy editors when component unmounts
+    return () => {
+      htmlRef.current?.destroy();
+      cssRef.current?.destroy();
+      jsRef.current?.destroy();
+      htmlRef.current = null;
+      cssRef.current = null;
+      jsRef.current = null;
+    };
   }, [project.files.html, project.files.css, project.files.js]);
 
   return (
