@@ -7,8 +7,9 @@ import { projects } from "../data/projects";
 import LiveEditor from "../components/LiveEditor";
 import GameFrame from "../components/GameFrame";
 import VideoPlayer from "../components/projectComponents/VideoPlayer";
-import "./ProjectPage.css";
+import ProjectNotFound from "../components/UI/ProjectNotFound";
 import NotFoundPage from "./NotFoundPage";
+import "./ProjectPage.css";
 import useIsMobile from "../utils/UseIsMobile";
 import ExternalLinkIcon from "../components/ExternalLinkIcon";
 
@@ -56,9 +57,12 @@ const ProjectPage = () => {
   }, [slug]);
   const isMobile = useIsMobile();
 
-  if (!project) return <NotFoundPage />;
+  if (!project) {
+    return <NotFoundPage />;
+  }
 
   const isConstelations = project.slug === "constellations";
+  const hasNoContent = !project.video && !project.files && !project.url;
 
   return (
     <div 
@@ -104,6 +108,7 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
+          {hasNoContent && <ProjectNotFound />}
           {/* VIDEO para Constelations solo en móvil */}
           {isConstelations && isMobile && project.video && (
             <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />

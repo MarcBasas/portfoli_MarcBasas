@@ -68,7 +68,6 @@ export const projects = {
       slug: "hobo",
       description:"Hobo is a Unity-based 2D platformer developed in C# that procedurally generates a randomized map each session, lets players run, jump, and navigate dynamically placed platforms to collect every food item scattered across the level.",
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_Hobo.webp",
-      url: import.meta.env.BASE_URL + "games/brick-breaker/index.html"
     }
   ]
 };
