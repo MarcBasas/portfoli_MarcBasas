@@ -35,38 +35,15 @@ const VideoPlayer = React.memo(function VideoPlayer({ src, poster, title = 'Vide
   }, []);
 
   const handleFullscreenChange = useCallback(() => {
-    setIsFullscreen(
-      !!document.fullscreenElement ||
-      !!document.webkitFullscreenElement ||
-      !!document.mozFullScreenElement ||
-      !!document.msFullscreenElement
-    );
+    setIsFullscreen(!!document.fullscreenElement);
   }, []);
 
   const toggleFullscreen = useCallback(() => {
     if (!wrapperRef.current) return;
-    
     if (document.fullscreenElement) {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      } else if (document.webkitExitFullscreen) {
-        document.webkitExitFullscreen();
-      } else if (document.mozCancelFullScreen) {
-        document.mozCancelFullScreen();
-      } else if (document.msExitFullscreen) {
-        document.msExitFullscreen();
-      }
+      document.exitFullscreen();
     } else {
-      const element = wrapperRef.current;
-      if (element.requestFullscreen) {
-        element.requestFullscreen();
-      } else if (element.webkitRequestFullscreen) {
-        element.webkitRequestFullscreen();
-      } else if (element.mozRequestFullScreen) {
-        element.mozRequestFullScreen();
-      } else if (element.msRequestFullscreen) {
-        element.msRequestFullscreen();
-      }
+      wrapperRef.current.requestFullscreen();
     }
   }, []);
 

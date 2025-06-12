@@ -58,7 +58,7 @@ const Header = () => {
             aria-current={location.pathname === "/about" ? "page" : undefined}
             itemProp="url"
           >
-            <span itemProp="name">ABOUT</span>
+            <span itemProp="name" translate="no">ABOUT</span>
           </Link>
 
           {!isMobile && (
@@ -86,6 +86,7 @@ const Header = () => {
             aria-expanded={showProjects}
             aria-controls="projects-dropdown"
             itemProp="name"
+            translate="no"
           >
             {isMobile && showProjects ? "CLOSE" : "PROJECTS"}
           </button>
@@ -112,7 +113,7 @@ const Header = () => {
                     itemScope
                     itemType="https://schema.org/ListItem"
                   >
-                    <span itemProp="name">{project.title}</span>
+                    <span itemProp="name" translate="no">{project.title}</span>
                     <meta itemProp="position" content={index + 1} />
                   </Link>
                 ))}

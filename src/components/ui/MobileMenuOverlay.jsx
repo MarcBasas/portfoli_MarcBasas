@@ -12,6 +12,7 @@ const MobileMenuOverlay = ({ allProjects, onClose }) => {
           to={`/project/${project.slug}`}
           className="header__mobile-menu-link"
           onClick={onClose}
+          translate="no"
         >
           {project.title}
         </Link>
