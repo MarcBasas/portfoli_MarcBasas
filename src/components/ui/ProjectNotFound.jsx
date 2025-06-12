@@ -1,6 +1,6 @@
 import React from "react";
 import "./ProjectNotFound.css";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 const ProjectNotFound = () => (
   <>
