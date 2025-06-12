@@ -7,7 +7,6 @@ export const cinevisionDemo = {
     <meta name="description" content="CineVision Studios - Empresa líder en producción audiovisual. Ofrecemos servicios de video, fotografía y postproducción profesional.">
     <meta name="keywords" content="producción audiovisual, videografía, fotografía profesional, postproducción, cine, video corporativo">
     <meta name="author" content="CineVision Studios">
-    <meta name="robots" content="index, follow">
     <meta property="og:title" content="CineVision Studios - Producción Audiovisual Profesional">
     <meta property="og:description" content="Tu visión, nuestra pasión. Producción audiovisual profesional para contar tu historia.">
     <meta property="og:image" content="/demos/cinevision/preview.webp">

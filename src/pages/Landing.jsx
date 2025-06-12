@@ -126,12 +126,28 @@ const Landing = () => {
   return (
     <>
       <Helmet>
+        {/* Título, descripción, autor*/}
         <title>Marc Basas - Web Developer</title>
         <meta name="description" content="Bienvenido al portfolio de Marc Basas. Proyectos web y videojuegos interactivos." />
         <meta name="keywords" content="portfolio, desarrollo web, programación, coding, programación web, videojuegos, proyectos, Marc Basas, MarcBasas REACT, FrontEnd, Web Developer" />
+        <meta name="author" content="Marc Basas" />
+
+        {/* Open Graph*/}
         <meta property="og:title" content="Marc Basas - Web Developer" />
-        <meta property="og:description" content="Explora mis proyectos de desarrollo web y videojuegos interactivos." />
+        <meta property="og:description" content="Mis proyectos de desarrollo web y videojuegos interactivos." />
         <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.marcbasas.com" />
+        <meta property="og:site_name" content="Marc Basas - Web Developer" />
+        <meta property="og:locale" content="es_ES" />
+
+        {/* Twitter*/}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Marc Basas - Web Developer" />
+        <meta name="twitter:description" content="Portfolio de proyectos de desarrollo web y videojuegos interactivos." />
+        <meta name="twitter:url" content="https://www.marcbasas.com" />
+
+        {/* Canonical*/}
+        <link rel="canonical" href="https://www.marcbasas.com/" />
       </Helmet>
 
       {isMobile ? (
@@ -147,6 +163,7 @@ const Landing = () => {
               key={`mobile-${index}`}
               data={project}
               aria-label={`Proyecto: ${project.title}`}
+              translate="no"
             />
           ))}
         </div>

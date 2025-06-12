@@ -13,7 +13,8 @@ export const projects = {
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_KumoCreative.webp",
       video: import.meta.env.BASE_URL + "vids/KumoCreativeProject.webm",
       poster: import.meta.env.BASE_URL + "vids/PosterKumoCreativeProject.webp",
-      url: "https://kumocreativeproject.com"
+      url: "https://kumocreativeproject.com",
+      keywords: "Kumo Creative, Kumo Creative Project, Video Producer, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Kumo Creative Project Website, Kumo Creative Project Website, Kumo Creative Project Website React, Kumo Creative Project Website HTML, Kumo Creative Project Website CSS, Kumo Creative Project Website JavaScript"
     },
     {
         id: 2,
@@ -23,7 +24,8 @@ export const projects = {
       slug: "cinevision-studios",
       description: "CineVision Studios is an imaginary small indie studio that makes movies and series. This is a demo of their website where you can see its code. It's a simple, classic website with a home page, a about page and a contact page.",
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_CineVision.webp",
-      files: cinevisionDemo
+      files: cinevisionDemo,
+      keywords: "Video production, Videos, Movie Studio, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, CineVision Studios, CineVision Studios Website, CineVision Studios Website Demo, CineVision Studios Website React, CineVision Studios Website HTML, CineVision Studios Website CSS, CineVision Studios Website JavaScript"
     },
     {
       id: 3,  
@@ -34,7 +36,8 @@ export const projects = {
       description: `This is a demo of a straightforward portfolio website. The images work as a carousel and the details are hidden in a modal.
       This solution is based on Esmeralda Devlin's portfolio.`,
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_Portfolio.webp",
-      files: portfolioDemo
+      files: portfolioDemo,
+      keywords: "Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Portfolio Demo, Portfolio Website, Portfolio Website Demo, Portfolio Website React, Portfolio Website HTML, Portfolio Website CSS, Portfolio Website JavaScript"
     }
   ],
   games: [
@@ -48,7 +51,8 @@ export const projects = {
       url: import.meta.env.BASE_URL + "games/Constelations/build/web/index.html",
       git: "https://github.com/MarcBasas/Constelations_pygame",
       video: import.meta.env.BASE_URL + "vids/ProjectVideo_Constellations.webm",
-      poster: import.meta.env.BASE_URL + "img/LandingPreview_Constellations.webp"
+      poster: import.meta.env.BASE_URL + "img/LandingPreview_Constellations.webp",
+      keywords: "Pygame, WebAssembly, Game, Portfolio, Video Game, Games Development, pygame, pywebview, pyinstaller, constellations pygame, constellations webassembly, constellations game, constellations portfolio, constellations pygame game, constellations webassembly game, constellations portfolio game"
     },
     {
       id: 5,
@@ -59,7 +63,8 @@ export const projects = {
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_ChessExcel.webp",
       video: import.meta.env.BASE_URL + "vids/ChessExcell.webm",
       poster: import.meta.env.BASE_URL + "img/LandingPreview_ChessExcel.webp",
-      git: "https://github.com/MarcBasas/ChessExcel"
+      git: "https://github.com/MarcBasas/ChessExcel",
+      keywords: "Excel, VBA, Game, Portfolio, Video Game, Games Development, Chess, Excel VBA, Excel VBA Game, Excel VBA Chess, Chess Excel, Chess Excel Game, Chess Excel VBA, Chess Excel VBA Game"
     },
     {
       id: 6,
@@ -68,6 +73,7 @@ export const projects = {
       slug: "hobo",
       description:"Hobo is a Unity-based 2D platformer developed in C# that procedurally generates a randomized map each session, lets players run, jump, and navigate dynamically placed platforms to collect every food item scattered across the level.",
       previewImage: import.meta.env.BASE_URL + "img/LandingPreview_Hobo.webp",
+      keywords: "Unity, C#, Game, Portfolio, Video Game, Games Development, Hobo, Unity C#, Unity C# Game, Unity C# Hobo, map generation, random map, platformer, 2D platformer"
     }
   ]
 };

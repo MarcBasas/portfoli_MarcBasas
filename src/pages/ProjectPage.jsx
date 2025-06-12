@@ -73,19 +73,29 @@ const ProjectPage = () => {
       itemType="https://schema.org/CreativeWork"
     >
       <Helmet>
-        <title>{project.title} | Marc Basas</title>
+        {/* Título, descripción, autor*/}
+        <title translate="no">{project.title} | Marc Basas</title>
         <meta name="description" content={project.description} />
+        <meta name="keywords" content={project.keywords} />
+        <meta name="author" content="Marc Basas" />
+
+        {/* Open Graph*/}
         <meta property="og:title" content={`${project.title} | Portfolio de Marc Basas`} />
         <meta property="og:description" content={project.description} />
         {project.previewImage && (
           <meta property="og:image" content={project.previewImage} />
         )}
+
+        {/* Twitter*/}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={`${project.title} | Portfolio de Marc Basas`} />
         <meta name="twitter:description" content={project.description} />
         {project.previewImage && (
           <meta name="twitter:image" content={project.previewImage} />
         )}
+
+        {/* Canonical*/}
+        <link rel="canonical" href={`https://www.marcbasas.com/project/${project.slug}`} />
       </Helmet>
 
       <div 
@@ -96,6 +106,7 @@ const ProjectPage = () => {
         <h1 
           className="project-title"
           itemProp="name"
+          translate="no"
         >
           {project.titleMin}
         </h1>

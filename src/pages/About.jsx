@@ -9,6 +9,7 @@ const About = () => {
   return (
     <>
       <Helmet>
+        {/* Título, descripción, autor*/}
         <title>About | Marc Basas - Web Developer Portfolio</title>
         <meta 
           name="description" 
@@ -18,8 +19,24 @@ const About = () => {
           name="keywords" 
           content="Marc Basas, Web Developer, Fullstack Developer, Portfolio, About Me, Experience, Web Development"
         />
-        <link rel="canonical" href="https://marcbasas.com/about" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Marc Basas" />
+
+        {/* Open Graph*/}
+        <meta property="og:title" content="About | Marc Basas - Web Developer Portfolio" />
+        <meta property="og:description" content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills." />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://www.marcbasas.com/about" />
+        <meta property="og:site_name" content="Marc Basas - Web Developer Portfolio" />
+        <meta property="og:locale" content="es_ES" />
+
+        {/* Twitter*/}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="About | Marc Basas - Web Developer Portfolio" />
+        <meta name="twitter:description" content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills." />
+        <meta name="twitter:url" content="https://www.marcbasas.com/about" />
+
+        {/* Canonical*/}
+        <link rel="canonical" href="https://www.marcbasas.com/about" />
       </Helmet>
 
       <main 

@@ -1,0 +1,19 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow access to specific resources that shouldn't be indexed
+Disallow: /img/
+Disallow: /vids/
+Disallow: /games/
+Disallow: /demos/
+
+# Allow access to important assets
+Allow: /android-chrome-*.png
+Allow: /apple-touch-icon.png
+Allow: /favicon*.png
+Allow: /favicon.ico
+Allow: /site.webmanifest
+
+# Sitemap location (you should create one)
+Sitemap: https://www.marcbasas.com/sitemap.xml

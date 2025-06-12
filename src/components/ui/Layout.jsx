@@ -14,11 +14,8 @@ const Layout = () => {
   return (
     <>
       <Helmet>
-        <html lang="es" />
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <html lang="en" />
         <meta name="theme-color" content="#e5ff70" />
-        <link rel="canonical" href="https://marcbasas.com" />
       </Helmet>
 
       <div className="layout" role="document">
