@@ -22,6 +22,9 @@ const VideoPlayer = React.memo(function VideoPlayer({ src, poster, title = 'Vide
   const [isDragging, setIsDragging] = useState(false);
   const isMobile = useIsMobile();
 
+  // Detectar iOS Safari específicamente
+  const isIOSSafari = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
   // Handlers
   const togglePlay = useCallback(() => {
     if (!videoRef.current) return;
@@ -35,17 +38,35 @@ const VideoPlayer = React.memo(function VideoPlayer({ src, poster, title = 'Vide
   }, []);
 
   const handleFullscreenChange = useCallback(() => {
-    setIsFullscreen(!!document.fullscreenElement);
-  }, []);
+    // Para iOS Safari, necesitamos escuchar eventos diferentes
+    if (isIOSSafari) {
+      setIsFullscreen(!!document.webkitFullscreenElement);
+    } else {
+      setIsFullscreen(!!document.fullscreenElement);
+    }
+  }, [isIOSSafari]);
 
   const toggleFullscreen = useCallback(() => {
-    if (!wrapperRef.current) return;
-    if (document.fullscreenElement) {
-      document.exitFullscreen();
+    if (!videoRef.current) return;
+    
+    if (isIOSSafari) {
+      // En iOS Safari, usar webkitEnterFullscreen directamente en el video
+      if (videoRef.current.webkitDisplayingFullscreen) {
+        videoRef.current.webkitExitFullscreen();
+      } else {
+        videoRef.current.webkitEnterFullscreen();
+      }
     } else {
-      wrapperRef.current.requestFullscreen();
+      // Para otros navegadores, usar la API estándar
+      if (document.fullscreenElement) {
+        document.exitFullscreen();
+      } else {
+        wrapperRef.current.requestFullscreen().catch(err => {
+          console.warn('Error al intentar pantalla completa:', err);
+        });
+      }
     }
-  }, []);
+  }, [isIOSSafari]);
 
   const handleMouseEnter = () => {
     setShowControls(true);
@@ -62,30 +83,55 @@ const VideoPlayer = React.memo(function VideoPlayer({ src, poster, title = 'Vide
 
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && document.fullscreenElement) {
-        document.exitFullscreen();
+      if (e.key === 'Escape') {
+        if (isIOSSafari && videoRef.current?.webkitDisplayingFullscreen) {
+          videoRef.current.webkitExitFullscreen();
+        } else if (document.fullscreenElement) {
+          document.exitFullscreen();
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [isIOSSafari]);
 
   useEffect(() => {
     const v = videoRef.current;
     if (!v) return;
+    
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
+    
+    // Eventos de fullscreen específicos para iOS Safari
+    const onWebkitEnterFullscreen = () => setIsFullscreen(true);
+    const onWebkitExitFullscreen = () => setIsFullscreen(false);
+    
     v.addEventListener('play', onPlay);
     v.addEventListener('pause', onPause);
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    
+    if (isIOSSafari) {
+      v.addEventListener('webkitbeginfullscreen', onWebkitEnterFullscreen);
+      v.addEventListener('webkitendfullscreen', onWebkitExitFullscreen);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    } else {
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+    }
+    
     return () => {
       v.removeEventListener('play', onPlay);
       v.removeEventListener('pause', onPause);
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      
+      if (isIOSSafari) {
+        v.removeEventListener('webkitbeginfullscreen', onWebkitEnterFullscreen);
+        v.removeEventListener('webkitendfullscreen', onWebkitExitFullscreen);
+        document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      } else {
+        document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      }
     };
-  }, [handleFullscreenChange]);
+  }, [handleFullscreenChange, isIOSSafari]);
 
   useEffect(() => {
     return () => {

@@ -16,6 +16,97 @@ body,
   overflow-x: hidden;
 }
 
+/* Bloquear scroll en desktop - solo permitir en móvil */
+@media (min-width: 769px) {
+  html,
+  body,
+  #root {
+    overflow-y: hidden !important;
+    height: 100vh !important;
+    max-height: 100vh !important;
+  }
+}
+
+/* Permitir scroll en móvil */
+@media (max-width: 768px) {
+  html,
+  body,
+  #root {
+    overflow-y: auto;
+    height: auto;
+    min-height: 100vh;
+  }
+  
+  /* Evitar el flex centering en móvil que puede causar problemas de scroll */
+  body {
+    display: block !important;
+    place-items: unset !important;
+  }
+}
+
+/* Mejoras para scroll en móvil */
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+}
+
+/* Scroll suave en dispositivos que lo soporten */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Fixes específicos para iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  body {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* Fixes adicionales para iOS y doble scroll */
+@media (max-width: 768px) {
+  /* Prevenir el rubber band scrolling en iOS */
+  html {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+  }
+  
+  body {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #root {
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    height: auto;
+  }
+  
+  /* Prevenir zoom en iOS cuando se toca input */
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Fix específico para iPhone SE y dispositivos con viewport pequeño */
+  @supports (-webkit-touch-callout: none) {
+    /* Solo en iOS */
+    html {
+      height: -webkit-fill-available;
+    }
+    
+    body {
+      height: -webkit-fill-available;
+    }
+  }
+}
+
 html {
   scrollbar-width: none;
 }

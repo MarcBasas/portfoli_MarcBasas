@@ -119,7 +119,7 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
-          {hasNoContent && <ProjectNotFound />}
+          {hasNoContent && <ProjectNotFound previewImage={project.previewImage} />}
           {/* VIDEO para Constelations solo en móvil */}
           {isConstelations && isMobile && project.video && (
             <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />

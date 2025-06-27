@@ -1,7 +1,6 @@
 @import '../styles/variables.css';
 
 .project-page {
-  min-height: 100vh;
   width: 100vw;
   background-color: var(--color-background-project);
   color: var(--color-text-general);
@@ -11,9 +10,30 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
-  min-height: 100vh;
   box-sizing: border-box;
+}
+
+/* Desktop: altura fija sin scroll */
+@media (min-width: 769px) {
+  .project-page {
+    height: 100vh;
+    overflow: hidden;
+  }
+  
+  .project-content {
+    height: 100vh;
+  }
+}
+
+/* Móvil: altura mínima con scroll permitido */
+@media (max-width: 768px) {
+  .project-page {
+    min-height: 100vh;
+  }
+  
+  .project-content {
+    min-height: 100vh;
+  }
 }
 
 .project-title {
@@ -44,15 +64,28 @@
   flex: 1 1 auto;
   min-height: 0;
   max-width: calc(188 * var(--grid-unit-w));
-  max-height: calc(75 * var(--grid-unit-h));
-  overflow-y: auto;
-  margin-bottom: 80px;
   margin-top: calc(4 * var(--grid-unit-h));
   margin-left: calc(2 * var(--grid-unit-w));
   display: flex;
   flex-direction: column;
   align-items: left;
   width: 100%;
+}
+
+/* Desktop: contenido limitado sin scroll */
+@media (min-width: 769px) {
+  .project-dynamic-content {
+    max-height: calc(75 * var(--grid-unit-h));
+    overflow: hidden;
+    margin-bottom: 80px;
+  }
+}
+
+/* Móvil: contenido libre con scroll */
+@media (max-width: 768px) {
+  .project-dynamic-content {
+    margin-bottom: 0;
+  }
 }
 
 a.project-link {
@@ -73,19 +106,26 @@ a.project-link {
 }
 
 @media (max-width: 600px) {
-  .project-content {
-    height: auto;
-    min-height: unset;
+  .project-page {
+    position: relative;
+    overflow-x: hidden;
   }
+  
+  .project-content {
+    position: relative;
+  }
+  
   .project-title {
     font-size: var(--font-size-lg2);
   }
+  
   .project-dynamic-content {
     margin-bottom: 0;
-    max-height: unset;
-    min-height: unset;
-    flex: unset;
+    flex: none;
+    position: relative;
+    overflow: visible;
   }
+  
   .project-description {
     min-width: 98vw;
     max-width: 99vw;

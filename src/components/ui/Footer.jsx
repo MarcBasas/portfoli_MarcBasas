@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Footer.css";
 import { Link } from "react-router-dom";
 import useIsMobile from "../../utils/UseIsMobile";
+import { useContact } from "../../utils/ContactContext";
 
 /**
  * Componente de pie de página que muestra enlaces a proyectos
@@ -10,17 +11,17 @@ import useIsMobile from "../../utils/UseIsMobile";
  * @returns {JSX.Element} El componente Footer renderizado
  */
 const Footer = () => {
-  const [showContact, setShowContact] = useState(false);
+  const { showContact, toggleContact, closeContact } = useContact();
   const isMobile = useIsMobile();
 
   const handleAboutClick = () => {
-    setShowContact(!showContact);
+    toggleContact();
   };
 
   const handleOverlayClick = (e) => {
     // Solo cerrar si se hace clic en el overlay, no en el contenido
     if (e.target.classList.contains('contact-overlay')) {
-      setShowContact(false);
+      closeContact();
     }
   };
 
@@ -56,6 +57,7 @@ const Footer = () => {
             <Link 
               to="/" 
               className="footer__copyright"
+              onClick={closeContact}
               aria-label="Go to Home page - Marc Basas Portfolio"
               itemProp="url"
             >
@@ -96,23 +98,25 @@ const Footer = () => {
             </h2>
             <p itemProp="description">For inquiries & commisions:<br/>
             <p><br/></p>
-            <a 
-                href="https://github.com/MarcBasas"
-                itemProp="GitHub"
-              >
-                https://github.com/MarcBasas <br />
-              </a>
               <a 
-                href="mailto:marcbasas@gmail.com"
+                href="mailto:marcbasasdev@gmail.com"
                 itemProp="email"
               >
-                marcbasas@gmail.com <br />
+                marcbasasdev@gmail.com <br />
               </a>
               <a
                 href="tel:+34615502988"
                 itemProp="telephone"
               >
                 +34 615502988 <br />
+              </a>
+            <a 
+                href="https://github.com/MarcBasas"
+                itemProp="GitHub"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                https://github.com/MarcBasas <br />
               </a>
             </p>
             <p itemProp="description">Thanks for visiting!</p>
