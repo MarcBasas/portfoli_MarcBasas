@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { projects } from "../../data/projects";
 import useIsMobile from "../../utils/UseIsMobile";
+import { useContact } from "../../utils/ContactContext";
 import "./Header.css";
 import MobileMenuOverlay from "./MobileMenuOverlay";
 
@@ -17,8 +18,10 @@ const Header = () => {
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
   const isMobile = useIsMobile();
+  const { closeContact } = useContact();
 
   const handleProjectsClick = () => {
+    closeContact();
     setShowProjects(!showProjects);
   };
 
@@ -38,6 +41,26 @@ const Header = () => {
     };
   }, [showProjects]);
 
+  // useEffect adicional para móvil: cerrar menú en cualquier clic si está abierto
+  useEffect(() => {
+    const handleMobileClick = (event) => {
+      if (isMobile && showProjects) {
+        // No cerrar si se hace clic en el botón de proyectos o en los links del menú
+        if (!buttonRef.current?.contains(event.target) && 
+            !event.target.closest('.header__mobile-menu-link')) {
+          setShowProjects(false);
+        }
+      }
+    };
+
+    if (isMobile) {
+      document.addEventListener('click', handleMobileClick);
+      return () => {
+        document.removeEventListener('click', handleMobileClick);
+      };
+    }
+  }, [isMobile, showProjects]);
+
   return (
     <header 
       className="header"  
@@ -54,6 +77,7 @@ const Header = () => {
           <Link 
             to="/about" 
             className="header__link"
+            onClick={closeContact}
             aria-label="Go to About page - Marc Basas Portfolio"
             aria-current={location.pathname === "/about" ? "page" : undefined}
             itemProp="url"
@@ -65,6 +89,7 @@ const Header = () => {
             <Link 
               to="/" 
               className="header__link header__logo"
+              onClick={closeContact}
               aria-label="Go to Home page - Marc Basas Portfolio"
               aria-current={location.pathname === "/" ? "page" : undefined}
               itemProp="url"
@@ -107,6 +132,10 @@ const Header = () => {
                     key={project.id}
                     to={`/project/${project.slug}`}
                     className="header__project-link"
+                    onClick={() => {
+                      closeContact();
+                      setShowProjects(false);
+                    }}
                     role="menuitem"
                     aria-label={`Go to ${project.title} project - Marc Basas Portfolio`}
                     itemProp="itemListElement"

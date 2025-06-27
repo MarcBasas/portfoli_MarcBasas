@@ -1,6 +1,7 @@
 @import '../styles/variables.css';
 
-html,
+/* Eliminar la sobrescritura del base.css - esto causa conflictos de scroll */
+/* html,
 body,
 #root {
   margin: 0;
@@ -8,7 +9,7 @@ body,
   height: 100%;
   overflow:auto;
   box-sizing: border-box;
-}
+} */
 
 .landing-container {
   display: flex;
@@ -96,11 +97,13 @@ body,
 /* Estilos para la versión móvil (una sola columna) */
 @media (max-width: 768px) {
   .mobile-landing-container {
-    width: 100vw;
-    height: 100vh;
-    overflow-y: auto;
+    width: 100%;
+    min-height: 100vh;
+    overflow-y: visible;
+    overflow-x: hidden;
     display: block;
     background: var(--color-background, #fff);
+    position: relative;
   }
   .landing-container,
   .column,

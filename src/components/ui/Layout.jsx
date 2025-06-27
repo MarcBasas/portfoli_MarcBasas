@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "./Header";
 import Footer from "./Footer";
+import { ContactProvider } from "../../utils/ContactContext";
+import "./Layout.css";
 
 /**
  * Componente Layout que proporciona la estructura base de la aplicación
@@ -12,7 +14,7 @@ import Footer from "./Footer";
  */
 const Layout = () => {
   return (
-    <>
+    <ContactProvider>
       <Helmet>
         <html lang="en" />
         <meta name="theme-color" content="#e5ff70" />
@@ -25,7 +27,7 @@ const Layout = () => {
         </main>
         <Footer />
       </div>
-    </>
+    </ContactProvider>
   );
 };
 

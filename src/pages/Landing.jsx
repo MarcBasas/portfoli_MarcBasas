@@ -42,6 +42,8 @@ const Landing = () => {
         content: '#smooth-content-landing',
         smooth: 1.2
       });
+      // Hacer disponible globalmente para ScrollToTop
+      window.ScrollSmoother = ScrollSmoother;
     }
 
     // Sincronización de scroll
@@ -154,7 +156,6 @@ const Landing = () => {
         <div
           id="mobile-scroll-container"
           className="mobile-landing-container"
-          style={{ height: "100vh", overflowY: "auto", width: "100vw" }}
           role="main"
           aria-label="Lista de proyectos"
         >
