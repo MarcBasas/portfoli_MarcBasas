@@ -254,6 +254,8 @@ config = {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="viewport" content="height=device-height, initial-scale=1.0">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="robots" content="noindex,follow" />
+    <meta name="googlebot" content="noindex,follow" />
     <meta name="apple-mobile-web-app-capable" content="yes"/>
 
     <link rel="prefetch" href="https://pygame-web.github.io/archives/0.9/pythonrc.py">
@@ -289,7 +291,7 @@ config = {
         }
 
         div.emscripten { text-align: center; }
- 
+
 
         /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
         /* average size of droid screen 470dp x 320dp  */
@@ -302,14 +304,15 @@ config = {
             height: 576px !important;
             z-index: 5;
 
-            padding: 0;
-            margin: 0;
+            padding: 0 !important;
+            margin: 0 !important;
 
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            position: absolute !important;
+            left: 0 !important;
+            right: auto !important;
+
+            top: 50% !important;
+            transform: translateY(-50%) !important;
         }
 
         body {
@@ -320,9 +323,9 @@ config = {
         }
 
         .topright{
-           position:absolute;
-           top:0px;
-           right:0px;
+            position:absolute;         
+            top:0px;
+            right:0px;
         }
 
         .bottomright {
@@ -338,16 +341,15 @@ config = {
         }
 
         .trinfo{
-           position:relative;
-           right:0px;
+            position:relative;
+            right:0px;
 
         }
 
         .framed{
-           position:relative;
-           top:150px;
-           right:10px;
-
+            position:relative;
+            top:150px;
+            right:10px;
         }
     </style>
     
