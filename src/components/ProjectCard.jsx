@@ -7,7 +7,7 @@ const ProjectCard = ({ data }) => {
 
   return (
     <Link 
-      to={`/project/${slug}`} 
+      to={`/project/${slug}/`} 
       className="project-card" 
       aria-label={`View ${title} project - Marc Basas Portfolio - Web Developer Portfolio`}
       itemScope

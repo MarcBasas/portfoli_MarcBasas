@@ -75,7 +75,7 @@ const Header = () => {
         itemType="https://schema.org/SiteNavigationElement"
         >
           <Link 
-            to="/about" 
+            to="/about/" 
             className="header__link"
             onClick={closeContact}
             aria-label="Go to About page - Marc Basas Portfolio"
@@ -130,7 +130,7 @@ const Header = () => {
                 {allProjects.map((project, index) => (
                   <Link
                     key={project.id}
-                    to={`/project/${project.slug}`}
+                    to={`/project/${project.slug}/`}
                     className="header__project-link"
                     onClick={() => {
                       closeContact();
