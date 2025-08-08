@@ -36,7 +36,7 @@ const About = () => {
         <meta name="twitter:url" content="https://www.marcbasas.com/about" />
 
         {/* Canonical*/}
-        <link rel="canonical" href="https://www.marcbasas.com/about" />
+        <link rel="canonical" href="https://www.marcbasas.com/about/" />
       </Helmet>
 
       <main 

@@ -7,7 +7,7 @@ import { projects } from "../data/projects";
 import LiveEditor from "../components/LiveEditor";
 import GameFrame from "../components/GameFrame";
 import VideoPlayer from "../components/projectComponents/VideoPlayer";
-import ProjectNotFound from "../components/UI/ProjectNotFound";
+import ProjectUnderDevelopment from "../components/ui/ProjectUnderDevelopment";
 import NotFoundPage from "./NotFoundPage";
 import "./ProjectPage.css";
 import useIsMobile from "../utils/UseIsMobile";
@@ -62,7 +62,6 @@ const ProjectPage = () => {
   }
 
   const isConstelations = project.slug === "constellations";
-  const hasNoContent = !project.video && !project.files && !project.url;
 
   return (
     <div 
@@ -95,7 +94,7 @@ const ProjectPage = () => {
         )}
 
         {/* Canonical*/}
-        <link rel="canonical" href={`https://www.marcbasas.com/project/${project.slug}`} />
+        <link rel="canonical" href={`https://www.marcbasas.com/project/${project.slug}/`} />
       </Helmet>
 
       <div 
@@ -119,33 +118,42 @@ const ProjectPage = () => {
         </p>
 
         <div className="project-dynamic-content">
-          {hasNoContent && <ProjectNotFound previewImage={project.previewImage} />}
-          {/* VIDEO para Constelations solo en móvil */}
-          {isConstelations && isMobile && project.video && (
-            <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
+          {/* PROJECT UNDER DEVELOPMENT */}
+          {project.finished === false && (
+            <ProjectUnderDevelopment previewImage={project.previewImage} />
           )}
-          {/* VIDEO para otros proyectos */}
-          {!isConstelations && project.video && (
-            <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
+          
+          {/* Contenido normal solo si el proyecto está terminado */}
+          {project.finished !== false && (
+            <>
+              {/* VIDEO para Constelations solo en móvil */}
+              {isConstelations && isMobile && project.video && (
+                <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
+              )}
+              {/* VIDEO para otros proyectos */}
+              {!isConstelations && project.video && (
+                <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
+              )}
+              {/* WEB DEMO */}
+              {project.category === "demo" && project.files && <LiveEditor project={project} />}
+              {/* GAMES: Constelations solo en escritorio, otros juegos igual que antes */}
+              {((isConstelations && !isMobile) || (!isConstelations && project.url && project.slug && project.category !== "demo" && project.category !== "final")) && (
+                <GameFrame title={project.title} url={project.url} />
+              )}
+              {/* LINKS */}
+              <div className="project-links-row">
+                {/* Juegos: solo enlace GitHub */}
+                {project.git && project.category === undefined && (
+                  <ProjectGitLink git={project.git} />
+                )}
+                {/* Web final: solo enlace al sitio */}
+                {project.category === "final" && project.url && (
+                  <ProjectLink url={project.url} />
+                )}
+                {/* Web demo: ningún enlace */}
+              </div>
+            </>
           )}
-          {/* WEB DEMO */}
-          {project.category === "demo" && project.files && <LiveEditor project={project} />}
-          {/* GAMES: Constelations solo en escritorio, otros juegos igual que antes */}
-          {((isConstelations && !isMobile) || (!isConstelations && project.url && project.slug && project.category !== "demo" && project.category !== "final")) && (
-            <GameFrame title={project.title} url={project.url} />
-          )}
-          {/* LINKS */}
-          <div className="project-links-row">
-            {/* Juegos: solo enlace GitHub */}
-            {project.git && project.category === undefined && (
-              <ProjectGitLink git={project.git} />
-            )}
-            {/* Web final: solo enlace al sitio */}
-            {project.category === "final" && project.url && (
-              <ProjectLink url={project.url} />
-            )}
-            {/* Web demo: ningún enlace */}
-          </div>
         </div>
       </div>
     </div>

@@ -17,7 +17,7 @@ const MobileMenuOverlay = ({ allProjects, onClose }) => {
       {allProjects.map((project) => (
         <Link
           key={project.id}
-          to={`/project/${project.slug}`}
+          to={`/project/${project.slug}/`}
           className="header__mobile-menu-link"
           onClick={handleProjectClick}
           translate="no"

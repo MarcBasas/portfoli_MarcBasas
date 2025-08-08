@@ -1,13 +1,10 @@
 import React from "react";
-import "./ProjectNotFound.css";
+import "./ProjectUnderDevelopment.css";
 import { Helmet } from "react-helmet-async";
 import PropTypes from "prop-types";
 
-const ProjectNotFound = ({ previewImage }) => (
+const ProjectUnderDevelopment = ({ previewImage }) => (
   <>
-    <Helmet>
-      <meta name="robots" content="noindex, nofollow" />
-    </Helmet>
     <div className="project-notfound-container">
       <div 
         className="project-notfound-background"
@@ -21,8 +18,8 @@ const ProjectNotFound = ({ previewImage }) => (
   </>
 );
 
-ProjectNotFound.propTypes = {
+ProjectUnderDevelopment.propTypes = {
   previewImage: PropTypes.string
 };
 
-export default ProjectNotFound; 
+export default ProjectUnderDevelopment;
