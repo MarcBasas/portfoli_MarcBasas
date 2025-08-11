@@ -26,7 +26,7 @@ const ProjectLink = ({ url }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Visit <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+    Visita la web <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 
@@ -41,7 +41,7 @@ const ProjectGitLink = ({ git }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Check the code in GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+    Aquí está el código en GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 

@@ -10,29 +10,29 @@ const About = () => {
     <>
       <Helmet>
         {/* Título, descripción, autor*/}
-        <title>About | Marc Basas - Web Developer Portfolio</title>
+        <title>Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona</title>
         <meta 
           name="description" 
-          content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills."
+          content="Conoce a Marc Basas, programador web autónomo en Barcelona especializado en desarrollo frontend y fullstack. Experiencia en servicios de programación web para empresas, desarrollo de aplicaciones a medida y soluciones digitales. Freelancer con formación en desarrollo web y videojuegos."
         />
         <meta 
           name="keywords" 
-          content="Marc Basas, Web Developer, Fullstack Developer, Portfolio, About Me, Experience, Web Development"
+          content="programador autonomo barcelona, programador web autonomo, Marc Basas, freelancer barcelona, desarrollador independiente barcelona, servicios programacion web barcelona, experiencia programador web, formacion desarrollo web, programador frontend barcelona, programador fullstack barcelona"
         />
         <meta name="author" content="Marc Basas" />
 
         {/* Open Graph*/}
-        <meta property="og:title" content="About | Marc Basas - Web Developer Portfolio" />
-        <meta property="og:description" content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills." />
+        <meta property="og:title" content="Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona" />
+        <meta property="og:description" content="Conoce la experiencia y formación de Marc Basas, programador web autónomo en Barcelona. Especializado en desarrollo frontend y fullstack, con servicios de programación para empresas." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.marcbasas.com/about" />
-        <meta property="og:site_name" content="Marc Basas - Web Developer Portfolio" />
+        <meta property="og:site_name" content="Marc Basas - Programador Web Autónomo Barcelona" />
         <meta property="og:locale" content="es_ES" />
 
         {/* Twitter*/}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="About | Marc Basas - Web Developer Portfolio" />
-        <meta name="twitter:description" content="Learn about Marc Basas, a fullstack developer with experience in web development. Discover his professional journey and skills." />
+        <meta name="twitter:title" content="Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona" />
+        <meta name="twitter:description" content="Programador web autónomo en Barcelona con experiencia en desarrollo frontend y fullstack. Servicios de programación web para empresas y proyectos personalizados." />
         <meta name="twitter:url" content="https://www.marcbasas.com/about" />
 
         {/* Canonical*/}
@@ -60,19 +60,19 @@ const About = () => {
               id="about-title"
               itemProp="name"
             >
-              About me
+              Sobre mí
             </h2>
             <p>
-              I'm a web developer who builds straightforward, dependable sites using the basics: HTML, CSS and JavaScript, and popular tools like React, Angular or Vue when they make sense.
+              Soy un programador web autónomo con base en Barcelona, especializado en el desarrollo frontend y fullstack. Creo sitios web funcionales utilizando tecnologías fundamentales como HTML, CSS y JavaScript, además de herramientas modernas como React, Angular o Vue cuando aportan valor y eficiencia al proyecto.
             </p>
             <p>
-              As a freelancer, I focus on practical solutions to help businesses and creatives get their projects off the ground.
+              Como programador autónomo, me enfoco en ofrecer soluciones prácticas que ayuden a empresas y creativos a materializar sus proyectos.
             </p>
             <p>
-              In my free time I play around with small games in Unity, Pygame or plain JavaScript just for the fun of it.
+              En mi tiempo libre desarrollo pequeños juegos con Unity, Pygame o JavaScript puro por diversión.
             </p>
             <p>
-              I also spent two years at a consulting firm. The first year I helped developing Java back-end systems, and the second one I worked on a web app using React and Node.js with Figma designs.
+              También trabajé durante dos años en una consultora. El primer año desarrollando sistemas backend en Java, y el segundo trabajando en aplicaciones web con React y Node.js a partir de diseños de Figma. Esta experiencia me consolidó como programador web antes de convertirme en freelance.
             </p>
           </section>
 
@@ -85,21 +85,22 @@ const About = () => {
               id="experience-title"
               itemProp="jobTitle"
             >
-              Education and Experience
+              Formación y Experiencia
             </h2>
             <p>
-              2024–2025, Currently working freelance as a fullstack developer.
+              2024–2025, Actualmente trabajando como programador web autónomo en Barcelona.
             </p>
             <p>
               2023-2024, NTTDATA<br/>
-              Backend & Frontend Developer            </p>
+              Desarrollador Backend & Frontend. Experiencia que me preparó para mi carrera como programador autónomo.
+            </p>
             <p>
               2021–2023, Universitat Oberta de Catalunya<br/>
-              Master's degree in Video Game Design and Programming.
+              Máster en Diseño y Programación de Videojuegos.
             </p>
             <p>
               2015 - 2019, Universitat de Vic<br/>
-              Multimedia. Apps and Games Degree.
+              Grado en Multimedia. Aplicaciones y Videojuegos.
             </p>
           </section>
         </div>

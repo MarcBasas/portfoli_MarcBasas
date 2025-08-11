@@ -11,8 +11,8 @@ const ProjectUnderDevelopment = ({ previewImage }) => (
         style={{ backgroundImage: previewImage ? `url(${previewImage})` : 'none' }}
       />
       <div className="project-notfound-content">
-        <h1 className="project-notfound-title">Project under development.</h1>
-        <p className="project-notfound-text">The project you are looking for is still under construction.</p>
+        <h1 className="project-notfound-title">Proyecto en desarrollo.</h1>
+        <p className="project-notfound-text">El proyecto que buscas aún está en construcción.</p>
       </div>
     </div>
   </>

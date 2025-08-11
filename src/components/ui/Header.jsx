@@ -113,7 +113,7 @@ const Header = () => {
             itemProp="name"
             translate="no"
           >
-            {isMobile && showProjects ? "CLOSE" : "PROJECTS"}
+            {isMobile && showProjects ? "CERRAR" : "PROYECTOS"}
           </button>
           
           {showProjects && (
