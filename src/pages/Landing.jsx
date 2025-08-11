@@ -129,23 +129,23 @@ const Landing = () => {
     <>
       <Helmet>
         {/* Título, descripción, autor*/}
-        <title>Marc Basas - Web Developer</title>
-        <meta name="description" content="Bienvenido al portfolio de Marc Basas. Proyectos web y videojuegos interactivos." />
-        <meta name="keywords" content="portfolio, desarrollo web, programación, coding, programación web, videojuegos, proyectos, Marc Basas, MarcBasas REACT, FrontEnd, Web Developer" />
+        <title>Marc Basas - Programador Web Autónomo Barcelona | Portfolio Frontend y Fullstack</title>
+        <meta name="description" content="Portfolio de Marc Basas, programador web autónomo en Barcelona. Especializado en desarrollo frontend y fullstack, servicios de programación web para empresas y proyectos personalizados. Descubre mis proyectos de desarrollo web y aplicaciones interactivas." />
+        <meta name="keywords" content="programador autonomo, programador web autonomo, programador barcelona, portfolio programador, desarrollo web barcelona, programador freelance barcelona, servicios programacion web, frontend barcelona, fullstack barcelona, proyectos web barcelona, Marc Basas, desarrollador independiente" />
         <meta name="author" content="Marc Basas" />
 
         {/* Open Graph*/}
-        <meta property="og:title" content="Marc Basas - Web Developer" />
-        <meta property="og:description" content="Mis proyectos de desarrollo web y videojuegos interactivos." />
+        <meta property="og:title" content="Marc Basas - Programador Web Autónomo Barcelona | Portfolio" />
+        <meta property="og:description" content="Portfolio de programador web autónomo en Barcelona. Proyectos de desarrollo frontend y fullstack, aplicaciones web interactivas y servicios de programación para empresas." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.marcbasas.com" />
-        <meta property="og:site_name" content="Marc Basas - Web Developer" />
+        <meta property="og:site_name" content="Marc Basas - Programador Web Autónomo Barcelona" />
         <meta property="og:locale" content="es_ES" />
 
         {/* Twitter*/}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Marc Basas - Web Developer" />
-        <meta name="twitter:description" content="Portfolio de proyectos de desarrollo web y videojuegos interactivos." />
+        <meta name="twitter:title" content="Marc Basas - Programador Web Autónomo Barcelona" />
+        <meta name="twitter:description" content="Portfolio de programador web autónomo en Barcelona. Servicios de desarrollo frontend y fullstack para empresas y proyectos personalizados." />
         <meta name="twitter:url" content="https://www.marcbasas.com" />
 
         {/* Canonical*/}
