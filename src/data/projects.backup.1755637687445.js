@@ -95,6 +95,18 @@ export const projects = {
       description:"Hobo es un juego de plataformas 2D basado en Unity desarrollado en C# que genera procedimentalmente un mapa aleatorio en cada sesión, permite a los jugadores correr, saltar y navegar por plataformas para recoger todos los elementos de comida esparcidos por el nivel.",
       previewImage: BASE + "img/LandingPreview_Hobo.webp",
       keywords: "Unity, C#, Game, Portfolio, Video Game, Games Development, Hobo, Unity C#, Unity C# Game, Unity C# Hobo, map generation, random map, platformer, 2D platformer"
+    },
+    {
+      id: 8,
+      category: "games",
+      title: "Juego tralala",
+      titleMin: "Tralaala",
+      slug: "juego-tralala",
+      finished: true,
+      description:"este juego es un juego muy jugoso sobre tralalero tralala y se crea en forma de prueba para probar el nuevo panel de administracion",
+      previewImage: BASE + "img/fondowindows-1755637574867.png",
+      git: "https://github.com/MarcBasas/Constelations_pygame",
+      keywords: "juego, jugoso"
     }
   ]
 };

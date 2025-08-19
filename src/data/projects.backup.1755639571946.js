@@ -1,5 +1,6 @@
 import { cinevisionDemo } from './demos/cinevision-demo';
 import { crealabDemo } from './demos/crealab-demo';
+import { demoDemo } from './demos/demo-demo';
 import { portfolioDemo } from './demos/portfolio-demo';
 // Fallback si no existe import.meta.env
 const BASE = typeof import.meta !== 'undefined' && import.meta.env
@@ -56,6 +57,18 @@ export const projects = {
       previewImage: BASE + "img/LandingPreview_Portfolio.webp",
       files: portfolioDemo,
       keywords: "Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Portfolio Demo, Portfolio Website, Portfolio Website Demo, Portfolio Website React, Portfolio Website HTML, Portfolio Website CSS, Portfolio Website JavaScript"
+    },
+    {
+      id: 8,
+      category: "web",
+      title: "Demo",
+      titleMin: "demo demo",
+      slug: "demo",
+      finished: true,
+      description:"sfas asdf asdf asdf asdfa sdf asdf asdf asdfas dfa sdfa sdf asdf asdf asdf asdf asdfasdf adsfouihkj asdf asdf asdf asdf asdfaswefdasdfasdfasdfasd fasd fasdf asdf asdf asdfasdf asdf asdf adf asfa sdfas df",
+      previewImage: BASE + "img/fondowindows-1755638550646.png",
+      git: "https://github.com/MarcBasas/Constelations_pygame",
+      keywords: ""
     }
   ],
   games: [

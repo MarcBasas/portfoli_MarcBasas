@@ -1,5 +1,5 @@
 import { cinevisionDemo } from './demos/cinevision-demo';
-import { crealabDemo } from './demos/crealab-demo';
+import { crealabDemo } from './demos/crealabDemo';
 import { portfolioDemo } from './demos/portfolio-demo';
 // Fallback si no existe import.meta.env
 const BASE = typeof import.meta !== 'undefined' && import.meta.env
@@ -32,6 +32,7 @@ export const projects = {
       finished: true,
       description:"Crealab es un estudio publicitario y de branding imaginario. Esta demo presenta una cuarícula infinita de proyectos, con modales para ver los detalles de cada uno. Es un sitio web mas creativo y diferente, pero simple al mismo tiempo",
       previewImage: BASE + "img/LandingPreview_Crealab.webp",
+      files: crealabDemo,
       keywords: "Crealab, Crealab Project, Research, Development, Software, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Crealab Project Website, Crealab Project Website Demo, Crealab Project Website React, Crealab Project Website HTML, Crealab Project Website CSS, Crealab Project Website JavaScript"
     },
     {
@@ -41,18 +42,20 @@ export const projects = {
       titleMin: "CineVision Studios",
       slug: "cinevision-studios",
       finished: true,
-      description:"CineVision Studios es un estudio indie imaginario que produce películas y series. Esta es una demo de su sitio web donde puedes ver su código. Es un sitio web simple y clásico con datos necesarios para el cliente.",
+      description: "CineVision Studios es un estudio indie imaginario que produce películas y series. Esta es una demo de su sitio web donde puedes ver su código. Es un sitio web simple y clásico con datos necesarios para el cliente.",
       previewImage: BASE + "img/LandingPreview_CineVision.webp",
+      files: cinevisionDemo,
       keywords: "Video production, Videos, Movie Studio, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, CineVision Studios, CineVision Studios Website, CineVision Studios Website Demo, CineVision Studios Website React, CineVision Studios Website HTML, CineVision Studios Website CSS, CineVision Studios Website JavaScript"
     },
     {
-      id: 4,
+      id: 4,  
       category: "demo",
       title: "PORTFOLIO DEMO",
       titleMin: "Portfolio",
       slug: "portfolio-demo",
       finished: true,
-      description:"Esta es una demo de un sitio web de portfolio. Las imágenes funcionan como un carrusel y los detalles se ocultan en un modal. Esta solución está basada en el portfolio de Esmeralda Devlin.",
+      description: `Esta es una demo de un sitio web de portfolio. Las imágenes funcionan como un carrusel y los detalles se ocultan en un modal.
+      Esta solución está basada en el portfolio de Esmeralda Devlin.`,
       previewImage: BASE + "img/LandingPreview_Portfolio.webp",
       files: portfolioDemo,
       keywords: "Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Portfolio Demo, Portfolio Website, Portfolio Website Demo, Portfolio Website React, Portfolio Website HTML, Portfolio Website CSS, Portfolio Website JavaScript"
@@ -65,12 +68,12 @@ export const projects = {
       titleMin: "Constelations",
       slug: "constellations",
       finished: true,
-      description:"Este pequeño juego de Pygame dibuja puntos en movimiento y conecta aquellos que están dentro de una cierta distancia. El usuario puede ajustar la velocidad, el número de puntos y la distancia de conexión. Con Pygbag, puede ejecutarse como una aplicación WebAssembly.",
+      description: "Este pequeño juego de Pygame dibuja puntos en movimiento y conecta aquellos que están dentro de una cierta distancia. El usuario puede ajustar la velocidad, el número de puntos y la distancia de conexión. Con Pygbag, puede ejecutarse como una aplicación WebAssembly.",
       previewImage: BASE + "img/LandingPreview_Constellations.webp",
+      url: BASE + "games/Constelations/build/web/index.html",
+      git: "https://github.com/MarcBasas/Constelations_pygame",
       video: BASE + "vids/ProjectVideo_Constellations.webm",
       poster: BASE + "img/LandingPreview_Constellations.webp",
-      url: "/games/Constelations/build/web/index.html",
-      git: "https://github.com/MarcBasas/Constelations_pygame",
       keywords: "Pygame, WebAssembly, Game, Portfolio, Video Game, Games Development, pygame, pywebview, pyinstaller, constellations pygame, constellations webassembly, constellations game, constellations portfolio, constellations pygame game, constellations webassembly game, constellations portfolio game"
     },
     {
@@ -79,7 +82,7 @@ export const projects = {
       titleMin: "ChessExcel",
       slug: "chessExcel",
       finished: true,
-      description:"Este juego de ajedrez basado en Excel desarrollado en VBA permite a los usuarios jugar ajedrez en un entorno diferente. Empaquetado como un libro de trabajo, intenta demostrar las capacidades de Excel.",
+      description: "Este juego de ajedrez basado en Excel desarrollado en VBA permite a los usuarios jugar ajedrez en un entorno diferente. Empaquetado como un libro de trabajo, intenta demostrar las capacidades de Excel.",
       previewImage: BASE + "img/LandingPreview_ChessExcel.webp",
       video: BASE + "vids/ChessExcell.webm",
       poster: BASE + "img/LandingPreview_ChessExcel.webp",

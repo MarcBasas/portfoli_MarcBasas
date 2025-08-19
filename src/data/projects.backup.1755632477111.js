@@ -1,5 +1,5 @@
 import { cinevisionDemo } from './demos/cinevision-demo';
-import { crealabDemo } from './demos/crealab-demo';
+import { crealabDemo } from './demos/crealabDemo';
 import { portfolioDemo } from './demos/portfolio-demo';
 // Fallback si no existe import.meta.env
 const BASE = typeof import.meta !== 'undefined' && import.meta.env
@@ -32,6 +32,7 @@ export const projects = {
       finished: true,
       description:"Crealab es un estudio publicitario y de branding imaginario. Esta demo presenta una cuarícula infinita de proyectos, con modales para ver los detalles de cada uno. Es un sitio web mas creativo y diferente, pero simple al mismo tiempo",
       previewImage: BASE + "img/LandingPreview_Crealab.webp",
+      files: crealabDemo,
       keywords: "Crealab, Crealab Project, Research, Development, Software, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Crealab Project Website, Crealab Project Website Demo, Crealab Project Website React, Crealab Project Website HTML, Crealab Project Website CSS, Crealab Project Website JavaScript"
     },
     {
@@ -95,6 +96,17 @@ export const projects = {
       description:"Hobo es un juego de plataformas 2D basado en Unity desarrollado en C# que genera procedimentalmente un mapa aleatorio en cada sesión, permite a los jugadores correr, saltar y navegar por plataformas para recoger todos los elementos de comida esparcidos por el nivel.",
       previewImage: BASE + "img/LandingPreview_Hobo.webp",
       keywords: "Unity, C#, Game, Portfolio, Video Game, Games Development, Hobo, Unity C#, Unity C# Game, Unity C# Hobo, map generation, random map, platformer, 2D platformer"
+    },
+    {
+      id: 8,
+      category: "games",
+      title: "Proba1",
+      titleMin: "proba proba",
+      slug: "proba",
+      finished: true,
+      description:"asdasfasdf w efsadF AWDEF ASDF ASDF ASDF ASDF WERFSDF AWEF WAE FQWE FWE FWEF ",
+      previewImage: BASE + "img/fondowindows-1755632075051.png",
+      keywords: ""
     }
   ]
 };

@@ -1,5 +1,5 @@
 import { cinevisionDemo } from './demos/cinevision-demo';
-import { crealabDemo } from './demos/crealab-demo';
+import { crealabDemo } from './demos/crealabDemo';
 import { portfolioDemo } from './demos/portfolio-demo';
 // Fallback si no existe import.meta.env
 const BASE = typeof import.meta !== 'undefined' && import.meta.env
@@ -32,6 +32,7 @@ export const projects = {
       finished: true,
       description:"Crealab es un estudio publicitario y de branding imaginario. Esta demo presenta una cuarícula infinita de proyectos, con modales para ver los detalles de cada uno. Es un sitio web mas creativo y diferente, pero simple al mismo tiempo",
       previewImage: BASE + "img/LandingPreview_Crealab.webp",
+      files: crealabDemo,
       keywords: "Crealab, Crealab Project, Research, Development, Software, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Crealab Project Website, Crealab Project Website Demo, Crealab Project Website React, Crealab Project Website HTML, Crealab Project Website CSS, Crealab Project Website JavaScript"
     },
     {
@@ -43,6 +44,7 @@ export const projects = {
       finished: true,
       description:"CineVision Studios es un estudio indie imaginario que produce películas y series. Esta es una demo de su sitio web donde puedes ver su código. Es un sitio web simple y clásico con datos necesarios para el cliente.",
       previewImage: BASE + "img/LandingPreview_CineVision.webp",
+      files: cinevisionDemo,
       keywords: "Video production, Videos, Movie Studio, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, CineVision Studios, CineVision Studios Website, CineVision Studios Website Demo, CineVision Studios Website React, CineVision Studios Website HTML, CineVision Studios Website CSS, CineVision Studios Website JavaScript"
     },
     {
