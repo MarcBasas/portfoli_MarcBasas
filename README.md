@@ -654,10 +654,10 @@ class ProjectErrorBoundary extends React.Component {
 // Structured logging en operations críticas
 app.post('/api/admin/save-projects', async (req, res) => {
   try {
-    console.log(`✅ Backup creado: ${backupFile}`);
-    console.log(`🗑️ Limpieza completada: ${cleanupResult}`);
+    console.log(`Backup creado: ${backupFile}`);
+    console.log(`Limpieza completada: ${cleanupResult}`);
   } catch (error) {
-    console.error(`❌ Error en save-projects:`, error);
+    console.error(`Error en save-projects:`, error);
   }
 });
 ```
