@@ -1,8 +1,8 @@
-# Marco Portfolio - Documentación Técnica Completa
+# portfoli_MarcBasas - Documentación Técnica Completa
 
 ## Resumen Ejecutivo
 
-**Marco Portfolio** es un portfolio web desarrollador completo con sistema de administración CMS personalizado. Incluye frontend en React/Vite, backend en Node.js/Express, sistema de demos interactivos, gestión de archivos multimedia y despliegue en GitHub Pages.
+**Marc Basas Portfolio** es un portfolio web desarrollador completo con sistema de administración CMS personalizado. Incluye frontend en React/Vite, backend en Node.js/Express, sistema de demos interactivos, gestión de archivos multimedia y despliegue en GitHub Pages.
 
 ### Características Principales
 - **Portfolio responsivo** con proyectos web y juegos
