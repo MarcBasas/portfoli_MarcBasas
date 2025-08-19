@@ -2,7 +2,8 @@
 export const webSlugs = [
     "kumo-creative-project",
     "cinevision-studios",
-    "portfolio-demo"
+    "portfolio-demo",
+    "crealab"
 ];
 export const gameSlugs = [
     "constellations",
