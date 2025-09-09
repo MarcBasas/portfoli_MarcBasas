@@ -126,10 +126,19 @@ const AdminPage = () => {
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    setFormData(prev => {
+      const newData = {
+        ...prev,
+        [name]: type === 'checkbox' ? checked : value
+      };
+      
+      // Si se desmarca hasDemo, eliminar la propiedad files
+      if (name === 'hasDemo' && !checked) {
+        delete newData.files;
+      }
+      
+      return newData;
+    });
   };
 
   const generateSlug = (title) => {
@@ -162,6 +171,13 @@ const AdminPage = () => {
           break;
         case 'demo':
           result = await uploadDemo(file, formData.slug || generateSlug(formData.title));
+          // Cuando se sube un demo, asignar automáticamente la propiedad files y categoría demo
+          const demoReference = result.exportName || `${formData.slug || generateSlug(formData.title)}Demo`;
+          setFormData(prev => ({
+            ...prev,
+            files: demoReference,
+            category: 'web' // Los demos van en la categoría web
+          }));
           break;
         default:
           throw new Error('Tipo de archivo no válido');
@@ -224,7 +240,11 @@ const AdminPage = () => {
 
   const handleEdit = (project, category) => {
     setEditingProject({ ...project, category });
-    setFormData({ ...project, category });
+    setFormData({ 
+      ...project, 
+      category,
+      hasDemo: !!project.files // Marcar como demo si tiene files
+    });
     setShowForm(true);
   };
 
@@ -507,6 +527,11 @@ const AdminPage = () => {
                           {uploadingFiles.demo ? 'Pujant arxiu demo...' : 'Cap arxiu seleccionat'}
                         </span>
                       </div>
+                      {formData.files && (
+                        <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#e8f5e8', borderRadius: '4px', fontSize: '0.9rem' }}>
+                          <strong>Referència del demo:</strong> {formData.files}
+                        </div>
+                      )}
                       <small style={{ display: 'block', marginTop: '0.5rem', color: '#1b1b1b', fontSize: '0.8rem', opacity: '0.7' }}>
                         L'arxiu ha d'exportar: export const elMeuDemo = &#123; html: "...", css: "...", js: "..." &#125;
                       </small>

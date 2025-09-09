@@ -1,0 +1,10 @@
+[33m5b81ff0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m Añadir carga de proyectos desde servidor y endpoint load-projects
+[33mef005d8[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m Arreglar centrado del login en pantallas grandes + comts + lint
+[33m0c20519[m Arreglar centrado del login en pantallas grandes + comts
+[33mb63a282[m Arreglar centrado del login en pantallas grandes
+[33m51daa3d[m Actualizar diseño del login: catalán, centrado y colores consistentes
+[33m8ab28d5[m re implementacio PIN ++ estilos
+[33m05c5b8e[m re implementacio PIN
+[33m1295a5f[m redireccion
+[33m90b8f77[m Solucionar 404 de /Admin1997 con redirección y mantener panel independiente
+[33m3a44504[m Mover ruta /Admin1997 dentro del Layout para solucionar 404 en GitHub Pages
