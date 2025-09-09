@@ -3,7 +3,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #dbd9c3; /* beige de la web */
+  background: #dbd9c3; 
   font-family: "Inter", sans-serif;
   width: 100%;
   padding: 2rem;
@@ -11,7 +11,7 @@
 }
 
 .admin-login__container {
-  background: #dbd9c3; /* beige de la web - mismo color que el fondo */
+  background: #dbd9c3; 
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(27, 27, 27, 0.3);
@@ -19,20 +19,20 @@
   max-width: 400px;
   min-width: 300px;
   text-align: center;
-  border: 2px solid #1b1b1b; /* negro de la web */
-  margin: 0 auto; /* centrado adicional */
+  border: 2px solid #1b1b1b; 
+  margin: 0 auto;
 }
 
 .admin-login__title {
   font-size: 1.8rem;
   font-weight: 700;
-  color: #1b1b1b; /* negro de la web */
+  color: #1b1b1b;
   margin-bottom: 0.5rem;
   font-family: "Inter", sans-serif;
 }
 
 .admin-login__subtitle {
-  color: #1b1b1b; /* negro de la web */
+  color: #1b1b1b; 
   margin-bottom: 2rem;
   font-size: 0.95rem;
   font-family: "Inter", sans-serif;
@@ -51,31 +51,31 @@
 .admin-login__input {
   width: 100%;
   padding: 1rem;
-  border: 2px solid #1b1b1b; /* negro de la web */
+  border: 2px solid #1b1b1b;
   border-radius: 8px;
   font-size: 1rem;
   transition: border-color 0.3s ease;
   box-sizing: border-box;
-  background: #dbd9c3; /* beige de la web */
-  color: #1b1b1b; /* negro de la web */
+  background: #dbd9c3; 
+  color: #1b1b1b;
   font-family: "Inter", sans-serif;
-  text-align: center; /* centrar el texto del PIN */
+  text-align: center; 
 }
 
 .admin-login__input:focus {
   outline: none;
-  border-color: #1b1b1b; /* negro de la web */
+  border-color: #1b1b1b;
   box-shadow: 0 0 0 3px rgba(27, 27, 27, 0.1);
 }
 
 .admin-login__input::placeholder {
   color: #666;
-  text-align: center; /* centrar el placeholder */
+  text-align: center; 
 }
 
 .admin-login__error {
-  background: #1b1b1b; /* negro de la web */
-  color: #e5ff70; /* fluor de la web */
+  background: #1b1b1b; 
+  color: #e5ff70; 
   padding: 0.75rem;
   border-radius: 6px;
   font-size: 0.9rem;
@@ -84,8 +84,8 @@
 }
 
 .admin-login__button {
-  background: #1b1b1b; /* negro de la web */
-  color: #e5ff70; /* fluor de la web */
+  background: #1b1b1b; 
+  color: #dbd9c3; 
   border: none;
   padding: 1rem;
   border-radius: 8px;
@@ -94,8 +94,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: "Inter", sans-serif;
-  text-transform: uppercase; /* asegurar mayúsculas */
-}
+  text-transform: uppercase; 
 
 .admin-login__button:hover:not(:disabled) {
   background: #333;
@@ -110,11 +109,11 @@
 .admin-login__info {
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #1b1b1b; /* negro de la web */
+  border-top: 1px solid #1b1b1b; 
 }
 
 .admin-login__info p {
-  color: #1b1b1b; /* negro de la web */
+  color: #1b1b1b; 
   font-size: 0.8rem;
   margin: 0;
   font-family: "Inter", sans-serif;
