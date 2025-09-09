@@ -132,4 +132,28 @@ export const uploadDemo = async (file, slug) => {
   }
 };
 
+// Función para hacer deploy manual
+export const manualDeploy = async () => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/deploy', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al hacer deploy');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error en deploy manual:', error);
+    throw error;
+  }
+};
+
 // NOTA: La generación del contenido de projects.js se hace en el servidor (server.js)
