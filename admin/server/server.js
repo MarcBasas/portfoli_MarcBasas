@@ -761,11 +761,19 @@ app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
     
     // Crear un contexto seguro con las variables necesarias
     const safeContext = {
-      BASE: '' // BASE vacío para el servidor
+      BASE: '', // BASE vacío para el servidor
+      portfolioDemo: null, // Demo placeholder
+      cinevisionDemo: null, // Demo placeholder  
+      crealabDemo: null // Demo placeholder
     };
     
     // Usar Function constructor con contexto seguro
-    const projectsData = new Function('BASE', 'return ' + projectsMatch[1])(safeContext.BASE);
+    const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
+      safeContext.BASE, 
+      safeContext.portfolioDemo, 
+      safeContext.cinevisionDemo, 
+      safeContext.crealabDemo
+    );
     
     console.log('PROYECTOS CARGADOS DESDE SERVIDOR:', {
       web: projectsData.web?.length || 0,
