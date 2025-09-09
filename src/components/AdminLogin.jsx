@@ -40,8 +40,7 @@ const AdminLogin = ({ onLogin }) => {
   return (
     <div className="admin-login">
       <div className="admin-login__container">
-        <h1 className="admin-login__title">Panel de Administración</h1>
-        <p className="admin-login__subtitle">Introduce tu PIN para acceder</p>
+        <h1 className="admin-login__title">PANELL D'ADMINISTRACIÓ</h1>
         
         <form onSubmit={handleSubmit} className="admin-login__form">
           <div className="admin-login__input-group">
@@ -49,7 +48,7 @@ const AdminLogin = ({ onLogin }) => {
               type="password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
-              placeholder="PIN de acceso"
+              placeholder="PIN d'accés"
               className="admin-login__input"
               required
               autoFocus
@@ -67,7 +66,7 @@ const AdminLogin = ({ onLogin }) => {
             className="admin-login__button"
             disabled={isLoading}
           >
-            {isLoading ? 'Verificando...' : 'Acceder'}
+            {isLoading ? 'Verificant...' : 'ACCEDIR'}
           </button>
         </form>
         

@@ -8,7 +8,7 @@
 }
 
 .admin-login__container {
-  background: #e5ff70; /* fluor de la web */
+  background: #dbd9c3; /* beige de la web - mismo color que el fondo */
   padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 20px 40px rgba(27, 27, 27, 0.3);
@@ -54,12 +54,18 @@
   background: #dbd9c3; /* beige de la web */
   color: #1b1b1b; /* negro de la web */
   font-family: "Inter", sans-serif;
+  text-align: center; /* centrar el texto del PIN */
 }
 
 .admin-login__input:focus {
   outline: none;
   border-color: #1b1b1b; /* negro de la web */
   box-shadow: 0 0 0 3px rgba(27, 27, 27, 0.1);
+}
+
+.admin-login__input::placeholder {
+  color: #666;
+  text-align: center; /* centrar el placeholder */
 }
 
 .admin-login__error {
@@ -83,6 +89,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   font-family: "Inter", sans-serif;
+  text-transform: uppercase; /* asegurar mayúsculas */
 }
 
 .admin-login__button:hover:not(:disabled) {
