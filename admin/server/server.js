@@ -759,8 +759,13 @@ app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
       throw new Error('No se pudo extraer los datos de proyectos del archivo');
     }
     
-    // Usar Function constructor en lugar de eval para mayor seguridad
-    const projectsData = new Function('return ' + projectsMatch[1])();
+    // Crear un contexto seguro con las variables necesarias
+    const safeContext = {
+      BASE: '' // BASE vacío para el servidor
+    };
+    
+    // Usar Function constructor con contexto seguro
+    const projectsData = new Function('BASE', 'return ' + projectsMatch[1])(safeContext.BASE);
     
     console.log('PROYECTOS CARGADOS DESDE SERVIDOR:', {
       web: projectsData.web?.length || 0,
