@@ -1,7 +1,7 @@
 // Utilidad para manejar las operaciones de administración
 export const saveProjectsToFile = async (projectsData) => {
   try {
-    const response = await fetch('http://localhost:3001/api/admin/save-projects', {
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/save-projects', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ export const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append('image', file);
 
-    const response = await fetch('http://localhost:3001/api/admin/upload-image', {
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-image', {
       method: 'POST',
       body: formData,
     });
@@ -49,7 +49,7 @@ export const uploadVideo = async (file) => {
     const formData = new FormData();
     formData.append('video', file);
 
-    const response = await fetch('http://localhost:3001/api/admin/upload-video', {
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-video', {
       method: 'POST',
       body: formData,
     });
@@ -73,7 +73,7 @@ export const uploadDemo = async (file, slug) => {
     formData.append('demoFile', file);
     formData.append('slug', slug);
 
-    const response = await fetch('http://localhost:3001/api/admin/upload-demo', {
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-demo', {
       method: 'POST',
       body: formData,
     });
