@@ -267,7 +267,7 @@ const AdminPage = () => {
               onClick={handleLogout}
               title="Cerrar sesión"
             >
-              🚪 Logout
+              SORTIR
             </button>
           </div>
         </div>
