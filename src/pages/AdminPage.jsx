@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { projects } from "../data/projects";
-import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo } from "../utils/adminApi";
+import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
@@ -50,10 +50,12 @@ const AdminPage = () => {
             },
           });
           
-          if (response.ok) {
-            setToken(savedToken);
-            setIsAuthenticated(true);
-          } else {
+                      if (response.ok) {
+                        setToken(savedToken);
+                        setIsAuthenticated(true);
+                        // Cargar proyectos desde el servidor
+                        loadProjects();
+                      } else {
             // Token inválido, limpiar localStorage
             localStorage.removeItem('adminToken');
             localStorage.removeItem('adminTokenExpiry');
@@ -69,9 +71,24 @@ const AdminPage = () => {
     checkAuth();
   }, []);
 
-  const handleLogin = (newToken) => {
+  const handleLogin = async (newToken) => {
     setToken(newToken);
     setIsAuthenticated(true);
+    // Cargar proyectos desde el servidor después del login
+    await loadProjects();
+  };
+
+  const loadProjects = async () => {
+    try {
+      const response = await loadProjectsFromServer();
+      if (response.success && response.projects) {
+        setProjectsData(response.projects);
+      }
+    } catch (error) {
+      console.error('Error cargando proyectos:', error);
+      // Si falla, usar los datos estáticos como fallback
+      setProjectsData(projects);
+    }
   };
 
   const handleLogout = () => {

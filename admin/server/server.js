@@ -744,6 +744,38 @@ ${gameProjects}
   }
 });
 
+// Endpoint para cargar proyectos
+app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
+  try {
+    const projectsFilePath = path.join(__dirname, '..', '..', 'src', 'data', 'projects.js');
+    
+    // Leer el archivo de proyectos
+    const fileContent = await fs.readFile(projectsFilePath, 'utf8');
+    
+    // Extraer solo la parte de datos de proyectos (sin imports ni exports)
+    const projectsMatch = fileContent.match(/export const projects = ({[\s\S]*?});/);
+    
+    if (!projectsMatch) {
+      throw new Error('No se pudo extraer los datos de proyectos del archivo');
+    }
+    
+    // Evaluar el objeto de proyectos de forma segura
+    const projectsData = eval(`(${projectsMatch[1]})`);
+    
+    res.json({
+      success: true,
+      projects: projectsData
+    });
+    
+  } catch (error) {
+    console.error('Error al cargar proyectos:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
+
 // Endpoint para subir imágenes
 app.post('/api/admin/upload-image', authenticateToken, uploadImage.single('image'), async (req, res) => {
   try {
