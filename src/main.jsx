@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 
 
@@ -15,7 +15,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <HelmetProvider>
-    <BrowserRouter basename="/">
+    <HashRouter>
     <ScrollToTop />
       <Routes>
         {/* Ruta independiente para el panel de administración */}
@@ -29,6 +29,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </HelmetProvider>
 );
