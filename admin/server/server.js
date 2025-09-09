@@ -759,8 +759,13 @@ app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
       throw new Error('No se pudo extraer los datos de proyectos del archivo');
     }
     
-    // Evaluar el objeto de proyectos de forma segura
-    const projectsData = eval(`(${projectsMatch[1]})`);
+    // Usar Function constructor en lugar de eval para mayor seguridad
+    const projectsData = new Function('return ' + projectsMatch[1])();
+    
+    console.log('PROYECTOS CARGADOS DESDE SERVIDOR:', {
+      web: projectsData.web?.length || 0,
+      games: projectsData.games?.length || 0
+    });
     
     res.json({
       success: true,
@@ -768,7 +773,7 @@ app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
     });
     
   } catch (error) {
-    console.error('Error al cargar proyectos:', error);
+    console.error('ERROR AL CARGAR PROYECTOS:', error);
     res.status(500).json({ 
       error: 'Error interno del servidor', 
       details: error.message 
