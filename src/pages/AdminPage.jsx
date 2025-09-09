@@ -2,9 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { projects } from "../data/projects";
 import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo } from "../utils/adminApi";
+import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
 const AdminPage = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [token, setToken] = useState(null);
   const [projectsData, setProjectsData] = useState(projects);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -29,6 +32,54 @@ const AdminPage = () => {
     poster: false,
     demo: false
   });
+
+  // Verificar autenticación al cargar el componente
+  useEffect(() => {
+    const checkAuth = async () => {
+      const savedToken = localStorage.getItem('adminToken');
+      const tokenExpiry = localStorage.getItem('adminTokenExpiry');
+      
+      if (savedToken && tokenExpiry && Date.now() < parseInt(tokenExpiry)) {
+        // Verificar que el token sigue siendo válido
+        try {
+          const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/auth/validate', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${savedToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+          
+          if (response.ok) {
+            setToken(savedToken);
+            setIsAuthenticated(true);
+          } else {
+            // Token inválido, limpiar localStorage
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminTokenExpiry');
+          }
+        } catch (error) {
+          console.error('Error verificando token:', error);
+          localStorage.removeItem('adminToken');
+          localStorage.removeItem('adminTokenExpiry');
+        }
+      }
+    };
+    
+    checkAuth();
+  }, []);
+
+  const handleLogin = (newToken) => {
+    setToken(newToken);
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminTokenExpiry');
+    setToken(null);
+    setIsAuthenticated(false);
+  };
 
   const resetForm = () => {
     setFormData({
@@ -176,6 +227,11 @@ const AdminPage = () => {
 
 
 
+  // Si no está autenticado, mostrar el login
+  if (!isAuthenticated) {
+    return <AdminLogin onLogin={handleLogin} />;
+  }
+
   return (
     <>
       <Helmet>
@@ -199,12 +255,21 @@ const AdminPage = () => {
         <div className="admin-header">
           <a href="/" className="btn-back-portfolio">← TORNAR AL PORTFOLIO</a>
           <h1>PANELL D'ADMINISTRACIÓ</h1>
-          <button 
-            className="btn-add-project"
-            onClick={() => setShowForm(true)}
-          >
-            + Afegir Projecte
-          </button>
+          <div className="admin-header-actions">
+            <button 
+              className="btn-add-project"
+              onClick={() => setShowForm(true)}
+            >
+              + Afegir Projecte
+            </button>
+            <button 
+              className="btn-logout"
+              onClick={handleLogout}
+              title="Cerrar sesión"
+            >
+              🚪 Logout
+            </button>
+          </div>
         </div>
 
         {showForm && (
