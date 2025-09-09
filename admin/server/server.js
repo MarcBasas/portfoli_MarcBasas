@@ -733,6 +733,12 @@ ${gameProjects}
       };
     }
     
+    // Iniciar deploy automático en segundo plano
+    console.log('INICIANDO DEPLOY AUTOMATICO DESPUES DE GUARDAR PROYECTOS...');
+    deployAutomatically().catch(error => {
+      console.error('ERROR EN DEPLOY AUTOMATICO:', error);
+    });
+    
     res.json(response);
     
   } catch (error) {
@@ -1113,6 +1119,50 @@ app.post('/api/admin/download-files-backup', authenticateToken, async (req, res)
   }
 });
 
+// Endpoint para hacer deploy automático
+app.post('/api/admin/deploy', authenticateToken, async (req, res) => {
+  try {
+    console.log('INICIANDO DEPLOY AUTOMATICO...');
+    
+    // Ejecutar el comando de deploy
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+    
+    // Cambiar al directorio del proyecto y ejecutar deploy
+    const projectPath = path.join(__dirname, '..', '..');
+    const deployCommand = 'npm run deploy';
+    
+    console.log(`Ejecutando: ${deployCommand} en ${projectPath}`);
+    
+    const { stdout, stderr } = await execAsync(deployCommand, { 
+      cwd: projectPath,
+      timeout: 300000 // 5 minutos timeout
+    });
+    
+    console.log('DEPLOY COMPLETADO EXITOSAMENTE');
+    console.log('STDOUT:', stdout);
+    if (stderr) console.log('STDERR:', stderr);
+    
+    res.json({
+      success: true,
+      message: 'Deploy completado exitosamente',
+      output: stdout,
+      warnings: stderr
+    });
+    
+  } catch (error) {
+    console.error('ERROR EN DEPLOY AUTOMATICO:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Error durante el deploy automático',
+      details: error.message,
+      output: error.stdout || '',
+      warnings: error.stderr || ''
+    });
+  }
+});
+
 // Endpoint health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Servidor de administración funcionando' });
@@ -1120,6 +1170,50 @@ app.get('/api/health', (req, res) => {
 
 
 // ===== FUNCIONES AUXILIARES =====
+
+// Función para hacer deploy automático
+const deployAutomatically = async () => {
+  try {
+    console.log('INICIANDO DEPLOY AUTOMATICO...');
+    
+    // Ejecutar el comando de deploy
+    const { exec } = await import('child_process');
+    const { promisify } = await import('util');
+    const execAsync = promisify(exec);
+    
+    // Cambiar al directorio del proyecto y ejecutar deploy
+    const projectPath = path.join(__dirname, '..', '..');
+    const deployCommand = 'npm run deploy';
+    
+    console.log(`Ejecutando: ${deployCommand} en ${projectPath}`);
+    
+    const { stdout, stderr } = await execAsync(deployCommand, { 
+      cwd: projectPath,
+      timeout: 300000 // 5 minutos timeout
+    });
+    
+    console.log('DEPLOY AUTOMATICO COMPLETADO EXITOSAMENTE');
+    console.log('STDOUT:', stdout);
+    if (stderr) console.log('STDERR:', stderr);
+    
+    return {
+      success: true,
+      message: 'Deploy automático completado exitosamente',
+      output: stdout,
+      warnings: stderr
+    };
+    
+  } catch (error) {
+    console.error('ERROR EN DEPLOY AUTOMATICO:', error);
+    return {
+      success: false,
+      error: 'Error durante el deploy automático',
+      details: error.message,
+      output: error.stdout || '',
+      warnings: error.stderr || ''
+    };
+  }
+};
 
 // Función auxiliar para calcular tamaño de carpeta
 const calculateFolderSize = async (folderPath) => {

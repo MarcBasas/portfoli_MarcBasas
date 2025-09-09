@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { projects } from "../data/projects";
-import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer } from "../utils/adminApi";
+import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer, manualDeploy } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
@@ -32,6 +32,7 @@ const AdminPage = () => {
     poster: false,
     demo: false
   });
+  const [isDeploying, setIsDeploying] = useState(false);
 
   // Verificar autenticación al cargar el componente
   useEffect(() => {
@@ -96,6 +97,20 @@ const AdminPage = () => {
     localStorage.removeItem('adminTokenExpiry');
     setToken(null);
     setIsAuthenticated(false);
+  };
+
+  const handleManualDeploy = async () => {
+    if (window.confirm('¿Estás seguro de que quieres hacer deploy manual? Esto actualizará el sitio web público.')) {
+      setIsDeploying(true);
+      try {
+        const result = await manualDeploy();
+        alert(`Deploy completado: ${result.message}`);
+      } catch (error) {
+        alert(`Error en deploy: ${error.message}`);
+      } finally {
+        setIsDeploying(false);
+      }
+    }
   };
 
   const resetForm = () => {
@@ -232,7 +247,7 @@ const AdminPage = () => {
       await saveProjectsToFile(updatedProjects);
       setProjectsData(updatedProjects);
       resetForm();
-      alert(editingProject ? 'Projecte actualitzat correctament' : 'Projecte afegit correctament');
+      alert(editingProject ? 'Projecte actualitzat correctament. El deploy automàtic s\'està executant en segon pla.' : 'Projecte afegit correctament. El deploy automàtic s\'està executant en segon pla.');
     } catch (error) {
       alert('Error en desar el projecte: ' + error.message);
     }
@@ -292,21 +307,29 @@ const AdminPage = () => {
         <div className="admin-header">
           <a href="/" className="btn-back-portfolio">← TORNAR AL PORTFOLIO</a>
           <h1>PANELL D'ADMINISTRACIÓ</h1>
-          <div className="admin-header-actions">
-            <button 
-              className="btn-add-project"
-              onClick={() => setShowForm(true)}
-            >
-              + Afegir Projecte
-            </button>
-            <button 
-              className="btn-logout"
-              onClick={handleLogout}
-              title="Cerrar sesión"
-            >
-              SORTIR
-            </button>
-          </div>
+           <div className="admin-header-actions">
+             <button 
+               className="btn-add-project"
+               onClick={() => setShowForm(true)}
+             >
+               + Afegir Projecte
+             </button>
+             <button 
+               className="btn-deploy"
+               onClick={handleManualDeploy}
+               disabled={isDeploying}
+               title="Hacer deploy manual"
+             >
+               {isDeploying ? '🚀 Deployant...' : '🚀 Deploy'}
+             </button>
+             <button 
+               className="btn-logout"
+               onClick={handleLogout}
+               title="Cerrar sesión"
+             >
+               SORTIR
+             </button>
+           </div>
         </div>
 
         {showForm && (
