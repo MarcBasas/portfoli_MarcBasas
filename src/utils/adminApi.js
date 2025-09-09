@@ -1,10 +1,12 @@
 // Utilidad para manejar las operaciones de administración
 export const saveProjectsToFile = async (projectsData) => {
   try {
+    const token = localStorage.getItem('adminToken');
     const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/save-projects', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
       },
       body: JSON.stringify({ projects: projectsData }),
     });
@@ -23,11 +25,15 @@ export const saveProjectsToFile = async (projectsData) => {
 // Función para subir imágenes
 export const uploadImage = async (file) => {
   try {
+    const token = localStorage.getItem('adminToken');
     const formData = new FormData();
     formData.append('image', file);
 
     const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-image', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       body: formData,
     });
 
@@ -46,11 +52,15 @@ export const uploadImage = async (file) => {
 // Función para subir videos
 export const uploadVideo = async (file) => {
   try {
+    const token = localStorage.getItem('adminToken');
     const formData = new FormData();
     formData.append('video', file);
 
     const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-video', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       body: formData,
     });
 
@@ -69,12 +79,16 @@ export const uploadVideo = async (file) => {
 // Función para subir archivos demo
 export const uploadDemo = async (file, slug) => {
   try {
+    const token = localStorage.getItem('adminToken');
     const formData = new FormData();
     formData.append('demoFile', file);
     formData.append('slug', slug);
 
     const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/upload-demo', {
       method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
       body: formData,
     });
 
