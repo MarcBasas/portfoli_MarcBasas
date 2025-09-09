@@ -18,14 +18,12 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <BrowserRouter basename="/">
     <ScrollToTop />
       <Routes>
-        {/* Ruta independiente para el panel de administración */}
-        <Route path="/Admin1997" element={<AdminPage />} />
-        
         {/* Rutas con layout normal */}
         <Route element={<Layout />}>
           <Route path="/" element={<Landing />} />
           <Route path="/project/:slug" element={<ProjectPage />} />
           <Route path="/about" element={<About />} />
+          <Route path="/Admin1997" element={<AdminPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
