@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { html } from "@codemirror/lang-html";
@@ -56,34 +56,46 @@ const EditorTopBar = ({ activeTab, setActiveTab, onOpenInNewTab, viewMode, setVi
   </div>
 );
 
-const LiveEditorDesktop = React.memo(({ project }) => {
+const LiveEditorDesktop = ({ project }) => {
+  console.log('LiveEditorDesktop: Component rendering with project:', project?.title, 'ID:', project?.id);
+  console.log('LiveEditorDesktop: Project files available:', {
+    html: !!project?.files?.html,
+    css: !!project?.files?.css,
+    js: !!project?.files?.js
+  });
+  
   const iframeRef = useRef();
   const htmlRef = useRef();
   const cssRef = useRef();
   const jsRef = useRef();
   const initializedRef = useRef(false);
   const editorWrapperRef = useRef(null);
-  
-  // Estabilizar los archivos del proyecto para evitar re-renders innecesarios
-  const projectFiles = useMemo(() => ({
-    html: project?.files?.html || '',
-    css: project?.files?.css || '',
-    js: project?.files?.js || ''
-  }), [project?.files?.html, project?.files?.css, project?.files?.js]);
 
   const [activeTab, setActiveTab] = useState("html");
   const [columnWidth, setColumnWidth] = useState(20);
   const [isDragging, setIsDragging] = useState(false);
   const [viewMode, setViewMode] = useState('desktop');
 
-  const updateIframe = useCallback(() => {
+  const updateIframe = () => {
+    console.log('LiveEditorDesktop: updateIframe called');
     const iframe = iframeRef.current;
-    if (!iframe) return;
+    if (!iframe) {
+      console.warn('LiveEditor: iframe not available for update');
+      return;
+    }
+    console.log('LiveEditorDesktop: iframe found, getting document');
     const doc = iframe.contentDocument;
-    if (!doc) return;
+    if (!doc) {
+      console.warn('LiveEditor: iframe document not available');
+      return;
+    }
+    console.log('LiveEditorDesktop: document found, extracting content from editors');
     const htmlContent = htmlRef.current?.state.doc.toString() || "";
     const cssContent = cssRef.current?.state.doc.toString() || "";
     const jsContent = jsRef.current?.state.doc.toString() || "";
+    
+    console.log('LiveEditorDesktop: Content lengths - HTML:', htmlContent.length, 'CSS:', cssContent.length, 'JS:', jsContent.length);
+    
     const fullHtml = `
       <html>
         <head>
@@ -102,10 +114,12 @@ const LiveEditorDesktop = React.memo(({ project }) => {
         </body>
       </html>
     `;
+    console.log('LiveEditorDesktop: Writing HTML to iframe');
     doc.open();
     doc.write(fullHtml);
     doc.close();
-  }, []);
+    console.log('LiveEditorDesktop: iframe updated successfully');
+  };
 
   const handleDrag = useCallback((e) => {
     if (!isDragging || !editorWrapperRef.current) return;
@@ -172,15 +186,32 @@ const LiveEditorDesktop = React.memo(({ project }) => {
   }, [isDragging, handleDrag, handleDragEnd]);
 
   useEffect(() => {
-    console.log('LIVEEDITOR - Inicializando editores para proyecto:', project?.slug || 'unknown');
+    console.log('LiveEditorDesktop: useEffect triggered for project:', project?.title);
+    console.log('LiveEditorDesktop: Dependencies changed:', {
+      html: project?.files?.html?.substring(0, 50) + '...',
+      css: project?.files?.css?.substring(0, 50) + '...',
+      js: project?.files?.js?.substring(0, 50) + '...'
+    });
     
-    // Reset initialization when project files change
+    // Reset initialization when project changes
     initializedRef.current = false;
     
-    if (initializedRef.current) return;
+    if (initializedRef.current) {
+      console.log('LiveEditorDesktop: Already initialized, skipping');
+      return;
+    }
     initializedRef.current = true;
     
+    console.log('LiveEditorDesktop: Initializing editors for', project?.title);
+    
     const createEditor = (initialCode, language, parentId, ref) => {
+      console.log(`LiveEditorDesktop: Creating editor ${parentId} with code length:`, initialCode?.length);
+      const parentElement = document.getElementById(parentId);
+      if (!parentElement) {
+        console.error(`LiveEditor: parent element ${parentId} not found`);
+        return;
+      }
+      
       const view = new EditorView({
         state: EditorState.create({
           doc: initialCode,
@@ -189,23 +220,29 @@ const LiveEditorDesktop = React.memo(({ project }) => {
             language,
             baseTheme,
             EditorView.updateListener.of((v) => {
-              if (v.docChanged) updateIframe();
+              if (v.docChanged) {
+                console.log(`LiveEditorDesktop: ${parentId} content changed, updating iframe`);
+                updateIframe();
+              }
             }),
           ],
         }),
-        parent: document.getElementById(parentId),
+        parent: parentElement,
       });
       ref.current = view;
+      console.log(`LiveEditorDesktop: Editor ${parentId} created successfully`);
     };
     
-    createEditor(projectFiles.html, html(), "html-editor", htmlRef);
-    createEditor(projectFiles.css, css(), "css-editor", cssRef);
-    createEditor(projectFiles.js, javascript(), "js-editor", jsRef);
+    createEditor(project.files.html, html(), "html-editor", htmlRef);
+    createEditor(project.files.css, css(), "css-editor", cssRef);
+    createEditor(project.files.js, javascript(), "js-editor", jsRef);
+    
+    console.log('LiveEditorDesktop: Scheduling iframe update');
     setTimeout(updateIframe, 100);
 
     // Cleanup function to destroy editors when component unmounts
     return () => {
-      console.log('LIVEEDITOR - Limpiando editores');
+      console.log('LiveEditorDesktop: Cleaning up editors for', project?.title);
       htmlRef.current?.destroy();
       cssRef.current?.destroy();
       jsRef.current?.destroy();
@@ -213,7 +250,7 @@ const LiveEditorDesktop = React.memo(({ project }) => {
       cssRef.current = null;
       jsRef.current = null;
     };
-  }, [projectFiles.html, projectFiles.css, projectFiles.js, updateIframe]);
+  }, [project?.files?.html, project?.files?.css, project?.files?.js]);
 
   return (
     <div className="live-editor-container">
@@ -265,14 +302,6 @@ const LiveEditorDesktop = React.memo(({ project }) => {
       </div>
     </div>
   );
-}, (prevProps, nextProps) => {
-  // Solo re-renderizar si los archivos del proyecto realmente cambiaron
-  return (
-    prevProps.project?.files?.html === nextProps.project?.files?.html &&
-    prevProps.project?.files?.css === nextProps.project?.files?.css &&
-    prevProps.project?.files?.js === nextProps.project?.files?.js &&
-    prevProps.project?.slug === nextProps.project?.slug
-  );
-});
+};
 
 export default LiveEditorDesktop; 

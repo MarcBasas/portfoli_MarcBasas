@@ -54,8 +54,49 @@ const ProjectPage = () => {
   const { projects } = useProjects();
   const project = useMemo(() => {
     const allProjects = [...projects.web, ...projects.games];
-    return allProjects.find((p) => p.slug === slug);
+    const foundProject = allProjects.find((p) => p.slug === slug);
+    console.log('ProjectPage: Project found for slug', slug, ':', foundProject?.title);
+    console.log('ProjectPage: projects reference changed:', projects);
+    return foundProject;
   }, [slug, projects]);
+
+  // Crear una versión estable del proyecto para evitar re-renders innecesarios del LiveEditor
+  const stableProject = useMemo(() => {
+    console.log('ProjectPage: stableProject useMemo triggered');
+    console.log('ProjectPage: project data:', {
+      id: project?.id,
+      title: project?.title,
+      hasFiles: !!project?.files,
+      htmlLength: project?.files?.html?.length,
+      cssLength: project?.files?.css?.length,
+      jsLength: project?.files?.js?.length,
+      slug: project?.slug,
+      category: project?.category
+    });
+    
+    if (!project) {
+      console.log('ProjectPage: project is null, returning null stableProject');
+      return null;
+    }
+    
+    // Solo crear un nuevo objeto si realmente cambió el contenido
+    const stable = {
+      ...project,
+      // Asegurar que las propiedades clave sean estables
+      files: project.files ? { ...project.files } : undefined
+    };
+    
+    console.log('ProjectPage: created new stableProject:', stable.title);
+    return stable;
+  }, [
+    project?.id, 
+    project?.title, 
+    project?.files?.html, 
+    project?.files?.css, 
+    project?.files?.js,
+    project?.slug,
+    project?.category
+  ]);
   const isMobile = useIsMobile();
 
   if (!project) {
@@ -136,7 +177,7 @@ const ProjectPage = () => {
                 <VideoPlayer src={project.video} poster={project.poster || project.previewImage} />
               )}
               {/* WEB DEMO */}
-              {project.category === "demo" && project.files && <LiveEditor project={project} />}
+              {project.category === "demo" && project.files && <LiveEditor project={stableProject} />}
               {/* GAMES: Constelations solo en escritorio, otros juegos igual que antes */}
               {((isConstelations && !isMobile) || (!isConstelations && project.url && project.slug && project.category !== "demo" && project.category !== "final")) && (
                 <GameFrame title={project.title} url={project.url} />
