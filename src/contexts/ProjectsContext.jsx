@@ -64,9 +64,11 @@ export const ProjectsProvider = ({ children }) => {
 
   // Función específica para cuando se hacen cambios en admin
   const refreshAfterAdminChange = async () => {
+    console.log('DEBUG: refreshAfterAdminChange ejecutado');
     invalidateProjectsCache();
     // Esperar un poco más para asegurar que el servidor haya procesado
     setTimeout(async () => {
+      console.log('DEBUG: Ejecutando loadProjectsData después del timeout');
       await loadProjectsData(true);
     }, 1000);
   };
