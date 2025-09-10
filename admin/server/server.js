@@ -7,6 +7,13 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { fileURLToPath } from 'url';
 import { config } from 'dotenv';
+import { 
+  createProjectBackup, 
+  listBackups, 
+  restoreProjectFromBackup, 
+  cleanupOldBackups, 
+  deleteBackup 
+} from './backup-manager.js';
 
 // Para obtener __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -339,11 +346,31 @@ app.post('/api/admin/save-projects', authenticateToken, async (req, res) => {
       return res.status(400).json({ error: 'Los datos de proyectos son requeridos' });
     }
 
-    // Si se está eliminando un proyecto, limpiar sus archivos automáticamente
+    // Si se está eliminando un proyecto, crear backup y luego limpiar archivos
     let cleanupResult = null;
+    let backupResult = null;
     if (deletedProject) {
-      console.log(`Proyecto eliminado detectado: ${deletedProject.title}`);
+      console.log(`PROYECTO ELIMINADO DETECTADO: ${deletedProject.title}`);
+      
+      // Crear backup antes de eliminar
+      try {
+        const backupId = `backup-${Date.now()}-${deletedProject.slug}`;
+        backupResult = await createProjectBackup(deletedProject, backupId, 'delete');
+        console.log(`BACKUP CREADO ANTES DE ELIMINACION: ${backupId}`);
+      } catch (backupError) {
+        console.error('ERROR CREANDO BACKUP:', backupError);
+        // Continuar con la eliminación aunque falle el backup
+      }
+      
+      // Limpiar archivos después del backup
       cleanupResult = await cleanupProjectFiles(deletedProject);
+      
+      // Limpiar backups antiguos automáticamente
+      try {
+        await cleanupOldBackups();
+      } catch (cleanupError) {
+        console.warn('ERROR EN LIMPIEZA AUTOMATICA DE BACKUPS:', cleanupError);
+      }
     }
 
     // Generar imports automáticamente basado en archivos existentes
@@ -465,6 +492,16 @@ ${gameProjects}
       response.cleanup = {
         performed: true,
         files: cleanupResult.cleanedFiles
+      };
+    }
+
+    // Incluir información de backup si se realizó
+    if (backupResult) {
+      response.backup = {
+        created: true,
+        backupId: backupResult.id,
+        timestamp: backupResult.timestamp,
+        filesBackedUp: backupResult.files
       };
     }
     
@@ -666,6 +703,145 @@ app.post('/api/admin/upload-demo', authenticateToken, uploadDemo.single('demoFil
   }
 });
 
+
+// ===== ENDPOINTS DE BACKUP =====
+
+// Endpoint para listar todos los backups
+app.get('/api/admin/backups', authenticateToken, async (req, res) => {
+  try {
+    const backups = await listBackups();
+    
+    console.log(`BACKUPS LISTADOS: ${backups.length} encontrados`);
+    
+    res.json({
+      success: true,
+      backups: backups,
+      total: backups.length
+    });
+
+  } catch (error) {
+    console.error('ERROR LISTANDO BACKUPS:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
+
+// Endpoint para restaurar un proyecto desde backup
+app.post('/api/admin/backups/:backupId/restore', authenticateToken, async (req, res) => {
+  try {
+    const { backupId } = req.params;
+    
+    console.log(`INICIANDO RESTAURACION DE BACKUP: ${backupId}`);
+    
+    const restoreResult = await restoreProjectFromBackup(backupId);
+    
+    res.json({
+      success: true,
+      message: `Proyecto restaurado desde backup ${backupId}`,
+      project: restoreResult.project,
+      filesRestored: restoreResult.filesRestored,
+      backupInfo: {
+        id: restoreResult.backupInfo.id,
+        timestamp: restoreResult.backupInfo.timestamp,
+        operation: restoreResult.backupInfo.operation
+      }
+    });
+
+  } catch (error) {
+    console.error(`ERROR RESTAURANDO BACKUP ${req.params.backupId}:`, error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
+
+// Endpoint para eliminar un backup específico
+app.delete('/api/admin/backups/:backupId', authenticateToken, async (req, res) => {
+  try {
+    const { backupId } = req.params;
+    
+    console.log(`ELIMINANDO BACKUP: ${backupId}`);
+    
+    const deleteResult = await deleteBackup(backupId);
+    
+    res.json({
+      success: true,
+      message: deleteResult.message
+    });
+
+  } catch (error) {
+    console.error(`ERROR ELIMINANDO BACKUP ${req.params.backupId}:`, error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
+
+// Endpoint para crear backup manual de un proyecto
+app.post('/api/admin/backups/create', authenticateToken, async (req, res) => {
+  try {
+    const { project } = req.body;
+    
+    if (!project) {
+      return res.status(400).json({ error: 'Los datos del proyecto son requeridos' });
+    }
+
+    const backupId = `manual-${Date.now()}-${project.slug}`;
+    const backupResult = await createProjectBackup(project, backupId, 'manual');
+    
+    console.log(`BACKUP MANUAL CREADO: ${backupId} para proyecto: ${project.title}`);
+    
+    // Limpiar backups antiguos automáticamente
+    try {
+      await cleanupOldBackups();
+    } catch (cleanupError) {
+      console.warn('ERROR EN LIMPIEZA AUTOMATICA DE BACKUPS:', cleanupError);
+    }
+
+    res.json({
+      success: true,
+      message: `Backup manual creado para ${project.title}`,
+      backup: {
+        id: backupResult.id,
+        timestamp: backupResult.timestamp,
+        filesBackedUp: backupResult.files
+      }
+    });
+
+  } catch (error) {
+    console.error('ERROR CREANDO BACKUP MANUAL:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
+
+// Endpoint para limpiar backups antiguos manualmente
+app.post('/api/admin/backups/cleanup', authenticateToken, async (req, res) => {
+  try {
+    console.log('INICIANDO LIMPIEZA MANUAL DE BACKUPS');
+    
+    const cleanupResult = await cleanupOldBackups();
+    
+    res.json({
+      success: true,
+      message: cleanupResult.message,
+      cleaned: cleanupResult.cleaned
+    });
+
+  } catch (error) {
+    console.error('ERROR EN LIMPIEZA MANUAL DE BACKUPS:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
+});
 
 // Endpoint health check
 app.get('/api/health', (req, res) => {

@@ -151,6 +151,52 @@ export const miProyectoDemo = {
 - Archivo: `proyecto-slug-demo.js`
 - Export: `proyectoSlugDemo` (camelCase)
 
+### 5. Sistema de Backup y Historial
+
+El sistema incluye un sistema completo de backup automático que preserva el historial de proyectos eliminados y modificados.
+
+#### Características Principales
+- **Backup automático**: Se crea automáticamente al eliminar proyectos
+- **Historial visual**: Modal en la interfaz para gestionar backups
+- **Rotación inteligente**: Mantiene máximo 10 backups, solo 5 con archivos completos
+- **Restauración selectiva**: Restaurar proyectos específicos desde el historial
+- **Backup manual**: Crear backups de proyectos existentes
+
+#### Estructura de Directorios
+```
+admin/backups/
+├── projects/           # Metadatos de backups (JSON)
+├── files/             # Archivos multimedia respaldados
+└── compressed/        # Backups antiguos comprimidos (futuro)
+```
+
+#### Tipos de Backup
+1. **Automático (delete)**: Creado al eliminar un proyecto
+2. **Manual**: Creado manualmente desde la interfaz
+3. **Actualización (update)**: Creado al modificar proyectos (futuro)
+
+#### Estrategia de Rotación
+- **Backups 1-5**: Metadatos + archivos completos
+- **Backups 6-10**: Solo metadatos (archivos eliminados)
+- **Backups >10**: Eliminados automáticamente
+
+#### Funcionalidades de la Interfaz
+- **Botón "Historial"**: Acceso al modal de gestión de backups
+- **Lista de backups**: Ordenados por fecha (más reciente primero)
+- **Información detallada**: Fecha, tipo de operación, disponibilidad de archivos
+- **Acciones disponibles**:
+  - **Restaurar**: Restaura el proyecto y sus archivos
+  - **Backup**: Crea backup manual del proyecto
+  - **Eliminar**: Elimina el backup específico
+
+#### Información de Backups
+Cada backup incluye:
+- **Metadatos del proyecto**: Título, descripción, configuración
+- **Archivos multimedia**: Imágenes, videos, posters (si están disponibles)
+- **Archivos demo**: Código JavaScript de demos interactivos
+- **Timestamp**: Fecha y hora de creación
+- **Tipo de operación**: delete, manual, update
+
 
 ## API Endpoints
 
@@ -168,6 +214,15 @@ POST /api/admin/save-projects        # Guardar proyectos
 POST /api/admin/upload-image         # Subir imagen
 POST /api/admin/upload-video         # Subir video
 POST /api/admin/upload-demo          # Subir archivo demo
+```
+
+### Sistema de Backup (Requiere autenticación)
+```
+GET  /api/admin/backups              # Listar todos los backups
+POST /api/admin/backups/:id/restore  # Restaurar proyecto desde backup
+DELETE /api/admin/backups/:id        # Eliminar backup específico
+POST /api/admin/backups/create       # Crear backup manual
+POST /api/admin/backups/cleanup      # Limpiar backups antiguos
 ```
 
 ### Utilidades
