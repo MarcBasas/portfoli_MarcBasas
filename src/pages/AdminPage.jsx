@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useProjects } from "../contexts/ProjectsContext";
-import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer, listBackups, restoreProjectFromBackup, deleteBackup, createManualBackup } from "../utils/adminApi";
+import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, listBackups, restoreProjectFromBackup, deleteBackup, createManualBackup } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
@@ -90,16 +90,13 @@ const AdminPage = () => {
 
   const loadProjects = async () => {
     try {
-      const response = await loadProjectsFromServer();
-      if (response.success && response.projects) {
-        setProjectsData(response.projects);
-        // También refrescar el contexto global
-        refreshProjects();
-      }
+      // Los proyectos ahora se cargan automáticamente a través del contexto
+      // Simplemente refrescar el contexto global
+      await refreshProjects();
+      console.log('PROYECTOS REFRESCADOS DESDE CONTEXTO EN ADMIN');
     } catch (error) {
-      console.error('Error cargando proyectos:', error);
-      // Si falla, usar los datos del contexto como fallback
-      setProjectsData(projects);
+      console.error('Error refrescando proyectos:', error);
+      // Los datos ya están disponibles en el contexto
     }
   };
 
@@ -406,9 +403,8 @@ const AdminPage = () => {
       try {
         const response = await restoreProjectFromBackup(backupId);
         
-        // Recargar proyectos desde el servidor para obtener la versión actualizada
-        const projectsResponse = await loadProjectsFromServer();
-        setProjectsData(projectsResponse.projects);
+        // Refrescar proyectos desde el contexto para obtener la versión actualizada
+        await refreshProjects();
         
         alert(`Projecte "${projectTitle}" restaurat correctament`);
         setShowBackupModal(false);

@@ -36,8 +36,8 @@ Se ha implementado un **sistema de carga dinámica** que:
 
 ### 1. **Carga Inicial**
 ```javascript
-// Al cargar la app, intenta cargar desde servidor
-const projects = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/load-projects')
+// Al cargar la app, intenta cargar desde servidor (endpoint público)
+const projects = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/projects')
 // Si falla, usa proyectos estáticos como fallback
 ```
 
@@ -98,8 +98,8 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 ```
 
 ### Endpoints Utilizados
-- `GET /api/admin/load-projects` - Cargar proyectos (sin autenticación requerida)
-- Timeout de 5 segundos para evitar esperas largas
+- `GET /api/projects` - Cargar proyectos (público, sin autenticación)
+- Timeout de 8 segundos para evitar esperas largas
 
 ## Monitoreo y Debug
 
