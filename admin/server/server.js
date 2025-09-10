@@ -339,10 +339,19 @@ app.post('/api/auth/logout', (req, res) => {
 
 // Endpoint para guardar proyectos
 app.post('/api/admin/save-projects', authenticateToken, async (req, res) => {
+  console.log('=== ENDPOINT SAVE-PROJECTS EJECUTADO ===');
+  console.log('Datos recibidos:', {
+    hasProjects: !!req.body.projects,
+    hasDeletedProject: !!req.body.deletedProject,
+    webCount: req.body.projects?.web?.length || 0,
+    gamesCount: req.body.projects?.games?.length || 0
+  });
+  
   try {
     const { projects, deletedProject } = req.body;
     
     if (!projects) {
+      console.log('ERROR: No se enviaron datos de proyectos');
       return res.status(400).json({ error: 'Los datos de proyectos son requeridos' });
     }
 
@@ -501,6 +510,8 @@ ${gameProjects}
     
     // Escribir el nuevo contenido
     await fs.writeFile(projectsFilePath, fileContent, 'utf8');
+    console.log('ARCHIVO PROJECTS.JS ACTUALIZADO EXITOSAMENTE');
+    console.log(`PROYECTOS GUARDADOS: web: ${projects.web.length}, games: ${projects.games.length}`);
     
     const response = { 
       success: true, 
