@@ -818,28 +818,22 @@ const AdminPage = () => {
                   <div className="backups-list">
                     {backups.map(backup => (
                       <div key={backup.id} className="backup-item">
-                        <div className="backup-info">
-                          <h3>{backup.project.title}</h3>
-                          <div className="backup-details">
-                            <div className="backup-detail-row">
-                              <span className="backup-date">
-                                {new Date(backup.timestamp).toLocaleString('ca-ES')}
-                              </span>
-                            </div>
-                            <div className="backup-detail-row">
-                              <span className={`backup-operation operation-${backup.operation}`}>
-                                {backup.operation === 'delete' ? 'Eliminació' : 
-                                 backup.operation === 'manual' ? 'Manual' : 'Actualització'}
-                              </span>
-                            </div>
-                            <div className="backup-detail-row">
-                              <span className={`backup-files ${backup.hasFiles ? 'has-files' : 'no-files'}`}>
-                                {backup.hasFiles ? 'Amb arxius' : 'Només metadades'}
-                              </span>
-                            </div>
+                        <div className="backup-column-1">
+                          <div className="backup-title">{backup.project.title}</div>
+                          <div className="backup-date">
+                            {new Date(backup.timestamp).toLocaleString('ca-ES')}
                           </div>
                         </div>
-                        <div className="backup-actions">
+                        <div className="backup-column-2">
+                          <div className={`backup-operation operation-${backup.operation}`}>
+                            {backup.operation === 'delete' ? 'Eliminació' : 
+                             backup.operation === 'manual' ? 'Manual' : 'Actualització'}
+                          </div>
+                          <div className={`backup-files ${backup.hasFiles ? 'has-files' : 'no-files'}`}>
+                            {backup.hasFiles ? 'Amb arxius' : 'Només metadades'}
+                          </div>
+                        </div>
+                        <div className="backup-column-3">
                           <button 
                             onClick={() => handleRestoreBackup(backup.id, backup.project.title)}
                             className="btn-restore-only"

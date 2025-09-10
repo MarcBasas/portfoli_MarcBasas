@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { EditorView, basicSetup } from "codemirror";
 import { EditorState } from "@codemirror/state";
 import { html } from "@codemirror/lang-html";
@@ -56,20 +56,27 @@ const EditorTopBar = ({ activeTab, setActiveTab, onOpenInNewTab, viewMode, setVi
   </div>
 );
 
-const LiveEditorDesktop = ({ project }) => {
+const LiveEditorDesktop = React.memo(({ project }) => {
   const iframeRef = useRef();
   const htmlRef = useRef();
   const cssRef = useRef();
   const jsRef = useRef();
   const initializedRef = useRef(false);
   const editorWrapperRef = useRef(null);
+  
+  // Estabilizar los archivos del proyecto para evitar re-renders innecesarios
+  const projectFiles = useMemo(() => ({
+    html: project?.files?.html || '',
+    css: project?.files?.css || '',
+    js: project?.files?.js || ''
+  }), [project?.files?.html, project?.files?.css, project?.files?.js]);
 
   const [activeTab, setActiveTab] = useState("html");
   const [columnWidth, setColumnWidth] = useState(20);
   const [isDragging, setIsDragging] = useState(false);
   const [viewMode, setViewMode] = useState('desktop');
 
-  const updateIframe = () => {
+  const updateIframe = useCallback(() => {
     const iframe = iframeRef.current;
     if (!iframe) return;
     const doc = iframe.contentDocument;
@@ -98,7 +105,7 @@ const LiveEditorDesktop = ({ project }) => {
     doc.open();
     doc.write(fullHtml);
     doc.close();
-  };
+  }, []);
 
   const handleDrag = useCallback((e) => {
     if (!isDragging || !editorWrapperRef.current) return;
@@ -165,11 +172,14 @@ const LiveEditorDesktop = ({ project }) => {
   }, [isDragging, handleDrag, handleDragEnd]);
 
   useEffect(() => {
-    // Reset initialization when project changes
+    console.log('LIVEEDITOR - Inicializando editores para proyecto:', project?.slug || 'unknown');
+    
+    // Reset initialization when project files change
     initializedRef.current = false;
     
     if (initializedRef.current) return;
     initializedRef.current = true;
+    
     const createEditor = (initialCode, language, parentId, ref) => {
       const view = new EditorView({
         state: EditorState.create({
@@ -187,13 +197,15 @@ const LiveEditorDesktop = ({ project }) => {
       });
       ref.current = view;
     };
-    createEditor(project.files.html, html(), "html-editor", htmlRef);
-    createEditor(project.files.css, css(), "css-editor", cssRef);
-    createEditor(project.files.js, javascript(), "js-editor", jsRef);
+    
+    createEditor(projectFiles.html, html(), "html-editor", htmlRef);
+    createEditor(projectFiles.css, css(), "css-editor", cssRef);
+    createEditor(projectFiles.js, javascript(), "js-editor", jsRef);
     setTimeout(updateIframe, 100);
 
     // Cleanup function to destroy editors when component unmounts
     return () => {
+      console.log('LIVEEDITOR - Limpiando editores');
       htmlRef.current?.destroy();
       cssRef.current?.destroy();
       jsRef.current?.destroy();
@@ -201,7 +213,7 @@ const LiveEditorDesktop = ({ project }) => {
       cssRef.current = null;
       jsRef.current = null;
     };
-  }, [project.files.html, project.files.css, project.files.js]);
+  }, [projectFiles.html, projectFiles.css, projectFiles.js, updateIframe]);
 
   return (
     <div className="live-editor-container">
@@ -254,5 +266,15 @@ const LiveEditorDesktop = ({ project }) => {
     </div>
   );
 };
+
+}, (prevProps, nextProps) => {
+  // Solo re-renderizar si los archivos del proyecto realmente cambiaron
+  return (
+    prevProps.project?.files?.html === nextProps.project?.files?.html &&
+    prevProps.project?.files?.css === nextProps.project?.files?.css &&
+    prevProps.project?.files?.js === nextProps.project?.files?.js &&
+    prevProps.project?.slug === nextProps.project?.slug
+  );
+});
 
 export default LiveEditorDesktop; 
