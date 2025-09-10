@@ -12,7 +12,8 @@ const AdminPage = () => {
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
   const [formData, setFormData] = useState({
-    category: "web",
+    type: "web", // web o games
+    category: "final", // para web: "final" o "demo"
     title: "",
     titleMin: "",
     slug: "",
@@ -24,7 +25,7 @@ const AdminPage = () => {
     url: "",
     git: "",
     keywords: "",
-    hasDemo: false
+    files: "" // para demos
   });
   const [uploadingFiles, setUploadingFiles] = useState({
     previewImage: false,
@@ -103,7 +104,8 @@ const AdminPage = () => {
 
   const resetForm = () => {
     setFormData({
-      category: "web",
+      type: "web",
+      category: "final",
       title: "",
       titleMin: "",
       slug: "",
@@ -115,7 +117,7 @@ const AdminPage = () => {
       url: "",
       git: "",
       keywords: "",
-      hasDemo: false
+      files: ""
     });
     setUploadingFiles({
       previewImage: false,
@@ -135,9 +137,24 @@ const AdminPage = () => {
         [name]: type === 'checkbox' ? checked : value
       };
       
-      // Si se desmarca hasDemo, eliminar la propiedad files
-      if (name === 'hasDemo' && !checked) {
-        delete newData.files;
+      // Si cambia el tipo, resetear categoría
+      if (name === 'type') {
+        if (value === 'web') {
+          newData.category = 'final';
+          newData.git = ''; // Los web no tienen git por defecto
+        } else if (value === 'games') {
+          newData.category = 'games'; // Los games solo tienen una categoría
+          newData.files = ''; // Los games no tienen files
+        }
+      }
+      
+      // Si cambia a no terminado, limpiar campos específicos
+      if (name === 'finished' && !checked) {
+        newData.video = '';
+        newData.poster = '';
+        newData.url = '';
+        newData.git = '';
+        newData.files = '';
       }
       
       return newData;
@@ -153,7 +170,7 @@ const AdminPage = () => {
       .trim();
   };
 
-  const generateId = (category) => {
+  const generateId = (type) => {
     const allProjects = [...projectsData.web, ...projectsData.games];
     const maxId = Math.max(...allProjects.map(p => p.id), 0);
     return maxId + 1;
@@ -174,12 +191,11 @@ const AdminPage = () => {
           break;
         case 'demo':
           result = await uploadDemo(file, formData.slug || generateSlug(formData.title));
-          // Cuando se sube un demo, asignar automáticamente la propiedad files y categoría demo
+          // Cuando se sube un demo, asignar automáticamente la propiedad files
           const demoReference = result.exportName || `${formData.slug || generateSlug(formData.title)}Demo`;
           setFormData(prev => ({
             ...prev,
-            files: demoReference,
-            category: 'web' // Los demos van en la categoría web
+            files: demoReference
           }));
           break;
         default:
@@ -205,14 +221,60 @@ const AdminPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
+    // Validación personalizada según el tipo y estado
+    if (formData.finished) {
+      if (formData.type === 'web' && formData.category === 'final') {
+        if (!formData.video || !formData.poster || !formData.url) {
+          alert('Els projectes web finals han de tenir vídeo, poster i URL');
+          return;
+        }
+      } else if (formData.type === 'web' && formData.category === 'demo') {
+        if (!formData.files) {
+          alert('Els projectes web demo han de tenir un arxiu de demo');
+          return;
+        }
+      } else if (formData.type === 'games') {
+        if (!formData.video || !formData.poster || !formData.url || !formData.git) {
+          alert('Els jocs han de tenir vídeo, poster, URL i GitHub');
+          return;
+        }
+      }
+    }
+    
     const newProject = {
       ...formData,
-      id: editingProject ? editingProject.id : generateId(formData.category),
+      id: editingProject ? editingProject.id : generateId(formData.type),
       slug: formData.slug || generateSlug(formData.title)
     };
 
-    // Quitar hasDemo del objeto que se guarda
-    delete newProject.hasDemo;
+    // Limpiar campos no necesarios según el tipo y estado
+    if (!formData.finished) {
+      // Si no está terminado, solo mantener campos comunes
+      delete newProject.video;
+      delete newProject.poster;
+      delete newProject.url;
+      delete newProject.git;
+      delete newProject.files;
+    } else if (formData.type === 'web') {
+      if (formData.category === 'final') {
+        // Web final no tiene files ni git
+        delete newProject.files;
+        delete newProject.git;
+      } else if (formData.category === 'demo') {
+        // Web demo no tiene git, url, video ni poster
+        delete newProject.git;
+        delete newProject.url;
+        delete newProject.video;
+        delete newProject.poster;
+      }
+    } else if (formData.type === 'games') {
+      // Games no tienen files y siempre tienen category 'games'
+      delete newProject.files;
+      newProject.category = 'games';
+    }
+    
+    // Limpiar el campo type antes de guardar (mantener la estructura original)
+    delete newProject.type;
 
     try {
       // Crear una copia de los datos de proyectos
@@ -220,7 +282,7 @@ const AdminPage = () => {
       
       if (editingProject) {
         // Editar proyecto existente
-        const categoryProjects = updatedProjects[editingProject.category];
+        const categoryProjects = updatedProjects[editingProject.type];
         const projectIndex = categoryProjects.findIndex(p => p.id === editingProject.id);
         
         if (projectIndex !== -1) {
@@ -228,7 +290,7 @@ const AdminPage = () => {
         }
       } else {
         // Agregar nuevo proyecto
-        updatedProjects[formData.category] = [...updatedProjects[formData.category], newProject];
+        updatedProjects[formData.type] = [...updatedProjects[formData.type], newProject];
       }
       
       // Guardar los cambios
@@ -241,22 +303,37 @@ const AdminPage = () => {
     }
   };
 
-  const handleEdit = (project, category) => {
-    setEditingProject({ ...project, category });
+  const handleEdit = (project, type) => {
+    setEditingProject({ ...project, type });
+    
+    // Determinar la categoría basada en el tipo y propiedades del proyecto
+    let category = 'final'; // por defecto
+    if (type === 'web' && project.files) {
+      category = 'demo';
+    } else if (type === 'games') {
+      category = 'games';
+    }
+    
     setFormData({ 
       ...project, 
+      type,
       category,
-      hasDemo: !!project.files // Marcar como demo si tiene files
+      // Asegurar que todos los campos existan
+      video: project.video || '',
+      poster: project.poster || '',
+      url: project.url || '',
+      git: project.git || '',
+      files: project.files || ''
     });
     setShowForm(true);
   };
 
-  const handleDelete = async (projectId, category) => {
+  const handleDelete = async (projectId, type) => {
     if (window.confirm('Estàs segur que vols eliminar aquest projecte?')) {
       try {
-        const projectToDelete = projectsData[category].find(p => p.id === projectId);
+        const projectToDelete = projectsData[type].find(p => p.id === projectId);
         const updatedProjects = { ...projectsData };
-        updatedProjects[category] = updatedProjects[category].filter(p => p.id !== projectId);
+        updatedProjects[type] = updatedProjects[type].filter(p => p.id !== projectId);
         
         setProjectsData(updatedProjects);
         
@@ -380,17 +457,11 @@ const AdminPage = () => {
           <h1>PANELL D'ADMINISTRACIÓ</h1>
           <div className="admin-header-actions">
             <button 
-              className="btn-add-project"
-              onClick={() => setShowForm(true)}
-            >
-              + Afegir Projecte
-            </button>
-            <button 
               className="btn-backup-history"
               onClick={handleShowBackups}
               title="Veure historial de backups"
             >
-              Historial
+              HISTORIAL
             </button>
             <button 
               className="btn-logout"
@@ -412,10 +483,10 @@ const AdminPage = () => {
 
               <form onSubmit={handleSubmit} className="project-form">
                 <div className="form-group">
-                  <label>Categoria:</label>
+                  <label>Tipus:</label>
                   <select
-                    name="category"
-                    value={formData.category}
+                    name="type"
+                    value={formData.type}
                     onChange={handleInputChange}
                     required
                   >
@@ -423,6 +494,21 @@ const AdminPage = () => {
                     <option value="games">Jocs</option>
                   </select>
                 </div>
+
+                {formData.type === "web" && (
+                  <div className="form-group">
+                    <label>Categoria:</label>
+                    <select
+                      name="category"
+                      value={formData.category}
+                      onChange={handleInputChange}
+                      required
+                    >
+                      <option value="final">Final</option>
+                      <option value="demo">Demo</option>
+                    </select>
+                  </div>
+                )}
 
                 <div className="form-group">
                   <label>Títol:</label>
@@ -507,79 +593,130 @@ const AdminPage = () => {
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label>Vídeo (opcional):</label>
-                  <input
-                    type="text"
-                    name="video"
-                    value={formData.video}
-                    onChange={handleInputChange}
-                    placeholder="ex: vids/ElMeuProjecte.webm"
-                  />
-                  <div className="file-upload-simple">
-                    <label className="file-button">
-                      Seleccionar arxiu
-                      <input
-                        type="file"
-                        accept="video/*"
-                        onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'video')}
-                        className="file-input-hidden"
-                        disabled={uploadingFiles.video}
-                      />
-                    </label>
-                    <span className={`file-status ${uploadingFiles.video ? 'uploading' : ''}`}>
-                      {uploadingFiles.video ? 'Pujant...' : 'Cap arxiu seleccionat'}
-                    </span>
-                  </div>
-                </div>
+                {/* Campos específicos solo si el proyecto está terminado */}
+                {formData.finished && (
+                  <>
+                    {/* Video - requerido para web final y games */}
+                    {(formData.type === "games" || (formData.type === "web" && formData.category === "final")) && (
+                      <div className="form-group">
+                        <label>Vídeo {formData.type === "games" || (formData.type === "web" && formData.category === "final") ? "*" : "(opcional)"}:</label>
+                        <input
+                          type="text"
+                          name="video"
+                          value={formData.video}
+                          onChange={handleInputChange}
+                          placeholder="ex: vids/ElMeuProjecte.webm"
+                          required={formData.type === "games" || (formData.type === "web" && formData.category === "final")}
+                        />
+                        <div className="file-upload-simple">
+                          <label className="file-button">
+                            Seleccionar arxiu
+                            <input
+                              type="file"
+                              accept="video/*"
+                              onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'video')}
+                              className="file-input-hidden"
+                              disabled={uploadingFiles.video}
+                            />
+                          </label>
+                          <span className={`file-status ${uploadingFiles.video ? 'uploading' : ''}`}>
+                            {uploadingFiles.video ? 'Pujant...' : 'Cap arxiu seleccionat'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
-                <div className="form-group">
-                  <label>Poster del vídeo (opcional):</label>
-                  <input
-                    type="text"
-                    name="poster"
-                    value={formData.poster}
-                    onChange={handleInputChange}
-                    placeholder="ex: vids/PosterElMeuProjecte.webp"
-                  />
-                  <div className="file-upload-simple">
-                    <label className="file-button">
-                      Seleccionar arxiu
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'poster')}
-                        className="file-input-hidden"
-                        disabled={uploadingFiles.poster}
-                      />
-                    </label>
-                    <span className={`file-status ${uploadingFiles.poster ? 'uploading' : ''}`}>
-                      {uploadingFiles.poster ? 'Pujant...' : 'Cap arxiu seleccionat'}
-                    </span>
-                  </div>
-                </div>
+                    {/* Poster - requerido para web final y games */}
+                    {(formData.type === "games" || (formData.type === "web" && formData.category === "final")) && (
+                      <div className="form-group">
+                        <label>Poster del vídeo *:</label>
+                        <input
+                          type="text"
+                          name="poster"
+                          value={formData.poster}
+                          onChange={handleInputChange}
+                          placeholder="ex: vids/PosterElMeuProjecte.webp"
+                          required
+                        />
+                        <div className="file-upload-simple">
+                          <label className="file-button">
+                            Seleccionar arxiu
+                            <input
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'poster')}
+                              className="file-input-hidden"
+                              disabled={uploadingFiles.poster}
+                            />
+                          </label>
+                          <span className={`file-status ${uploadingFiles.poster ? 'uploading' : ''}`}>
+                            {uploadingFiles.poster ? 'Pujant...' : 'Cap arxiu seleccionat'}
+                          </span>
+                        </div>
+                      </div>
+                    )}
 
-                <div className="form-group">
-                  <label>URL del projecte (opcional):</label>
-                  <input
-                    type="url"
-                    name="url"
-                    value={formData.url}
-                    onChange={handleInputChange}
-                    placeholder="https://elmeuprojecte.com"
-                  />
-                </div>
+                    {/* URL - requerida para web final y games */}
+                    {(formData.type === "games" || (formData.type === "web" && formData.category === "final")) && (
+                      <div className="form-group">
+                        <label>URL del projecte *:</label>
+                        <input
+                          type="url"
+                          name="url"
+                          value={formData.url}
+                          onChange={handleInputChange}
+                          placeholder="https://elmeuprojecte.com"
+                          required
+                        />
+                      </div>
+                    )}
 
-                <div className="form-group">
-                  <label>URL de GitHub (opcional):</label>
-                  <input
-                    type="url"
-                    name="git"
-                    value={formData.git}
-                    onChange={handleInputChange}
-                    placeholder="https://github.com/usuari/projecte"
-                  />
-                </div>
+                    {/* Git - solo para games */}
+                    {formData.type === "games" && (
+                      <div className="form-group">
+                        <label>URL de GitHub *:</label>
+                        <input
+                          type="url"
+                          name="git"
+                          value={formData.git}
+                          onChange={handleInputChange}
+                          placeholder="https://github.com/usuari/projecte"
+                          required
+                        />
+                      </div>
+                    )}
+
+                    {/* Files - solo para web demo */}
+                    {formData.type === "web" && formData.category === "demo" && (
+                      <div className="form-group">
+                        <label>Arxiu demo (.js) *:</label>
+                        <div className="file-upload-simple">
+                          <label className="file-button">
+                            Seleccionar arxiu
+                            <input
+                              type="file"
+                              accept=".js"
+                              onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'demo')}
+                              className="file-input-hidden"
+                              disabled={uploadingFiles.demo}
+                            />
+                          </label>
+                          <span className={`file-status ${uploadingFiles.demo ? 'uploading' : ''}`}>
+                            {uploadingFiles.demo ? 'Pujant arxiu demo...' : 'Cap arxiu seleccionat'}
+                          </span>
+                        </div>
+                        {formData.files && (
+                          <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#e8f5e8', borderRadius: '4px', fontSize: '0.9rem' }}>
+                            <strong>Referència del demo:</strong> {formData.files}
+                          </div>
+                        )}
+                        <small style={{ display: 'block', marginTop: '0.5rem', color: '#1b1b1b', fontSize: '0.8rem', opacity: '0.7' }}>
+                          L'arxiu ha d'exportar: export const elMeuDemo = &#123; html: "...", css: "...", js: "..." &#125;
+                        </small>
+                      </div>
+                    )}
+                  </>
+                )}
 
                 <div className="form-group">
                   <label>Paraules clau (separades per comes):</label>
@@ -592,45 +729,6 @@ const AdminPage = () => {
                   />
                 </div>
 
-                <div className="form-group">
-                  <label>
-                    <input
-                      type="checkbox"
-                      name="hasDemo"
-                      checked={formData.hasDemo}
-                      onChange={handleInputChange}
-                    />
-                    Aquest projecte té codi demo interactiu
-                  </label>
-                  {formData.hasDemo && (
-                    <div style={{ marginTop: '1rem' }}>
-                      <label>Arxiu demo (.js):</label>
-                      <div className="file-upload-simple">
-                        <label className="file-button">
-                          Seleccionar arxiu
-                          <input
-                            type="file"
-                            accept=".js"
-                            onChange={(e) => e.target.files[0] && handleFileUpload(e.target.files[0], 'demo')}
-                            className="file-input-hidden"
-                            disabled={uploadingFiles.demo}
-                          />
-                        </label>
-                        <span className={`file-status ${uploadingFiles.demo ? 'uploading' : ''}`}>
-                          {uploadingFiles.demo ? 'Pujant arxiu demo...' : 'Cap arxiu seleccionat'}
-                        </span>
-                      </div>
-                      {formData.files && (
-                        <div style={{ marginTop: '0.5rem', padding: '0.5rem', backgroundColor: '#e8f5e8', borderRadius: '4px', fontSize: '0.9rem' }}>
-                          <strong>Referència del demo:</strong> {formData.files}
-                        </div>
-                      )}
-                      <small style={{ display: 'block', marginTop: '0.5rem', color: '#1b1b1b', fontSize: '0.8rem', opacity: '0.7' }}>
-                        L'arxiu ha d'exportar: export const elMeuDemo = &#123; html: "...", css: "...", js: "..." &#125;
-                      </small>
-                    </div>
-                  )}
-                </div>
 
                 <div className="form-actions">
                   <button type="button" onClick={resetForm} className="btn-cancel">
@@ -783,6 +881,15 @@ const AdminPage = () => {
             </div>
           </div>
         )}
+        
+        {/* Botón flotante para añadir proyecto */}
+        <button 
+          className="btn-floating-add"
+          onClick={() => setShowForm(true)}
+          title="Afegir nou projecte"
+        >
+          +
+        </button>
       </div>
     </>
   );
