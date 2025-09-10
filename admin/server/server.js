@@ -145,7 +145,7 @@ const uploadDemo = multer({
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, '..', '..', 'public')));
+app.use(express.static(path.join(__dirname, '..', '..', 'public')));
 
 // Middleware de autenticación para rutas protegidas
 const authenticateToken = (req, res, next) => {
@@ -530,7 +530,7 @@ app.post('/api/admin/upload-image', authenticateToken, uploadImage.single('image
       message: 'Imagen subida correctamente',
       fileName: req.file.filename,
       path: relativePath,
-      url: `/uploads/${relativePath}`
+      url: `/${relativePath}`
     });
 
   } catch (error) {
@@ -556,7 +556,7 @@ app.post('/api/admin/upload-video', authenticateToken, uploadVideo.single('video
       message: 'Video subido correctamente',
       fileName: req.file.filename,
       path: relativePath,
-      url: `/uploads/${relativePath}`
+      url: `/${relativePath}`
     });
 
   } catch (error) {
