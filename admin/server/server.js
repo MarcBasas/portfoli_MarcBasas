@@ -402,20 +402,40 @@ app.post('/api/admin/save-projects', authenticateToken, async (req, res) => {
       lines.push(`      finished: ${project.finished},`);
       lines.push(`      description:"${project.description}",`);
       
-      // Limpiar rutas de imágenes manteniendo BASE +
+      // Detectar si es un archivo subido (tiene timestamp) o archivo existente
+      const RENDER_SERVER_URL = 'https://portfolio-admin-server-76sn.onrender.com';
+      
       const cleanImagePath = project.previewImage.replace(/^.*\/img\//, 'img/');
-      lines.push(`      previewImage: BASE + "${cleanImagePath}",`);
+      const isUploadedFile = cleanImagePath.includes('-175'); // Archivos subidos tienen timestamp
+      
+      if (isUploadedFile) {
+        lines.push(`      previewImage: "${RENDER_SERVER_URL}/${cleanImagePath}",`);
+      } else {
+        lines.push(`      previewImage: BASE + "${cleanImagePath}",`);
+      }
       
       if (project.video) {
         const cleanVideoPath = project.video.replace(/^.*\/vids\//, 'vids/');
-        lines.push(`      video: BASE + "${cleanVideoPath}",`);
+        const isUploadedVideo = cleanVideoPath.includes('-175');
+        
+        if (isUploadedVideo) {
+          lines.push(`      video: "${RENDER_SERVER_URL}/${cleanVideoPath}",`);
+        } else {
+          lines.push(`      video: BASE + "${cleanVideoPath}",`);
+        }
       }
       
       if (project.poster) {
         const cleanPosterPath = project.poster.includes('/vids/') 
           ? project.poster.replace(/^.*\/vids\//, 'vids/')
           : project.poster.replace(/^.*\/img\//, 'img/');
-        lines.push(`      poster: BASE + "${cleanPosterPath}",`);
+        const isUploadedPoster = cleanPosterPath.includes('-175');
+        
+        if (isUploadedPoster) {
+          lines.push(`      poster: "${RENDER_SERVER_URL}/${cleanPosterPath}",`);
+        } else {
+          lines.push(`      poster: BASE + "${cleanPosterPath}",`);
+        }
       }
       
       if (project.url) lines.push(`      url: "${project.url}",`);
