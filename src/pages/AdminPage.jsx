@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
-import { projects } from "../data/projects";
+import { useProjects } from "../contexts/ProjectsContext";
 import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer, listBackups, restoreProjectFromBackup, deleteBackup, createManualBackup } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
@@ -8,6 +8,7 @@ import "./AdminPage.css";
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
+  const { projects, refresh: refreshProjects } = useProjects();
   const [projectsData, setProjectsData] = useState(projects);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -75,6 +76,11 @@ const AdminPage = () => {
     checkAuth();
   }, []);
 
+  // Sincronizar proyectos del contexto con el estado local
+  useEffect(() => {
+    setProjectsData(projects);
+  }, [projects]);
+
   const handleLogin = async (newToken) => {
     setToken(newToken);
     setIsAuthenticated(true);
@@ -87,10 +93,12 @@ const AdminPage = () => {
       const response = await loadProjectsFromServer();
       if (response.success && response.projects) {
         setProjectsData(response.projects);
+        // También refrescar el contexto global
+        refreshProjects();
       }
     } catch (error) {
       console.error('Error cargando proyectos:', error);
-      // Si falla, usar los datos estáticos como fallback
+      // Si falla, usar los datos del contexto como fallback
       setProjectsData(projects);
     }
   };
@@ -296,6 +304,8 @@ const AdminPage = () => {
       // Guardar los cambios
       await saveProjectsToFile(updatedProjects);
       setProjectsData(updatedProjects);
+      // Refrescar el contexto global
+      refreshProjects();
       resetForm();
       alert(editingProject ? 'Projecte actualitzat correctament' : 'Projecte afegit correctament');
     } catch (error) {
@@ -355,6 +365,9 @@ const AdminPage = () => {
         }
 
         const result = await response.json();
+        
+        // Refrescar el contexto global
+        refreshProjects();
         
         let message = 'Projecte eliminat correctament';
         if (result.backup?.created) {
@@ -456,6 +469,13 @@ const AdminPage = () => {
           <a href="/" className="btn-back-portfolio">← TORNAR AL PORTFOLIO</a>
           <h1>PANELL D'ADMINISTRACIÓ</h1>
           <div className="admin-header-actions">
+            <button 
+              className="btn-refresh-projects"
+              onClick={() => refreshProjects()}
+              title="Refrescar proyectos desde el servidor"
+            >
+              REFRESCAR
+            </button>
             <button 
               className="btn-backup-history"
               onClick={handleShowBackups}

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import ProjectCard from "../components/ProjectCard";
-import { projects } from "../data/projects";
+import { useProjects } from "../contexts/ProjectsContext";
 import "./Landing.css";
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -23,6 +23,7 @@ const Landing = () => {
   const syncingA = useRef(false);
   const syncingB = useRef(false);
   const isMobile = useIsMobile();
+  const { projects } = useProjects();
 
   const initialWebProjects = [...projects.web, ...projects.web]; 
   const initialGameProjects = [...projects.games, ...projects.games];
@@ -33,6 +34,17 @@ const Landing = () => {
 
   const [visibleWebProjects, setVisibleWebProjects] = useState(initialWebProjects);
   const [visibleGameProjects, setVisibleGameProjects] = useState(initialGameProjects);
+
+  // Actualizar proyectos visibles cuando cambien los datos
+  useEffect(() => {
+    const newWebProjects = [...projects.web, ...projects.web];
+    const newGameProjects = [...projects.games, ...projects.games];
+    const newMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
+    
+    setVisibleWebProjects(newWebProjects);
+    setVisibleGameProjects(newGameProjects);
+    setVisibleMobileProjects(newMobileProjects);
+  }, [projects]);
 
   useEffect(() => {
     if (isMobile) return; // No inicializar GSAP ni sincronización en móvil

@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import PropTypes from "prop-types";
 
-import { projects } from "../data/projects";
+import { useProjects } from "../contexts/ProjectsContext";
 import LiveEditor from "../components/LiveEditor";
 import GameFrame from "../components/GameFrame";
 import VideoPlayer from "../components/projectComponents/VideoPlayer";
@@ -51,10 +51,11 @@ ProjectGitLink.propTypes = {
 
 const ProjectPage = () => {
   const { slug } = useParams();
+  const { projects } = useProjects();
   const project = useMemo(() => {
     const allProjects = [...projects.web, ...projects.games];
     return allProjects.find((p) => p.slug === slug);
-  }, [slug]);
+  }, [slug, projects]);
   const isMobile = useIsMobile();
 
   if (!project) {

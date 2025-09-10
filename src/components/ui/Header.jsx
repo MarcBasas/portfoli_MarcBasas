@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { projects } from "../../data/projects";
+import { useProjects } from "../../contexts/ProjectsContext";
 import useIsMobile from "../../utils/UseIsMobile";
 import { useContact } from "../../utils/ContactContext";
 import "./Header.css";
@@ -14,6 +14,7 @@ import MobileMenuOverlay from "./MobileMenuOverlay";
 const Header = () => {
   const [showProjects, setShowProjects] = useState(false);
   const location = useLocation();
+  const { projects } = useProjects();
   const allProjects = [...projects.web, ...projects.games];
   const dropdownRef = useRef(null);
   const buttonRef = useRef(null);
