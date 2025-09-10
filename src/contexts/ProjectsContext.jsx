@@ -20,24 +20,41 @@ export const ProjectsProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isFromServer, setIsFromServer] = useState(false);
+  const [dataSource, setDataSource] = useState('static'); // 'static', 'server', 'cache'
 
   // Función para cargar proyectos
   const loadProjectsData = async (forceRefresh = false) => {
+    console.log('CARGANDO PROYECTOS - forceRefresh:', forceRefresh);
     setLoading(true);
     setError(null);
     
     try {
-      const projectsData = await loadProjects(forceRefresh);
-      setProjects(projectsData);
+      const result = await loadProjects(forceRefresh);
       
-      // Determinar si los datos vienen del servidor o son estáticos
-      setIsFromServer(projectsData !== staticProjects);
+      // loadProjects ahora retorna { projects, source }
+      const projectsData = result.projects || result;
+      const source = result.source || 'unknown';
+      
+      console.log('PROYECTOS CARGADOS - source:', source, 'proyectos:', {
+        web: projectsData.web?.length || 0,
+        games: projectsData.games?.length || 0
+      });
+      
+      setProjects(projectsData);
+      setDataSource(source);
+      
+      // Mejorar la lógica de detección del servidor
+      const fromServer = source === 'server' || source === 'cache';
+      setIsFromServer(fromServer);
+      
+      console.log('ESTADO ACTUALIZADO - isFromServer:', fromServer, 'dataSource:', source);
       
     } catch (err) {
       console.error('Error cargando proyectos:', err);
       setError(err.message);
       // En caso de error, mantener los proyectos estáticos
       setProjects(staticProjects);
+      setDataSource('static');
       setIsFromServer(false);
     } finally {
       setLoading(false);
@@ -72,6 +89,7 @@ export const ProjectsProvider = ({ children }) => {
     loading,
     error,
     isFromServer,
+    dataSource,
     refresh,
     refreshAfterAdminChange,
     // Funciones de utilidad
