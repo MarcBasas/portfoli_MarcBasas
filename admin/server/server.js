@@ -846,7 +846,7 @@ app.get('/api/projects', async (req, res) => {
       // Cargar portfolio demo
       const portfolioDemoPath = path.join(demosPath, 'portfolio-demo.js');
       const portfolioDemoContent = await fs.readFile(portfolioDemoPath, 'utf8');
-      const portfolioDemoMatch = portfolioDemoContent.match(/export const portfolioDemo = ({[\s\S]*?});/);
+      const portfolioDemoMatch = portfolioDemoContent.match(/export const portfolioDemo = ({[\s\S]*?};)/);
       if (portfolioDemoMatch) {
         portfolioDemo = new Function('return ' + portfolioDemoMatch[1])();
       }
@@ -858,7 +858,7 @@ app.get('/api/projects', async (req, res) => {
       // Cargar cinevision demo
       const cinevisionDemoPath = path.join(demosPath, 'cinevision-demo.js');
       const cinevisionDemoContent = await fs.readFile(cinevisionDemoPath, 'utf8');
-      const cinevisionDemoMatch = cinevisionDemoContent.match(/export const cinevisionDemo = ({[\s\S]*?});/);
+      const cinevisionDemoMatch = cinevisionDemoContent.match(/export const cinevisionDemo = ({[\s\S]*?};)/);
       if (cinevisionDemoMatch) {
         cinevisionDemo = new Function('return ' + cinevisionDemoMatch[1])();
       }
@@ -870,9 +870,13 @@ app.get('/api/projects', async (req, res) => {
       // Cargar crealab demo
       const crealabDemoPath = path.join(demosPath, 'crealab-demo.js');
       const crealabDemoContent = await fs.readFile(crealabDemoPath, 'utf8');
-      const crealabDemoMatch = crealabDemoContent.match(/export const crealabDemo = ({[\s\S]*?});/);
+      console.log('DEBUG: crealabDemo file exists:', crealabDemoContent.length > 0);
+      const crealabDemoMatch = crealabDemoContent.match(/export const crealabDemo = ({[\s\S]*?};)/);
+      console.log('DEBUG: crealabDemo match found:', !!crealabDemoMatch);
       if (crealabDemoMatch) {
+        console.log('DEBUG: crealabDemo match content length:', crealabDemoMatch[1].length);
         crealabDemo = new Function('return ' + crealabDemoMatch[1])();
+        console.log('DEBUG: crealabDemo loaded successfully:', !!crealabDemo);
       }
     } catch (error) {
       console.warn('No se pudo cargar crealab demo:', error.message);
@@ -880,6 +884,11 @@ app.get('/api/projects', async (req, res) => {
     
     
     // Usar Function constructor con contexto que incluye los demos
+    console.log('DEBUG: About to execute projects code with demos:', {
+      portfolioDemo: !!portfolioDemo,
+      cinevisionDemo: !!cinevisionDemo, 
+      crealabDemo: !!crealabDemo
+    });
     const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
       '', // BASE vacío para el servidor
       portfolioDemo, 
