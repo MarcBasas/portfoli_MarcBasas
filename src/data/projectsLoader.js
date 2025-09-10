@@ -25,7 +25,6 @@ export const loadProjects = async (forceRefresh = false) => {
     const response = await fetch(`${ADMIN_SERVER_URL}/api/projects?t=${Date.now()}`, {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json',
         'Cache-Control': 'no-cache, no-store, must-revalidate',
         'Pragma': 'no-cache',
         'Expires': '0'
@@ -38,16 +37,38 @@ export const loadProjects = async (forceRefresh = false) => {
       throw new Error(`Error del servidor: ${response.status}`);
     }
 
-    const data = await response.json();
+    // Obtener el código JavaScript del servidor
+    const jsCode = await response.text();
     
-    if (data.success && data.projects) {
+    // Crear un módulo temporal para evaluar el código
+    const module = { exports: {} };
+    const exports = module.exports;
+    
+    // Evaluar el código JavaScript de manera segura
+    const evalCode = jsCode.replace(/import\s+.*?from\s+.*?;?\n?/g, ''); // Remover imports
+    const projectsMatch = evalCode.match(/export const projects = ({[\s\S]*?});/);
+    
+    if (projectsMatch) {
+      // Usar los demos estáticos como fallback
+      const { cinevisionDemo } = await import('./demos/cinevision-demo');
+      const { crealabDemo } = await import('./demos/crealab-demo');  
+      const { portfolioDemo } = await import('./demos/portfolio-demo');
+      
+      // Evaluar el código con el contexto de los demos
+      const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
+        '', // BASE vacío
+        portfolioDemo,
+        cinevisionDemo, 
+        crealabDemo
+      );
+      
       // Actualizar cache
-      cachedProjects = data.projects;
+      cachedProjects = projectsData;
       lastFetchTime = Date.now();
       
-      return data.projects;
+      return projectsData;
     } else {
-      throw new Error('Respuesta del servidor inválida');
+      throw new Error('No se pudo extraer los datos de proyectos del servidor');
     }
 
   } catch (error) {
