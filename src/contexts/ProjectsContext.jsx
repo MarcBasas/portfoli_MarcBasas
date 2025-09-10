@@ -41,23 +41,6 @@ export const ProjectsProvider = ({ children }) => {
         }
         
         console.log('ProjectsContext: Datos diferentes, actualizando projects');
-        console.log('ProjectsContext: Previous projects count - web:', prevProjects?.web?.length, 'games:', prevProjects?.games?.length);
-        console.log('ProjectsContext: New projects count - web:', projectsData?.web?.length, 'games:', projectsData?.games?.length);
-        
-        // Comparar específicamente el proyecto que nos interesa (crealab)
-        const prevCrealab = prevProjects?.web?.find(p => p.slug === 'crealab');
-        const newCrealab = projectsData?.web?.find(p => p.slug === 'crealab');
-        
-        if (prevCrealab && newCrealab) {
-          console.log('ProjectsContext: Crealab comparison:');
-          console.log('  - Previous ID:', prevCrealab.id, 'Title:', prevCrealab.title);
-          console.log('  - New ID:', newCrealab.id, 'Title:', newCrealab.title);
-          console.log('  - Files changed:', 
-            prevCrealab.files?.html !== newCrealab.files?.html ||
-            prevCrealab.files?.css !== newCrealab.files?.css ||
-            prevCrealab.files?.js !== newCrealab.files?.js
-          );
-        }
         
         return projectsData;
       });

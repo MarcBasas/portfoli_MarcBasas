@@ -57,13 +57,6 @@ const EditorTopBar = ({ activeTab, setActiveTab, onOpenInNewTab, viewMode, setVi
 );
 
 const LiveEditorDesktop = ({ project }) => {
-  console.log('LiveEditorDesktop: Component rendering with project:', project?.title, 'ID:', project?.id);
-  console.log('LiveEditorDesktop: Project files available:', {
-    html: !!project?.files?.html,
-    css: !!project?.files?.css,
-    js: !!project?.files?.js
-  });
-  
   const iframeRef = useRef();
   const htmlRef = useRef();
   const cssRef = useRef();
@@ -77,24 +70,19 @@ const LiveEditorDesktop = ({ project }) => {
   const [viewMode, setViewMode] = useState('desktop');
 
   const updateIframe = () => {
-    console.log('LiveEditorDesktop: updateIframe called');
     const iframe = iframeRef.current;
     if (!iframe) {
       console.warn('LiveEditor: iframe not available for update');
       return;
     }
-    console.log('LiveEditorDesktop: iframe found, getting document');
     const doc = iframe.contentDocument;
     if (!doc) {
       console.warn('LiveEditor: iframe document not available');
       return;
     }
-    console.log('LiveEditorDesktop: document found, extracting content from editors');
     const htmlContent = htmlRef.current?.state.doc.toString() || "";
     const cssContent = cssRef.current?.state.doc.toString() || "";
     const jsContent = jsRef.current?.state.doc.toString() || "";
-    
-    console.log('LiveEditorDesktop: Content lengths - HTML:', htmlContent.length, 'CSS:', cssContent.length, 'JS:', jsContent.length);
     
     const fullHtml = `
       <html>
@@ -114,11 +102,9 @@ const LiveEditorDesktop = ({ project }) => {
         </body>
       </html>
     `;
-    console.log('LiveEditorDesktop: Writing HTML to iframe');
     doc.open();
     doc.write(fullHtml);
     doc.close();
-    console.log('LiveEditorDesktop: iframe updated successfully');
   };
 
   const handleDrag = useCallback((e) => {
@@ -186,26 +172,13 @@ const LiveEditorDesktop = ({ project }) => {
   }, [isDragging, handleDrag, handleDragEnd]);
 
   useEffect(() => {
-    console.log('LiveEditorDesktop: useEffect triggered for project:', project?.title);
-    console.log('LiveEditorDesktop: Dependencies changed:', {
-      html: project?.files?.html?.substring(0, 50) + '...',
-      css: project?.files?.css?.substring(0, 50) + '...',
-      js: project?.files?.js?.substring(0, 50) + '...'
-    });
-    
     // Reset initialization when project changes
     initializedRef.current = false;
     
-    if (initializedRef.current) {
-      console.log('LiveEditorDesktop: Already initialized, skipping');
-      return;
-    }
+    if (initializedRef.current) return;
     initializedRef.current = true;
     
-    console.log('LiveEditorDesktop: Initializing editors for', project?.title);
-    
     const createEditor = (initialCode, language, parentId, ref) => {
-      console.log(`LiveEditorDesktop: Creating editor ${parentId} with code length:`, initialCode?.length);
       const parentElement = document.getElementById(parentId);
       if (!parentElement) {
         console.error(`LiveEditor: parent element ${parentId} not found`);
@@ -220,29 +193,23 @@ const LiveEditorDesktop = ({ project }) => {
             language,
             baseTheme,
             EditorView.updateListener.of((v) => {
-              if (v.docChanged) {
-                console.log(`LiveEditorDesktop: ${parentId} content changed, updating iframe`);
-                updateIframe();
-              }
+              if (v.docChanged) updateIframe();
             }),
           ],
         }),
         parent: parentElement,
       });
       ref.current = view;
-      console.log(`LiveEditorDesktop: Editor ${parentId} created successfully`);
     };
     
     createEditor(project.files.html, html(), "html-editor", htmlRef);
     createEditor(project.files.css, css(), "css-editor", cssRef);
     createEditor(project.files.js, javascript(), "js-editor", jsRef);
     
-    console.log('LiveEditorDesktop: Scheduling iframe update');
     setTimeout(updateIframe, 100);
 
     // Cleanup function to destroy editors when component unmounts
     return () => {
-      console.log('LiveEditorDesktop: Cleaning up editors for', project?.title);
       htmlRef.current?.destroy();
       cssRef.current?.destroy();
       jsRef.current?.destroy();

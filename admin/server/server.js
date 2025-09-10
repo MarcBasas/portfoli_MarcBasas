@@ -835,20 +835,61 @@ app.get('/api/projects', async (req, res) => {
       throw new Error('No se pudo extraer los datos de proyectos del archivo');
     }
     
-    // Crear un contexto seguro con las variables necesarias
-    const safeContext = {
-      BASE: '', // BASE vacío para el servidor
-      portfolioDemo: null, // Demo placeholder
-      cinevisionDemo: null, // Demo placeholder  
-      crealabDemo: null // Demo placeholder
-    };
+    // Cargar archivos de demos
+    const demosPath = path.join(__dirname, '..', '..', 'src', 'data', 'demos');
     
-    // Usar Function constructor con contexto seguro
+    let portfolioDemo = null;
+    let cinevisionDemo = null;
+    let crealabDemo = null;
+    
+    try {
+      // Cargar portfolio demo
+      const portfolioDemoPath = path.join(demosPath, 'portfolio-demo.js');
+      const portfolioDemoContent = await fs.readFile(portfolioDemoPath, 'utf8');
+      const portfolioDemoMatch = portfolioDemoContent.match(/export const portfolioDemo = ({[\s\S]*?});/);
+      if (portfolioDemoMatch) {
+        portfolioDemo = new Function('return ' + portfolioDemoMatch[1])();
+      }
+    } catch (error) {
+      console.warn('No se pudo cargar portfolio demo:', error.message);
+    }
+    
+    try {
+      // Cargar cinevision demo
+      const cinevisionDemoPath = path.join(demosPath, 'cinevision-demo.js');
+      const cinevisionDemoContent = await fs.readFile(cinevisionDemoPath, 'utf8');
+      const cinevisionDemoMatch = cinevisionDemoContent.match(/export const cinevisionDemo = ({[\s\S]*?});/);
+      if (cinevisionDemoMatch) {
+        cinevisionDemo = new Function('return ' + cinevisionDemoMatch[1])();
+      }
+    } catch (error) {
+      console.warn('No se pudo cargar cinevision demo:', error.message);
+    }
+    
+    try {
+      // Cargar crealab demo
+      const crealabDemoPath = path.join(demosPath, 'crealab-demo.js');
+      const crealabDemoContent = await fs.readFile(crealabDemoPath, 'utf8');
+      const crealabDemoMatch = crealabDemoContent.match(/export const crealabDemo = ({[\s\S]*?});/);
+      if (crealabDemoMatch) {
+        crealabDemo = new Function('return ' + crealabDemoMatch[1])();
+      }
+    } catch (error) {
+      console.warn('No se pudo cargar crealab demo:', error.message);
+    }
+    
+    console.log('DEMOS CARGADOS:', {
+      portfolioDemo: !!portfolioDemo,
+      cinevisionDemo: !!cinevisionDemo,
+      crealabDemo: !!crealabDemo
+    });
+    
+    // Usar Function constructor con contexto que incluye los demos
     const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
-      safeContext.BASE, 
-      safeContext.portfolioDemo, 
-      safeContext.cinevisionDemo, 
-      safeContext.crealabDemo
+      '', // BASE vacío para el servidor
+      portfolioDemo, 
+      cinevisionDemo, 
+      crealabDemo
     );
     
     console.log('PROYECTOS SERVIDOS PÚBLICAMENTE:', {
