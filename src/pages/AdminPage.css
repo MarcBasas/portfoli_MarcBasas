@@ -590,8 +590,6 @@
   box-shadow: 0 4px 12px rgba(27, 27, 27, 0.2);
 }
 
-/* Estilos de backup-info eliminados - ahora usamos columnas */
-
 .backup-column-1,
 .backup-column-2 {
   display: flex;

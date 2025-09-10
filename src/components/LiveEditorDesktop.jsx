@@ -265,8 +265,6 @@ const LiveEditorDesktop = React.memo(({ project }) => {
       </div>
     </div>
   );
-};
-
 }, (prevProps, nextProps) => {
   // Solo re-renderizar si los archivos del proyecto realmente cambiaron
   return (
