@@ -516,57 +516,7 @@ ${gameProjects}
   }
 });
 
-// Endpoint público para cargar proyectos (sin autenticación)
-app.get('/api/projects', async (req, res) => {
-  try {
-    const projectsFilePath = path.join(__dirname, '..', '..', 'src', 'data', 'projects.js');
-    
-    // Leer el archivo de proyectos
-    const fileContent = await fs.readFile(projectsFilePath, 'utf8');
-    
-    // Extraer solo la parte de datos de proyectos (sin imports ni exports)
-    const projectsMatch = fileContent.match(/export const projects = ({[\s\S]*?});/);
-    
-    if (!projectsMatch) {
-      throw new Error('No se pudo extraer los datos de proyectos del archivo');
-    }
-    
-    // Crear un contexto seguro con las variables necesarias
-    const safeContext = {
-      BASE: '', // BASE vacío para el servidor
-      portfolioDemo: null, // Demo placeholder
-      cinevisionDemo: null, // Demo placeholder  
-      crealabDemo: null // Demo placeholder
-    };
-    
-    // Usar Function constructor con contexto seguro
-    const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
-      safeContext.BASE, 
-      safeContext.portfolioDemo, 
-      safeContext.cinevisionDemo, 
-      safeContext.crealabDemo
-    );
-    
-    console.log('PROYECTOS SERVIDOS PÚBLICAMENTE:', {
-      web: projectsData.web?.length || 0,
-      games: projectsData.games?.length || 0
-    });
-    
-    res.json({
-      success: true,
-      projects: projectsData
-    });
-    
-  } catch (error) {
-    console.error('ERROR AL CARGAR PROYECTOS PÚBLICOS:', error);
-    res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: error.message 
-    });
-  }
-});
-
-// Endpoint para cargar proyectos (ADMIN - requiere autenticación)
+// Endpoint para cargar proyectos
 app.get('/api/admin/load-projects', authenticateToken, async (req, res) => {
   try {
     const projectsFilePath = path.join(__dirname, '..', '..', 'src', 'data', 'projects.js');
@@ -896,6 +846,65 @@ app.post('/api/admin/backups/cleanup', authenticateToken, async (req, res) => {
 // Endpoint health check
 app.get('/api/health', (req, res) => {
   res.json({ status: 'OK', message: 'Servidor de administración funcionando' });
+});
+
+// ===== ENDPOINT PÚBLICO PARA CARGAR PROYECTOS =====
+
+// Endpoint público para cargar proyectos (sin autenticación)
+app.get('/api/projects', async (req, res) => {
+  try {
+    const projectsFilePath = path.join(__dirname, '..', '..', 'src', 'data', 'projects.js');
+    
+    // Leer el archivo de proyectos
+    const fileContent = await fs.readFile(projectsFilePath, 'utf8');
+    
+    // Extraer solo la parte de datos de proyectos (sin imports ni exports)
+    const projectsMatch = fileContent.match(/export const projects = ({[\s\S]*?});/);
+    
+    if (!projectsMatch) {
+      throw new Error('No se pudo extraer los datos de proyectos del archivo');
+    }
+    
+    // Crear un contexto seguro con las variables necesarias
+    const safeContext = {
+      BASE: '', // BASE vacío para el servidor
+      portfolioDemo: null, // Demo placeholder
+      cinevisionDemo: null, // Demo placeholder  
+      crealabDemo: null // Demo placeholder
+    };
+    
+    // Usar Function constructor con contexto seguro
+    const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
+      safeContext.BASE, 
+      safeContext.portfolioDemo, 
+      safeContext.cinevisionDemo, 
+      safeContext.crealabDemo
+    );
+    
+    console.log('PROYECTOS SERVIDOS PÚBLICAMENTE:', {
+      web: projectsData.web?.length || 0,
+      games: projectsData.games?.length || 0
+    });
+    
+    // Configurar headers para evitar cache en desarrollo
+    res.set({
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    });
+    
+    res.json({
+      success: true,
+      projects: projectsData
+    });
+    
+  } catch (error) {
+    console.error('ERROR AL SERVIR PROYECTOS PÚBLICAMENTE:', error);
+    res.status(500).json({ 
+      error: 'Error interno del servidor', 
+      details: error.message 
+    });
+  }
 });
 
 
