@@ -97,6 +97,7 @@
 }
 
 .btn-refresh-projects,
+.btn-test-sync,
 .btn-backup-history {
   background: #1b1b1b; 
   color: #dbd9c3;
@@ -113,7 +114,12 @@
   background: #059669; /* Verde para refrescar */
 }
 
+.btn-test-sync {
+  background: #f59e0b; /* Naranja para test */
+}
+
 .btn-refresh-projects:hover,
+.btn-test-sync:hover,
 .btn-backup-history:hover {
   background: #333;
   transform: translateY(-2px);
@@ -121,6 +127,10 @@
 
 .btn-refresh-projects:hover {
   background: #10b981; /* Verde más claro al hover */
+}
+
+.btn-test-sync:hover {
+  background: #fbbf24; /* Naranja más claro al hover */
 }
 
 .btn-logout:hover {
@@ -780,6 +790,7 @@
   }
 
   .btn-refresh-projects,
+  .btn-test-sync,
   .btn-backup-history {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;

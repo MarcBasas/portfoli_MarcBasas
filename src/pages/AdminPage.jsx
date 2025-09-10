@@ -8,7 +8,7 @@ import "./AdminPage.css";
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
-  const { projects, refresh: refreshProjects } = useProjects();
+  const { projects, refresh: refreshProjects, refreshAfterAdminChange } = useProjects();
   const [projectsData, setProjectsData] = useState(projects);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -304,8 +304,10 @@ const AdminPage = () => {
       // Guardar los cambios
       await saveProjectsToFile(updatedProjects);
       setProjectsData(updatedProjects);
-      // Refrescar el contexto global
-      refreshProjects();
+      
+      // Refrescar el contexto global usando la función específica para admin
+      refreshAfterAdminChange();
+      
       resetForm();
       alert(editingProject ? 'Projecte actualitzat correctament' : 'Projecte afegit correctament');
     } catch (error) {
@@ -366,8 +368,8 @@ const AdminPage = () => {
 
         const result = await response.json();
         
-        // Refrescar el contexto global
-        refreshProjects();
+        // Refrescar el contexto global usando la función específica para admin
+        refreshAfterAdminChange();
         
         let message = 'Projecte eliminat correctament';
         if (result.backup?.created) {
@@ -475,6 +477,19 @@ const AdminPage = () => {
               title="Refrescar proyectos desde el servidor"
             >
               REFRESCAR
+            </button>
+            <button 
+              className="btn-test-sync"
+              onClick={() => {
+                console.log('ESTADO ACTUAL DE PROYECTOS:', {
+                  admin: { web: projectsData.web?.length, games: projectsData.games?.length },
+                  contexto: { web: projects.web?.length, games: projects.games?.length }
+                });
+                refreshAfterAdminChange();
+              }}
+              title="Test sincronización"
+            >
+              TEST
             </button>
             <button 
               className="btn-backup-history"

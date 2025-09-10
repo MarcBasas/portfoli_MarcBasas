@@ -11,7 +11,7 @@ const ProjectsLoadingIndicator = () => {
   const { loading, error, isFromServer } = useProjects();
 
   // No mostrar nada si no hay estado especial
-  if (!loading && !error) return null;
+  if (!loading && !error && isFromServer) return null;
 
   return (
     <div className="projects-loading-indicator">

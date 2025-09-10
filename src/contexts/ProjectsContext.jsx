@@ -45,9 +45,20 @@ export const ProjectsProvider = ({ children }) => {
   };
 
   // Función para refrescar proyectos
-  const refresh = () => {
+  const refresh = async () => {
+    console.log('REFRESCANDO PROYECTOS DESDE CONTEXTO...');
     invalidateProjectsCache();
-    return loadProjectsData(true);
+    await loadProjectsData(true);
+  };
+
+  // Función específica para cuando se hacen cambios en admin
+  const refreshAfterAdminChange = async () => {
+    console.log('REFRESCANDO DESPUÉS DE CAMBIO EN ADMIN...');
+    invalidateProjectsCache();
+    // Esperar un poco más para asegurar que el servidor haya procesado
+    setTimeout(async () => {
+      await loadProjectsData(true);
+    }, 1000);
   };
 
   // Cargar proyectos al montar el componente
@@ -62,6 +73,7 @@ export const ProjectsProvider = ({ children }) => {
     error,
     isFromServer,
     refresh,
+    refreshAfterAdminChange,
     // Funciones de utilidad
     getProjectBySlug: (slug) => {
       const allProjects = [...projects.web, ...projects.games];

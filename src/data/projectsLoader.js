@@ -25,13 +25,16 @@ export const loadProjects = async (forceRefresh = false) => {
     console.log('CARGANDO PROYECTOS DESDE SERVIDOR...');
     
     // Intentar cargar desde el servidor
-    const response = await fetch(`${ADMIN_SERVER_URL}/api/admin/load-projects`, {
+    const response = await fetch(`${ADMIN_SERVER_URL}/api/admin/load-projects?t=${Date.now()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0'
       },
-      // Timeout de 5 segundos
-      signal: AbortSignal.timeout(5000)
+      // Timeout de 8 segundos (un poco más para dar tiempo)
+      signal: AbortSignal.timeout(8000)
     });
 
     if (!response.ok) {
@@ -58,11 +61,16 @@ export const loadProjects = async (forceRefresh = false) => {
   } catch (error) {
     console.warn('ERROR CARGANDO DESDE SERVIDOR, USANDO FALLBACK ESTÁTICO:', error.message);
     
-    // Usar proyectos estáticos como fallback
-    cachedProjects = staticProjects;
-    lastFetchTime = Date.now();
+    // Usar proyectos estáticos como fallback solo si no hay cache
+    if (!cachedProjects) {
+      cachedProjects = staticProjects;
+      lastFetchTime = Date.now();
+      return staticProjects;
+    }
     
-    return staticProjects;
+    // Si hay cache, usarlo aunque sea viejo
+    console.log('USANDO CACHE EXISTENTE DEBIDO A ERROR DE SERVIDOR');
+    return cachedProjects;
   }
 };
 
