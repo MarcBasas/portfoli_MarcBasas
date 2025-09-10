@@ -828,86 +828,16 @@ app.get('/api/projects', async (req, res) => {
     // Leer el archivo de proyectos
     const fileContent = await fs.readFile(projectsFilePath, 'utf8');
     
-    // Extraer solo la parte de datos de proyectos (sin imports ni exports)
-    const projectsMatch = fileContent.match(/export const projects = ({[\s\S]*?});/);
-    
-    if (!projectsMatch) {
-      throw new Error('No se pudo extraer los datos de proyectos del archivo');
-    }
-    
-    // Cargar archivos de demos
-    const demosPath = path.join(__dirname, '..', '..', 'src', 'data', 'demos');
-    
-    let portfolioDemo = null;
-    let cinevisionDemo = null;
-    let crealabDemo = null;
-    
-    try {
-      // Cargar portfolio demo
-      const portfolioDemoPath = path.join(demosPath, 'portfolio-demo.js');
-      const portfolioDemoContent = await fs.readFile(portfolioDemoPath, 'utf8');
-      const portfolioDemoMatch = portfolioDemoContent.match(/export const portfolioDemo = ({[\s\S]*?};)/);
-      if (portfolioDemoMatch) {
-        portfolioDemo = new Function('return ' + portfolioDemoMatch[1])();
-      }
-    } catch (error) {
-      console.warn('No se pudo cargar portfolio demo:', error.message);
-    }
-    
-    try {
-      // Cargar cinevision demo
-      const cinevisionDemoPath = path.join(demosPath, 'cinevision-demo.js');
-      const cinevisionDemoContent = await fs.readFile(cinevisionDemoPath, 'utf8');
-      const cinevisionDemoMatch = cinevisionDemoContent.match(/export const cinevisionDemo = ({[\s\S]*?};)/);
-      if (cinevisionDemoMatch) {
-        cinevisionDemo = new Function('return ' + cinevisionDemoMatch[1])();
-      }
-    } catch (error) {
-      console.warn('No se pudo cargar cinevision demo:', error.message);
-    }
-    
-    try {
-      // Cargar crealab demo
-      const crealabDemoPath = path.join(demosPath, 'crealab-demo.js');
-      const crealabDemoContent = await fs.readFile(crealabDemoPath, 'utf8');
-      console.log('DEBUG: crealabDemo file exists:', crealabDemoContent.length > 0);
-      const crealabDemoMatch = crealabDemoContent.match(/export const crealabDemo = ({[\s\S]*?};)/);
-      console.log('DEBUG: crealabDemo match found:', !!crealabDemoMatch);
-      if (crealabDemoMatch) {
-        console.log('DEBUG: crealabDemo match content length:', crealabDemoMatch[1].length);
-        crealabDemo = new Function('return ' + crealabDemoMatch[1])();
-        console.log('DEBUG: crealabDemo loaded successfully:', !!crealabDemo);
-      }
-    } catch (error) {
-      console.warn('No se pudo cargar crealab demo:', error.message);
-    }
-    
-    
-    // Usar Function constructor con contexto que incluye los demos
-    console.log('DEBUG: About to execute projects code with demos:', {
-      portfolioDemo: !!portfolioDemo,
-      cinevisionDemo: !!cinevisionDemo, 
-      crealabDemo: !!crealabDemo
-    });
-    const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
-      '', // BASE vacío para el servidor
-      portfolioDemo, 
-      cinevisionDemo, 
-      crealabDemo
-    );
-    
-    
     // Configurar headers para evitar cache en desarrollo
     res.set({
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
-      'Expires': '0'
+      'Expires': '0',
+      'Content-Type': 'application/javascript'
     });
     
-    res.json({
-      success: true,
-      projects: projectsData
-    });
+    // Devolver el contenido del archivo tal como está
+    res.send(fileContent);
     
   } catch (error) {
     console.error('ERROR AL SERVIR PROYECTOS PÚBLICAMENTE:', error);
