@@ -36,11 +36,8 @@ export const ProjectsProvider = ({ children }) => {
         const newJson = JSON.stringify(projectsData);
         
         if (prevJson === newJson) {
-          console.log('ProjectsContext: Los datos son iguales, evitando re-render');
           return prevProjects; // Mantener la referencia anterior
         }
-        
-        console.log('ProjectsContext: Datos diferentes, actualizando projects');
         
         return projectsData;
       });
@@ -61,14 +58,12 @@ export const ProjectsProvider = ({ children }) => {
 
   // Función para refrescar proyectos
   const refresh = async () => {
-    console.log('REFRESCANDO PROYECTOS DESDE CONTEXTO...');
     invalidateProjectsCache();
     await loadProjectsData(true);
   };
 
   // Función específica para cuando se hacen cambios en admin
   const refreshAfterAdminChange = async () => {
-    console.log('REFRESCANDO DESPUÉS DE CAMBIO EN ADMIN...');
     invalidateProjectsCache();
     // Esperar un poco más para asegurar que el servidor haya procesado
     setTimeout(async () => {

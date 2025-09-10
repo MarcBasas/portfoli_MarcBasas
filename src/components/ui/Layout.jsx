@@ -3,7 +3,6 @@ import { Outlet } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import Header from "./Header";
 import Footer from "./Footer";
-import ProjectsLoadingIndicator from "./ProjectsLoadingIndicator";
 import { ContactProvider } from "../../utils/ContactContext";
 import "./Layout.css";
 
@@ -27,7 +26,6 @@ const Layout = () => {
           <Outlet />
         </main>
         <Footer />
-        <ProjectsLoadingIndicator />
       </div>
     </ContactProvider>
   );

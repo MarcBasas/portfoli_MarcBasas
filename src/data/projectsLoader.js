@@ -17,13 +17,10 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 export const loadProjects = async (forceRefresh = false) => {
   // Si hay cache válido y no se fuerza refresh, usar cache
   if (!forceRefresh && cachedProjects && (Date.now() - lastFetchTime) < CACHE_DURATION) {
-    console.log('USANDO PROYECTOS DESDE CACHE');
     return cachedProjects;
   }
 
   try {
-    console.log('CARGANDO PROYECTOS DESDE SERVIDOR...');
-    
     // Intentar cargar desde el servidor (endpoint público)
     const response = await fetch(`${ADMIN_SERVER_URL}/api/projects?t=${Date.now()}`, {
       method: 'GET',
@@ -44,11 +41,6 @@ export const loadProjects = async (forceRefresh = false) => {
     const data = await response.json();
     
     if (data.success && data.projects) {
-      console.log('PROYECTOS CARGADOS DESDE SERVIDOR:', {
-        web: data.projects.web?.length || 0,
-        games: data.projects.games?.length || 0
-      });
-      
       // Actualizar cache
       cachedProjects = data.projects;
       lastFetchTime = Date.now();
@@ -69,7 +61,6 @@ export const loadProjects = async (forceRefresh = false) => {
     }
     
     // Si hay cache, usarlo aunque sea viejo
-    console.log('USANDO CACHE EXISTENTE DEBIDO A ERROR DE SERVIDOR');
     return cachedProjects;
   }
 };
@@ -118,7 +109,6 @@ export const useProjects = () => {
 export const invalidateProjectsCache = () => {
   cachedProjects = null;
   lastFetchTime = 0;
-  console.log('CACHE DE PROYECTOS INVALIDADO');
 };
 
 /**

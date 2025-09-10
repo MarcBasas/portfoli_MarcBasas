@@ -878,11 +878,6 @@ app.get('/api/projects', async (req, res) => {
       console.warn('No se pudo cargar crealab demo:', error.message);
     }
     
-    console.log('DEMOS CARGADOS:', {
-      portfolioDemo: !!portfolioDemo,
-      cinevisionDemo: !!cinevisionDemo,
-      crealabDemo: !!crealabDemo
-    });
     
     // Usar Function constructor con contexto que incluye los demos
     const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
@@ -892,10 +887,6 @@ app.get('/api/projects', async (req, res) => {
       crealabDemo
     );
     
-    console.log('PROYECTOS SERVIDOS PÚBLICAMENTE:', {
-      web: projectsData.web?.length || 0,
-      games: projectsData.games?.length || 0
-    });
     
     // Configurar headers para evitar cache en desarrollo
     res.set({
