@@ -512,6 +512,8 @@ ${gameProjects}
     await fs.writeFile(projectsFilePath, fileContent, 'utf8');
     console.log('ARCHIVO PROJECTS.JS ACTUALIZADO EXITOSAMENTE');
     console.log(`PROYECTOS GUARDADOS: web: ${projects.web.length}, games: ${projects.games.length}`);
+    console.log('CONTENIDO ESCRITO (primeros 500 chars):');
+    console.log(fileContent.substring(0, 500));
     
     const response = { 
       success: true, 
