@@ -69,10 +69,6 @@ const AdminLogin = ({ onLogin }) => {
             {isLoading ? 'Verificant...' : 'ACCEDIR'}
           </button>
         </form>
-        
-        <div className="admin-login__info">
-          <p>Servidor: portfolio-admin-server-76sn.onrender.com</p>
-        </div>
       </div>
     </div>
   );

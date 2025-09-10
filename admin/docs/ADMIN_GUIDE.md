@@ -78,7 +78,6 @@ export const miProyectoDemo = {
 
 ### Persistencia de datos
 - **Archivo principal:** `src/data/projects.js`
-- **Backups automáticos:** `src/data/projects.backup.{timestamp}.js`
 - **Imports dinámicos:** Generación automática de imports para demos
 - **Hot reload:** El frontend se actualiza automáticamente
 
@@ -152,8 +151,6 @@ El servidor muestra información detallada sobre:
 - Operaciones de upload
 - Errores de validación
 
-### Backups
-Cada operación de guardado crea un backup automático con timestamp, permitiendo recuperación en caso de errores.
 
 ## Troubleshooting común
 

@@ -52,9 +52,6 @@ marco-portfoli/
 │   │   └── check-server.js      # Health check
 │   ├── docs/                    # Documentación
 │   │   └── ADMIN_GUIDE.md       # Guía técnica
-│   ├── backups/                 # Sistema de backups
-│   │   ├── projects/            # Backups de projects.js
-│   │   └── README.md
 │   └── examples/                # Archivos de ejemplo
 │       └── ejemplo-demo.js      # Template demo
 ├── public/                      # Assets estáticos
@@ -311,29 +308,6 @@ const [formData, setFormData] = useState({
 
 ## Sistema de Backups y Limpieza
 
-### Gestión Automática de Backups
-
-#### Configuración:
-- **Ubicación**: `admin/backups/projects/`
-- **Formato**: `projects.backup.{timestamp}.js`
-- **Retención**: 10 backups más recientes
-- **Trigger**: Cada modificación de projects.js
-
-#### Workflow de backup:
-1. **Crear backup** del estado actual
-2. **Aplicar cambios** al projects.js
-3. **Ejecutar limpieza** automática
-4. **Log de actividad** en consola
-
-```javascript
-// Función de limpieza automática
-const cleanupOldBackups = async () => {
-  const MAX_BACKUPS = 10;
-  // Leer directorio, ordenar por timestamp, eliminar excedentes
-  const filesToDelete = backupFiles.slice(MAX_BACKUPS);
-  // ...
-};
-```
 
 ### Limpieza de Archivos Huérfanos
 
@@ -654,10 +628,9 @@ class ProjectErrorBoundary extends React.Component {
 // Structured logging en operations críticas
 app.post('/api/admin/save-projects', async (req, res) => {
   try {
-    console.log(`Backup creado: ${backupFile}`);
-    console.log(`Limpieza completada: ${cleanupResult}`);
+    console.log('Proyectos guardados correctamente');
   } catch (error) {
-    console.error(`Error en save-projects:`, error);
+    console.error('Error en save-projects:', error);
   }
 });
 ```
@@ -822,7 +795,7 @@ Este portfolio representa una solución completa y escalable para desarrolladore
 - **Deployment gratuito** en GitHub Pages
 - **Performance optimizado** con técnicas modernas
 - **SEO-friendly** con pre-renderizado
-- **Maintenance automated** con backups y cleanup
+- **Maintenance automated** con limpieza de archivos
 
 ### Aplicabilidad:
 - **Portfolio personal** de desarrolladores

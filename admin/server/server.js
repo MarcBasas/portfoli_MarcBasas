@@ -169,196 +169,7 @@ const extractRealPath = (pathString) => {
   return pathString;
 };
 
-// ===== FUNCIONES DE BACKUP =====
-
-// Función para crear backup de archivos multimedia antes de eliminarlos
-const backupProjectFiles = async (projectData) => {
-  const timestamp = Date.now();
-  const backupDir = path.join(__dirname, '..', 'backups', 'files', `${timestamp}`);
-  const projectBackupDir = path.join(backupDir, `project-${projectData.slug}`);
-  
-  const backedUpFiles = {
-    images: [],
-    videos: [],
-    demos: [],
-    posters: []
-  };
-
-  try {
-    console.log(`CREANDO BACKUP DE ARCHIVOS PARA: ${projectData.title} (${projectData.slug})`);
-    
-    // Crear estructura de directorios
-    await fs.mkdir(path.join(projectBackupDir, 'images'), { recursive: true });
-    await fs.mkdir(path.join(projectBackupDir, 'videos'), { recursive: true });
-    await fs.mkdir(path.join(projectBackupDir, 'posters'), { recursive: true });
-    await fs.mkdir(path.join(projectBackupDir, 'demos'), { recursive: true });
-
-    // Backup de imagen de preview
-    if (projectData.previewImage) {
-      const imagePath = extractRealPath(projectData.previewImage);
-      const fullImagePath = path.join(__dirname, '..', '..', 'public', imagePath);
-      const backupImagePath = path.join(projectBackupDir, 'images', path.basename(fullImagePath));
-      
-      try {
-        await fs.access(fullImagePath);
-        await fs.copyFile(fullImagePath, backupImagePath);
-        backedUpFiles.images.push(path.basename(fullImagePath));
-        console.log(`BACKUP IMAGEN: ${path.basename(fullImagePath)}`);
-      } catch (error) {
-        console.log(`Imagen no encontrada para backup: ${imagePath}`);
-      }
-    }
-
-    // Backup de video
-    if (projectData.video) {
-      const videoPath = extractRealPath(projectData.video);
-      const fullVideoPath = path.join(__dirname, '..', '..', 'public', videoPath);
-      const backupVideoPath = path.join(projectBackupDir, 'videos', path.basename(fullVideoPath));
-      
-      try {
-        await fs.access(fullVideoPath);
-        await fs.copyFile(fullVideoPath, backupVideoPath);
-        backedUpFiles.videos.push(path.basename(fullVideoPath));
-        console.log(`BACKUP VIDEO: ${path.basename(fullVideoPath)}`);
-      } catch (error) {
-        console.log(`Video no encontrado para backup: ${videoPath}`);
-      }
-    }
-
-    // Backup de poster
-    if (projectData.poster) {
-      const posterPath = extractRealPath(projectData.poster);
-      const fullPosterPath = path.join(__dirname, '..', '..', 'public', posterPath);
-      const backupPosterPath = path.join(projectBackupDir, 'posters', path.basename(fullPosterPath));
-      
-      try {
-        await fs.access(fullPosterPath);
-        await fs.copyFile(fullPosterPath, backupPosterPath);
-        backedUpFiles.posters.push(path.basename(fullPosterPath));
-        console.log(`BACKUP POSTER: ${path.basename(fullPosterPath)}`);
-      } catch (error) {
-        console.log(`Poster no encontrado para backup: ${posterPath}`);
-      }
-    }
-
-    // Backup de demo asociado
-    if (projectData.category === 'demo' || projectData.files) {
-      const slug = projectData.slug;
-      const possibleDemoFiles = [
-        `${slug}-demo.js`,
-        `${slug.replace(/-/g, '')}-demo.js`,
-        `${slug}Demo.js`,
-        `${slug.replace(/-/g, '')}Demo.js`
-      ];
-
-      const demosDir = path.join(__dirname, '..', '..', 'src', 'data', 'demos');
-      
-      for (const demoFile of possibleDemoFiles) {
-        const demoPath = path.join(demosDir, demoFile);
-        const backupDemoPath = path.join(projectBackupDir, 'demos', demoFile);
-        
-        try {
-          await fs.access(demoPath);
-          await fs.copyFile(demoPath, backupDemoPath);
-          backedUpFiles.demos.push(demoFile);
-          console.log(`BACKUP DEMO: ${demoFile}`);
-          break;
-        } catch (error) {
-          // Archivo no existe, continuar con el siguiente
-        }
-      }
-    }
-
-    // Crear metadata del backup
-    const metadata = {
-      timestamp: timestamp,
-      project: {
-        title: projectData.title,
-        slug: projectData.slug,
-        category: projectData.category,
-        id: projectData.id
-      },
-      files: backedUpFiles,
-      backupDate: new Date().toISOString()
-    };
-
-    const metadataPath = path.join(backupDir, 'metadata.json');
-    await fs.writeFile(metadataPath, JSON.stringify(metadata, null, 2));
-
-    console.log(`BACKUP DE ARCHIVOS COMPLETADO: ${backupDir}`);
-    return {
-      backupDir: backupDir,
-      files: backedUpFiles,
-      metadata: metadata
-    };
-
-  } catch (error) {
-    console.error('ERROR AL CREAR BACKUP DE ARCHIVOS:', error);
-    return {
-      backupDir: null,
-      files: backedUpFiles,
-      error: error.message
-    };
-  }
-};
-
-// Función para limpiar backups de archivos antiguos (max 5 backups de archivos)
-const cleanupOldFileBackups = async () => {
-  const MAX_FILE_BACKUPS = 5;
-  
-  try {
-    const fileBackupsDir = path.join(__dirname, '..', 'backups', 'files');
-
-    try {
-      await fs.access(fileBackupsDir);
-    } catch (error) {
-      // No existe directorio de backups de archivos, no hay nada que limpiar
-      return;
-    }
-    
-    const backupFolders = await fs.readdir(fileBackupsDir);
-    const timestampFolders = backupFolders.filter(folder => /^\d+$/.test(folder));
-    
-    if (timestampFolders.length <= MAX_FILE_BACKUPS) {
-      return; 
-    }
-    
-    // Ordenar por timestamp (más reciente primero)
-    timestampFolders.sort((a, b) => parseInt(b) - parseInt(a));
-    
-    // Eliminar los backups más antiguos
-    const foldersToDelete = timestampFolders.slice(MAX_FILE_BACKUPS);
-    
-    for (const folder of foldersToDelete) {
-      const folderPath = path.join(fileBackupsDir, folder);
-      
-      // Eliminar recursivamente todo el contenido del folder
-      const deleteFolderRecursive = async (folderPath) => {
-        const files = await fs.readdir(folderPath);
-        for (const file of files) {
-          const filePath = path.join(folderPath, file);
-          const stat = await fs.stat(filePath);
-          if (stat.isDirectory()) {
-            await deleteFolderRecursive(filePath);
-          } else {
-            await fs.unlink(filePath);
-          }
-        }
-        await fs.rmdir(folderPath);
-      };
-      
-      await deleteFolderRecursive(folderPath);
-      console.log(`BACKUP DE ARCHIVOS ANTIGUO ELIMINADO: ${folder}`);
-    }
-    
-    if (foldersToDelete.length > 0) {
-      console.log(`LIMPIEZA DE BACKUPS DE ARCHIVOS COMPLETADA. ELIMINADOS: ${foldersToDelete.length}, CONSERVADOS: ${Math.min(timestampFolders.length, MAX_FILE_BACKUPS)}`);
-    }
-    
-  } catch (error) {
-    console.error('ERROR AL LIMPIAR BACKUPS DE ARCHIVOS ANTIGUOS:', error);
-  }
-};
+// ===== FUNCIONES DE LIMPIEZA =====
 
 // Función para limpiar archivos huérfanos de un proyecto eliminado
 const cleanupProjectFiles = async (projectData) => {
@@ -371,11 +182,8 @@ const cleanupProjectFiles = async (projectData) => {
 
   try {
     console.log(`LIMPIANDO ARCHIVOS DEL PROYECTO: ${projectData.title} (${projectData.slug})`);
-
-    // PRIMERO: Crear backup de todos los archivos
-    const backupResult = await backupProjectFiles(projectData);
     
-    // SEGUNDO: Eliminar los archivos originales
+    // Eliminar los archivos originales
     // Limpiar imagen de preview
     if (projectData.previewImage) {
       const imagePath = extractRealPath(projectData.previewImage);
@@ -444,13 +252,9 @@ const cleanupProjectFiles = async (projectData) => {
       }
     }
 
-    // TERCERO: Limpiar backups de archivos antiguos
-    await cleanupOldFileBackups();
-
     console.log('Limpieza completada:', cleanedFiles);
     return {
-      cleanedFiles: cleanedFiles,
-      backupResult: backupResult
+      cleanedFiles: cleanedFiles
     };
 
   } catch (error) {
@@ -459,53 +263,6 @@ const cleanupProjectFiles = async (projectData) => {
       cleanedFiles: cleanedFiles,
       error: error.message
     };
-  }
-};
-
-// Función para limpiar backups antiguos (max 10)
-const cleanupOldBackups = async () => {
-  const MAX_BACKUPS = 10;
-  
-  try {
-    const backupsDir = path.join(__dirname, '..', 'backups', 'projects');
-
-    try {
-      await fs.access(backupsDir);
-    } catch (error) {
-      await fs.mkdir(backupsDir, { recursive: true });
-      console.log(`DIRECTORIO DE BACKUPS CREADO: ${backupsDir}`);
-      return;
-    }
-    
-    const files = await fs.readdir(backupsDir);
-    const backupFiles = files.filter(file => file.startsWith('projects.backup.') && file.endsWith('.js'));
-    
-    if (backupFiles.length <= MAX_BACKUPS) {
-      return; 
-    }
-    
-    // Ordenar por timestamp (más reciente primero)
-    backupFiles.sort((a, b) => {
-      const timestampA = parseInt(a.match(/projects\.backup\.(\d+)\.js/)[1]);
-      const timestampB = parseInt(b.match(/projects\.backup\.(\d+)\.js/)[1]);
-      return timestampB - timestampA; // Orden descendente
-    });
-    
-    // Eliminar los backups más antiguos
-    const filesToDelete = backupFiles.slice(MAX_BACKUPS);
-    
-    for (const file of filesToDelete) {
-      const filePath = path.join(backupsDir, file);
-      await fs.unlink(filePath);
-      console.log(`BACKUP ANTIGUO ELIMINADO: ${file}`);
-    }
-    
-    if (filesToDelete.length > 0) {
-      console.log(`LIMPIEZA DE BACKUPS COMPLETADA. ELIMINADOS: ${filesToDelete.length}, CONSERVADOS: ${Math.min(backupFiles.length, MAX_BACKUPS)}`);
-    }
-    
-  } catch (error) {
-    console.error('ERROR AL LIMPIAR BACKUPS ANTIGUOS:', error);
   }
 };
 
@@ -695,41 +452,19 @@ ${gameProjects}
     // Ruta al archivo projects.js
     const projectsFilePath = path.join(__dirname, '..', '..', 'src', 'data', 'projects.js');
     
-    // Crear backup del archivo actual en la nueva ubicación
-    const backupPath = path.join(__dirname, '..', 'backups', 'projects', `projects.backup.${Date.now()}.js`);
-    
-    try {
-      const currentContent = await fs.readFile(projectsFilePath, 'utf8');
-      
-      // Asegurar que el directorio de backups existe
-      const backupDir = path.dirname(backupPath);
-      await fs.mkdir(backupDir, { recursive: true });
-      
-      await fs.writeFile(backupPath, currentContent);
-      console.log(`BACKUP CREADO: ${path.basename(backupPath)}`);
-      
-      // Limpiar backups antiguos después de crear el nuevo
-      await cleanupOldBackups();
-      
-    } catch (error) {
-      console.log('No se pudo crear backup, archivo probablemente no existe:', error.message);
-    }
-    
     // Escribir el nuevo contenido
     await fs.writeFile(projectsFilePath, fileContent, 'utf8');
     
     const response = { 
       success: true, 
-      message: 'Proyectos guardados correctamente',
-      backupCreated: backupPath
+      message: 'Proyectos guardados correctamente'
     };
 
     // Incluir información de limpieza si se realizó
     if (cleanupResult) {
       response.cleanup = {
         performed: true,
-        files: cleanupResult.cleanedFiles,
-        backupCreated: cleanupResult.backupResult.backupDir
+        files: cleanupResult.cleanedFiles
       };
     }
     
@@ -931,187 +666,6 @@ app.post('/api/admin/upload-demo', authenticateToken, uploadDemo.single('demoFil
   }
 });
 
-// Endpoint para obtener información de backups
-app.get('/api/admin/backups', authenticateToken, async (req, res) => {
-  try {
-    const BACKUPS_DIR = path.join(__dirname, '..', 'backups');
-    const FILES_BACKUPS_DIR = path.join(BACKUPS_DIR, 'files');
-    const PROJECTS_BACKUPS_DIR = path.join(BACKUPS_DIR, 'projects');
-    
-    const backupsInfo = {
-      projects: [],
-      files: [],
-      stats: {
-        totalProjectsBackups: 0,
-        totalFilesBackups: 0,
-        totalSize: 0
-      }
-    };
-
-    // Obtener backups de projects.js
-    try {
-      const projectFiles = await fs.readdir(PROJECTS_BACKUPS_DIR);
-      const backupFiles = projectFiles.filter(file => file.startsWith('projects.backup.') && file.endsWith('.js'));
-      
-      // Ordenar por timestamp (más reciente primero)
-      backupFiles.sort((a, b) => {
-        const timestampA = parseInt(a.match(/projects\.backup\.(\d+)\.js/)[1]);
-        const timestampB = parseInt(b.match(/projects\.backup\.(\d+)\.js/)[1]);
-        return timestampB - timestampA;
-      });
-
-      // Tomar solo los 10 más recientes
-      const recentProjectBackups = backupFiles.slice(0, 10);
-      
-      for (const file of recentProjectBackups) {
-        const timestamp = file.match(/projects\.backup\.(\d+)\.js/)[1];
-        const filePath = path.join(PROJECTS_BACKUPS_DIR, file);
-        const stats = await fs.stat(filePath);
-        
-        backupsInfo.projects.push({
-          filename: file,
-          timestamp: parseInt(timestamp),
-          date: new Date(parseInt(timestamp)).toISOString(),
-          size: stats.size,
-          sizeFormatted: formatBytes(stats.size)
-        });
-      }
-      
-      backupsInfo.stats.totalProjectsBackups = backupFiles.length;
-    } catch (error) {
-      console.log('No se pudo leer directorio de backups de projects:', error.message);
-    }
-
-    // Obtener backups de archivos multimedia
-    try {
-      const folders = await fs.readdir(FILES_BACKUPS_DIR);
-      const timestampFolders = folders.filter(folder => /^\d+$/.test(folder));
-      
-      // Ordenar por timestamp (más reciente primero)
-      timestampFolders.sort((a, b) => parseInt(b) - parseInt(a));
-      
-      // Tomar solo los 5 más recientes
-      const recentFileBackups = timestampFolders.slice(0, 5);
-      
-      for (const folder of recentFileBackups) {
-        const folderPath = path.join(FILES_BACKUPS_DIR, folder);
-        const metadataPath = path.join(folderPath, 'metadata.json');
-        
-        try {
-          const metadataContent = await fs.readFile(metadataPath, 'utf8');
-          const metadata = JSON.parse(metadataContent);
-          
-          // Calcular tamaño del backup
-          const folderSize = await calculateFolderSize(folderPath);
-          
-          backupsInfo.files.push({
-            timestamp: parseInt(folder),
-            date: new Date(parseInt(folder)).toISOString(),
-            project: metadata.project,
-            files: metadata.files,
-            totalFiles: metadata.files.images.length + metadata.files.videos.length + metadata.files.posters.length + metadata.files.demos.length,
-            size: folderSize,
-            sizeFormatted: formatBytes(folderSize)
-          });
-          
-          backupsInfo.stats.totalSize += folderSize;
-        } catch (error) {
-          console.log(`No se pudo leer metadata de ${folder}:`, error.message);
-        }
-      }
-      
-      backupsInfo.stats.totalFilesBackups = timestampFolders.length;
-    } catch (error) {
-      console.log('No se pudo leer directorio de backups de archivos:', error.message);
-    }
-
-    // Formatear tamaño total
-    backupsInfo.stats.totalSizeFormatted = formatBytes(backupsInfo.stats.totalSize);
-
-    res.json({
-      success: true,
-      data: backupsInfo
-    });
-
-  } catch (error) {
-    console.error('Error al obtener información de backups:', error);
-    res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: error.message 
-    });
-  }
-});
-
-// Endpoint para descargar backup de projects.js
-app.post('/api/admin/download-projects-backup', authenticateToken, async (req, res) => {
-  try {
-    const { filename } = req.body;
-    
-    if (!filename) {
-      return res.status(400).json({ error: 'Nombre de archivo requerido' });
-    }
-
-    const filePath = path.join(__dirname, '..', 'backups', 'projects', filename);
-    
-    // Verificar que el archivo existe
-    try {
-      await fs.access(filePath);
-    } catch (error) {
-      return res.status(404).json({ error: 'Archivo de backup no encontrado' });
-    }
-
-    // Enviar el archivo
-    res.download(filePath, filename);
-
-  } catch (error) {
-    console.error('Error al descargar backup de projects:', error);
-    res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: error.message 
-    });
-  }
-});
-
-// Endpoint para descargar backup de archivos multimedia
-app.post('/api/admin/download-files-backup', authenticateToken, async (req, res) => {
-  try {
-    const { timestamp } = req.body;
-    
-    if (!timestamp) {
-      return res.status(400).json({ error: 'Timestamp requerido' });
-    }
-
-    const backupDir = path.join(__dirname, '..', 'backups', 'files', timestamp.toString());
-    
-    // Verificar que el directorio existe
-    try {
-      await fs.access(backupDir);
-    } catch (error) {
-      return res.status(404).json({ error: 'Backup de archivos no encontrado' });
-    }
-
-    // Crear un archivo ZIP temporal con el contenido del backup
-    const archiver = await import('archiver');
-    const archive = archiver.default('zip', { zlib: { level: 9 } });
-    
-    // Configurar headers para descarga
-    res.attachment(`backup-files-${timestamp}.zip`);
-    archive.pipe(res);
-
-    // Añadir todo el contenido del directorio al ZIP
-    archive.directory(backupDir, false);
-
-    // Finalizar el archivo ZIP
-    await archive.finalize();
-
-  } catch (error) {
-    console.error('Error al descargar backup de archivos:', error);
-    res.status(500).json({ 
-      error: 'Error interno del servidor', 
-      details: error.message 
-    });
-  }
-});
 
 // Endpoint health check
 app.get('/api/health', (req, res) => {
@@ -1119,37 +673,6 @@ app.get('/api/health', (req, res) => {
 });
 
 
-// ===== FUNCIONES AUXILIARES =====
-
-// Función auxiliar para calcular tamaño de carpeta
-const calculateFolderSize = async (folderPath) => {
-  let totalSize = 0;
-  
-  const calculateSize = async (dir) => {
-    const files = await fs.readdir(dir);
-    for (const file of files) {
-      const filePath = path.join(dir, file);
-      const stat = await fs.stat(filePath);
-      if (stat.isDirectory()) {
-        await calculateSize(filePath);
-      } else {
-        totalSize += stat.size;
-      }
-    }
-  };
-  
-  await calculateSize(folderPath);
-  return totalSize;
-};
-
-// Función auxiliar para formatear bytes
-const formatBytes = (bytes) => {
-  if (bytes === 0) return '0 Bytes';
-  const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-  const i = Math.floor(Math.log(bytes) / Math.log(k));
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-};
 
 
 app.listen(PORT, () => {
