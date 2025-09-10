@@ -5,9 +5,14 @@
   justify-content: center;
   background: #dbd9c3; 
   font-family: "Inter", sans-serif;
-  width: 100%;
+  width: 100vw;
   padding: 2rem;
   box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 .admin-login__container {

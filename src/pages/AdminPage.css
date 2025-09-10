@@ -1,7 +1,4 @@
-/* ===== ADMIN PAGE - ESTILOS AUTÓNOMOS ===== */
-/* Colores de la web: beige (#dbd9c3), fluor (#e5ff70), negro (#1b1b1b) */
 
-/* Reset básico para el panel de admin */
 .admin-page * {
   box-sizing: border-box;
   margin: 0;
@@ -9,20 +6,19 @@
 }
 
 .admin-page {
-  background-color: #dbd9c3; /* beige de la web */
-  color: #1b1b1b; /* negro de la web */
+  background-color: #dbd9c3; 
+  color: #1b1b1b; 
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   line-height: 1.5;
   min-height: 100vh;
   width: 100vw;
-  padding-top: 100px; /* Espacio para el header fijo */
+  padding-top: 100px;
   padding-left: 2rem;
   padding-right: 2rem;
   padding-bottom: 2rem;
   font-size: 16px;
   position: relative;
   overflow-x: hidden;
-  /* Asegurar que el admin page sea completamente independiente */
   margin: 0;
   box-sizing: border-box;
 }
@@ -37,7 +33,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  /* Header fijo */
   position: fixed;
   top: 0;
   left: 0;
@@ -48,7 +43,7 @@
 
 .btn-back-portfolio {
   background: transparent;
-  color: #e5ff70; /* Color del botón fluor pero sin fondo */
+  color: #e5ff70;
   text-decoration: none;
   padding: 0.5rem 1rem;
   
@@ -63,7 +58,7 @@
   font-weight: 700;
   margin: 0;
   text-align: center;
-  flex: 1; /* Para centrar el título */
+  flex: 1; 
 }
 
 .admin-header-actions {
@@ -73,7 +68,7 @@
 }
 
 .btn-add-project {
-  background: #e5ff70; /* fluor de la web */
+  background: #e5ff70; 
   color: #1b1b1b;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -85,8 +80,8 @@
 }
 
 .btn-logout {
-  background: #1b1b1b; /* negro de la web */
-  color: #dbd9c3; /* beige de la web */
+  background: #1b1b1b; 
+  color: #dbd9c3; 
   border: none;
   padding: 0.75rem 1.5rem;
   border-radius: 6px;
@@ -113,7 +108,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(27, 27, 27, 0.8); /* negro con transparencia */
+  background: rgba(27, 27, 27, 0.8); 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -122,7 +117,7 @@
 }
 
 .project-form-modal {
-  background: #dbd9c3; /* beige de la web */
+  background: #dbd9c3; 
   border-radius: 12px;
   max-width: 600px;
   width: 100%;
@@ -209,7 +204,7 @@
 .form-group select:focus,
 .form-group textarea:focus {
   outline: none;
-  border-color: #e5ff70; /* fluor al hacer focus */
+  border-color: #e5ff70; 
   background: #dbd9c3;
 }
 
@@ -310,7 +305,7 @@
 }
 
 .btn-save {
-  background: #e5ff70; /* fluor de la web */
+  background: #e5ff70; 
   color: #1b1b1b;
 }
 
@@ -351,7 +346,7 @@
 }
 
 .project-item:hover {
-  border-color: #e5ff70; /* fluor al hover */
+  border-color: #e5ff70; 
   box-shadow: 0 4px 12px rgba(27, 27, 27, 0.1);
 }
 
@@ -380,7 +375,7 @@
 }
 
 .status.finished {
-  background: #e5ff70; /* fluor de la web */
+  background: #e5ff70; 
   color: #1b1b1b;
 }
 
@@ -416,7 +411,7 @@
 }
 
 .btn-delete {
-  background: #8b0000; /* rojo oscuro para eliminar */
+  background: #8b0000; 
   color: #dbd9c3;
 }
 
@@ -427,7 +422,7 @@
 /* ===== RESPONSIVE ===== */
 @media (max-width: 768px) {
   .admin-page {
-    padding-top: 140px; /* Más espacio para el header en móvil */
+    padding-top: 140px; 
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 2rem;
@@ -442,16 +437,16 @@
 
   .admin-header h1 {
     font-size: 1.5rem;
-    order: 1; /* Título primero en móvil */
+    order: 1; 
   }
 
   .btn-back-portfolio {
-    order: 2; /* Botón después del título */
+    order: 2; 
     font-size: 0.8rem;
   }
 
   .btn-add-project {
-    order: 3; /* Botón de añadir al final */
+    order: 3; 
   }
 
   .project-item {
