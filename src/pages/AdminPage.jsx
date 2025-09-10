@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { projects } from "../data/projects";
-import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer } from "../utils/adminApi";
+import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, loadProjectsFromServer, listBackups, restoreProjectFromBackup, deleteBackup, createManualBackup } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
@@ -32,6 +32,9 @@ const AdminPage = () => {
     poster: false,
     demo: false
   });
+  const [showBackupModal, setShowBackupModal] = useState(false);
+  const [backups, setBackups] = useState([]);
+  const [loadingBackups, setLoadingBackups] = useState(false);
 
   // Verificar autenticación al cargar el componente
   useEffect(() => {
@@ -251,14 +254,97 @@ const AdminPage = () => {
   const handleDelete = async (projectId, category) => {
     if (window.confirm('Estàs segur que vols eliminar aquest projecte?')) {
       try {
+        const projectToDelete = projectsData[category].find(p => p.id === projectId);
         const updatedProjects = { ...projectsData };
         updatedProjects[category] = updatedProjects[category].filter(p => p.id !== projectId);
+        
         setProjectsData(updatedProjects);
-        await saveProjectsToFile(updatedProjects);
-        alert('Projecte eliminat correctament');
+        
+        // Enviar información del proyecto eliminado para crear backup
+        const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/save-projects', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
+          },
+          body: JSON.stringify({ 
+            projects: updatedProjects,
+            deletedProject: projectToDelete 
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al eliminar el proyecto');
+        }
+
+        const result = await response.json();
+        
+        let message = 'Projecte eliminat correctament';
+        if (result.backup?.created) {
+          message += `\nBackup creat: ${result.backup.backupId}`;
+        }
+        
+        alert(message);
       } catch (error) {
         alert('Error en eliminar el projecte: ' + error.message);
       }
+    }
+  };
+
+  // Funciones para gestionar backups
+  const loadBackups = async () => {
+    setLoadingBackups(true);
+    try {
+      const response = await listBackups();
+      setBackups(response.backups || []);
+    } catch (error) {
+      alert('Error carregant backups: ' + error.message);
+    } finally {
+      setLoadingBackups(false);
+    }
+  };
+
+  const handleShowBackups = async () => {
+    setShowBackupModal(true);
+    await loadBackups();
+  };
+
+  const handleRestoreBackup = async (backupId, projectTitle) => {
+    if (window.confirm(`Estàs segur que vols restaurar el projecte "${projectTitle}"?`)) {
+      try {
+        const response = await restoreProjectFromBackup(backupId);
+        
+        // Recargar proyectos desde el servidor para obtener la versión actualizada
+        const projectsResponse = await loadProjectsFromServer();
+        setProjectsData(projectsResponse.projects);
+        
+        alert(`Projecte "${projectTitle}" restaurat correctament`);
+        setShowBackupModal(false);
+      } catch (error) {
+        alert('Error restaurant el backup: ' + error.message);
+      }
+    }
+  };
+
+  const handleDeleteBackup = async (backupId, projectTitle) => {
+    if (window.confirm(`Estàs segur que vols eliminar el backup de "${projectTitle}"?`)) {
+      try {
+        await deleteBackup(backupId);
+        alert('Backup eliminat correctament');
+        await loadBackups(); // Recargar lista
+      } catch (error) {
+        alert('Error eliminant el backup: ' + error.message);
+      }
+    }
+  };
+
+  const handleCreateManualBackup = async (project) => {
+    try {
+      const response = await createManualBackup(project);
+      alert(`Backup manual creat per "${project.title}"`);
+      await loadBackups(); // Recargar lista
+    } catch (error) {
+      alert('Error creant backup manual: ' + error.message);
     }
   };
 
@@ -298,6 +384,13 @@ const AdminPage = () => {
               onClick={() => setShowForm(true)}
             >
               + Afegir Projecte
+            </button>
+            <button 
+              className="btn-backup-history"
+              onClick={handleShowBackups}
+              title="Veure historial de backups"
+            >
+              Historial
             </button>
             <button 
               className="btn-logout"
@@ -613,6 +706,83 @@ const AdminPage = () => {
             ))}
           </div>
         </div>
+
+        {/* Modal de Historial de Backups */}
+        {showBackupModal && (
+          <div className="modal-overlay">
+            <div className="backup-modal">
+              <div className="modal-header">
+                <h2>HISTORIAL DE BACKUPS</h2>
+                <button className="btn-close" onClick={() => setShowBackupModal(false)}>×</button>
+              </div>
+
+              <div className="backup-modal-content">
+                {loadingBackups ? (
+                  <div className="loading-backups">
+                    <p>Carregant backups...</p>
+                  </div>
+                ) : backups.length === 0 ? (
+                  <div className="no-backups">
+                    <p>No hi ha backups disponibles</p>
+                  </div>
+                ) : (
+                  <div className="backups-list">
+                    {backups.map(backup => (
+                      <div key={backup.id} className="backup-item">
+                        <div className="backup-info">
+                          <h3>{backup.project.title}</h3>
+                          <div className="backup-details">
+                            <span className="backup-date">
+                              {new Date(backup.timestamp).toLocaleString('ca-ES')}
+                            </span>
+                            <span className={`backup-operation operation-${backup.operation}`}>
+                              {backup.operation === 'delete' ? 'Eliminació' : 
+                               backup.operation === 'manual' ? 'Manual' : 'Actualització'}
+                            </span>
+                            <span className={`backup-files ${backup.hasFiles ? 'has-files' : 'no-files'}`}>
+                              {backup.hasFiles ? 'Amb arxius' : 'Només metadades'}
+                            </span>
+                          </div>
+                          <p className="backup-description">{backup.project.description}</p>
+                        </div>
+                        <div className="backup-actions">
+                          <button 
+                            onClick={() => handleRestoreBackup(backup.id, backup.project.title)}
+                            className="btn-restore"
+                            title="Restaurar aquest projecte"
+                          >
+                            Restaurar
+                          </button>
+                          <button 
+                            onClick={() => handleCreateManualBackup(backup.project)}
+                            className="btn-backup"
+                            title="Crear backup manual d'aquest projecte"
+                          >
+                            Backup
+                          </button>
+                          <button 
+                            onClick={() => handleDeleteBackup(backup.id, backup.project.title)}
+                            className="btn-delete-backup"
+                            title="Eliminar aquest backup"
+                          >
+                            Eliminar
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="backup-modal-footer">
+                <p className="backup-info-text">
+                  Els backups es creen automàticament quan elimines projectes. 
+                  Es mantenen {backups.length > 0 ? `${Math.min(10, backups.length)}` : '10'} backups màxim.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </>
   );

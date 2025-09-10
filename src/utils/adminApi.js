@@ -132,4 +132,123 @@ export const uploadDemo = async (file, slug) => {
   }
 };
 
+// ===== FUNCIONES DE BACKUP =====
+
+// Función para listar todos los backups
+export const listBackups = async () => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/backups', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Error al cargar los backups');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Función para restaurar un proyecto desde backup
+export const restoreProjectFromBackup = async (backupId) => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`https://portfolio-admin-server-76sn.onrender.com/api/admin/backups/${backupId}/restore`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al restaurar el backup');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Función para eliminar un backup específico
+export const deleteBackup = async (backupId) => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch(`https://portfolio-admin-server-76sn.onrender.com/api/admin/backups/${backupId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al eliminar el backup');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Función para crear backup manual de un proyecto
+export const createManualBackup = async (project) => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/backups/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({ project }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al crear el backup');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
+// Función para limpiar backups antiguos manualmente
+export const cleanupOldBackups = async () => {
+  try {
+    const token = localStorage.getItem('adminToken');
+    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/backups/cleanup', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Error al limpiar los backups');
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error:', error);
+    throw error;
+  }
+};
+
 // NOTA: La generación del contenido de projects.js se hace en el servidor (server.js)
