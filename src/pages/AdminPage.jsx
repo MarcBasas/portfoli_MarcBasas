@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Helmet } from "react-helmet-async";
 import { useProjects } from "../contexts/ProjectsContext";
-import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, listBackups, restoreProjectFromBackup, deleteBackup, createManualBackup } from "../utils/adminApi";
+import { saveProjectsToFile, uploadImage, uploadVideo, uploadDemo, listBackups, restoreProjectFromBackup } from "../utils/adminApi";
 import AdminLogin from "../components/AdminLogin";
 import "./AdminPage.css";
 
@@ -414,27 +414,7 @@ const AdminPage = () => {
     }
   };
 
-  const handleDeleteBackup = async (backupId, projectTitle) => {
-    if (window.confirm(`Estàs segur que vols eliminar el backup de "${projectTitle}"?`)) {
-      try {
-        await deleteBackup(backupId);
-        alert('Backup eliminat correctament');
-        await loadBackups(); // Recargar lista
-      } catch (error) {
-        alert('Error eliminant el backup: ' + error.message);
-      }
-    }
-  };
-
-  const handleCreateManualBackup = async (project) => {
-    try {
-      const response = await createManualBackup(project);
-      alert(`Backup manual creat per "${project.title}"`);
-      await loadBackups(); // Recargar lista
-    } catch (error) {
-      alert('Error creant backup manual: ' + error.message);
-    }
-  };
+  // Funciones de backup eliminadas - solo mantenemos handleRestoreBackup
 
 
 
@@ -841,40 +821,31 @@ const AdminPage = () => {
                         <div className="backup-info">
                           <h3>{backup.project.title}</h3>
                           <div className="backup-details">
-                            <span className="backup-date">
-                              {new Date(backup.timestamp).toLocaleString('ca-ES')}
-                            </span>
-                            <span className={`backup-operation operation-${backup.operation}`}>
-                              {backup.operation === 'delete' ? 'Eliminació' : 
-                               backup.operation === 'manual' ? 'Manual' : 'Actualització'}
-                            </span>
-                            <span className={`backup-files ${backup.hasFiles ? 'has-files' : 'no-files'}`}>
-                              {backup.hasFiles ? 'Amb arxius' : 'Només metadades'}
-                            </span>
+                            <div className="backup-detail-row">
+                              <span className="backup-date">
+                                {new Date(backup.timestamp).toLocaleString('ca-ES')}
+                              </span>
+                            </div>
+                            <div className="backup-detail-row">
+                              <span className={`backup-operation operation-${backup.operation}`}>
+                                {backup.operation === 'delete' ? 'Eliminació' : 
+                                 backup.operation === 'manual' ? 'Manual' : 'Actualització'}
+                              </span>
+                            </div>
+                            <div className="backup-detail-row">
+                              <span className={`backup-files ${backup.hasFiles ? 'has-files' : 'no-files'}`}>
+                                {backup.hasFiles ? 'Amb arxius' : 'Només metadades'}
+                              </span>
+                            </div>
                           </div>
-                          <p className="backup-description">{backup.project.description}</p>
                         </div>
                         <div className="backup-actions">
                           <button 
                             onClick={() => handleRestoreBackup(backup.id, backup.project.title)}
-                            className="btn-restore"
+                            className="btn-restore-only"
                             title="Restaurar aquest projecte"
                           >
-                            Restaurar
-                          </button>
-                          <button 
-                            onClick={() => handleCreateManualBackup(backup.project)}
-                            className="btn-backup"
-                            title="Crear backup manual d'aquest projecte"
-                          >
-                            Backup
-                          </button>
-                          <button 
-                            onClick={() => handleDeleteBackup(backup.id, backup.project.title)}
-                            className="btn-delete-backup"
-                            title="Eliminar aquest backup"
-                          >
-                            Eliminar
+                            RESTAURAR
                           </button>
                         </div>
                       </div>

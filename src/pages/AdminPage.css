@@ -603,9 +603,14 @@
 
 .backup-details {
   display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.5rem;
   margin-bottom: 0.75rem;
+}
+
+.backup-detail-row {
+  display: flex;
+  align-items: center;
 }
 
 .backup-date {
@@ -678,48 +683,28 @@
   min-width: 120px;
 }
 
-.btn-restore,
-.btn-backup,
-.btn-delete-backup {
-  padding: 0.5rem 1rem;
+.btn-restore-only {
+  padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 6px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: center;
+  text-transform: uppercase;
+  background: #1b1b1b;
+  color: #dbd9c3;
+  letter-spacing: 0.5px;
 }
 
-.btn-restore {
-  background: #4caf50;
-  color: white;
+.btn-restore-only:hover {
+  background: #333;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(27, 27, 27, 0.3);
 }
 
-.btn-restore:hover {
-  background: #45a049;
-  transform: translateY(-1px);
-}
-
-.btn-backup {
-  background: #2196f3;
-  color: white;
-}
-
-.btn-backup:hover {
-  background: #1976d2;
-  transform: translateY(-1px);
-}
-
-.btn-delete-backup {
-  background: #f44336;
-  color: white;
-}
-
-.btn-delete-backup:hover {
-  background: #d32f2f;
-  transform: translateY(-1px);
-}
+/* Estilos de botones antiguos eliminados - solo queda btn-restore-only */
 
 .backup-modal-footer {
   background: rgba(27, 27, 27, 0.05);
@@ -753,15 +738,10 @@
     min-width: auto;
   }
 
-  .btn-restore,
-  .btn-backup,
-  .btn-delete-backup {
-    flex: 1;
-  }
-
-  .backup-details {
-    flex-direction: column;
-    gap: 0.5rem;
+  .btn-restore-only {
+    width: 100%;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
   }
 
   .admin-header-actions {
