@@ -24,8 +24,8 @@ export const loadProjects = async (forceRefresh = false) => {
   try {
     console.log('CARGANDO PROYECTOS DESDE SERVIDOR...');
     
-    // Intentar cargar desde el servidor
-    const response = await fetch(`${ADMIN_SERVER_URL}/api/admin/load-projects?t=${Date.now()}`, {
+    // Intentar cargar desde el servidor (endpoint público)
+    const response = await fetch(`${ADMIN_SERVER_URL}/api/projects?t=${Date.now()}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
