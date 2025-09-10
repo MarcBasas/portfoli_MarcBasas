@@ -8,7 +8,7 @@ import "./AdminPage.css";
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [token, setToken] = useState(null);
-  const { projects, refresh: refreshProjects, refreshAfterAdminChange } = useProjects();
+  const { projects, refreshAfterAdminChange } = useProjects();
   const [projectsData, setProjectsData] = useState(projects);
   const [showForm, setShowForm] = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -92,7 +92,7 @@ const AdminPage = () => {
     try {
       // Los proyectos ahora se cargan automáticamente a través del contexto
       // Simplemente refrescar el contexto global
-      await refreshProjects();
+      await refreshAfterAdminChange();
       console.log('PROYECTOS REFRESCADOS DESDE CONTEXTO EN ADMIN');
     } catch (error) {
       console.error('Error refrescando proyectos:', error);
@@ -404,7 +404,7 @@ const AdminPage = () => {
         const response = await restoreProjectFromBackup(backupId);
         
         // Refrescar proyectos desde el contexto para obtener la versión actualizada
-        await refreshProjects();
+        await refreshAfterAdminChange();
         
         alert(`Projecte "${projectTitle}" restaurat correctament`);
         setShowBackupModal(false);
@@ -467,26 +467,6 @@ const AdminPage = () => {
           <a href="/" className="btn-back-portfolio">← TORNAR AL PORTFOLIO</a>
           <h1>PANELL D'ADMINISTRACIÓ</h1>
           <div className="admin-header-actions">
-            <button 
-              className="btn-refresh-projects"
-              onClick={() => refreshProjects()}
-              title="Refrescar proyectos desde el servidor"
-            >
-              REFRESCAR
-            </button>
-            <button 
-              className="btn-test-sync"
-              onClick={() => {
-                console.log('ESTADO ACTUAL DE PROYECTOS:', {
-                  admin: { web: projectsData.web?.length, games: projectsData.games?.length },
-                  contexto: { web: projects.web?.length, games: projects.games?.length }
-                });
-                refreshAfterAdminChange();
-              }}
-              title="Test sincronización"
-            >
-              TEST
-            </button>
             <button 
               className="btn-backup-history"
               onClick={handleShowBackups}
