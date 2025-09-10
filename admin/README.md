@@ -209,11 +209,15 @@ POST /api/auth/logout         # Logout (client-side)
 
 ### Administración (Requiere autenticación)
 ```
-GET  /api/admin/load-projects        # Cargar proyectos
 POST /api/admin/save-projects        # Guardar proyectos
 POST /api/admin/upload-image         # Subir imagen
 POST /api/admin/upload-video         # Subir video
 POST /api/admin/upload-demo          # Subir archivo demo
+```
+
+### Público (Sin autenticación)
+```
+GET  /api/projects                   # Cargar proyectos (público)
 ```
 
 ### Sistema de Backup (Requiere autenticación)

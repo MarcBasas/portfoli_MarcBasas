@@ -1,24 +1,4 @@
-// Función para cargar proyectos desde el servidor
-export const loadProjectsFromServer = async () => {
-  try {
-    const token = localStorage.getItem('adminToken');
-    const response = await fetch('https://portfolio-admin-server-76sn.onrender.com/api/admin/load-projects', {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Error al cargar los proyectos');
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error:', error);
-    throw error;
-  }
-};
+// Los proyectos se cargan a través del contexto desde /api/projects
 
 // Utilidad para manejar las operaciones de administración
 export const saveProjectsToFile = async (projectsData) => {
