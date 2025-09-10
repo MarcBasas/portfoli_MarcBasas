@@ -56,38 +56,19 @@ const ProjectPage = () => {
     const allProjects = [...projects.web, ...projects.games];
     const foundProject = allProjects.find((p) => p.slug === slug);
     console.log('ProjectPage: Project found for slug', slug, ':', foundProject?.title);
-    console.log('ProjectPage: projects reference changed:', projects);
     return foundProject;
   }, [slug, projects]);
 
   // Crear una versión estable del proyecto para evitar re-renders innecesarios del LiveEditor
   const stableProject = useMemo(() => {
-    console.log('ProjectPage: stableProject useMemo triggered');
-    console.log('ProjectPage: project data:', {
-      id: project?.id,
-      title: project?.title,
-      hasFiles: !!project?.files,
-      htmlLength: project?.files?.html?.length,
-      cssLength: project?.files?.css?.length,
-      jsLength: project?.files?.js?.length,
-      slug: project?.slug,
-      category: project?.category
-    });
-    
-    if (!project) {
-      console.log('ProjectPage: project is null, returning null stableProject');
-      return null;
-    }
+    if (!project) return null;
     
     // Solo crear un nuevo objeto si realmente cambió el contenido
-    const stable = {
+    return {
       ...project,
       // Asegurar que las propiedades clave sean estables
       files: project.files ? { ...project.files } : undefined
     };
-    
-    console.log('ProjectPage: created new stableProject:', stable.title);
-    return stable;
   }, [
     project?.id, 
     project?.title, 
