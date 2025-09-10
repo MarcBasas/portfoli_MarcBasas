@@ -21,6 +21,7 @@ export const loadProjects = async (forceRefresh = false) => {
   }
 
   try {
+    console.log('DEBUG: Intentando cargar proyectos desde servidor...');
     // Intentar cargar desde el servidor (endpoint público)
     const response = await fetch(`${ADMIN_SERVER_URL}/api/projects?t=${Date.now()}`, {
       method: 'GET',
@@ -39,6 +40,7 @@ export const loadProjects = async (forceRefresh = false) => {
 
     // Obtener el código JavaScript del servidor
     const jsCode = await response.text();
+    console.log('DEBUG: Código recibido del servidor, longitud:', jsCode.length);
     
     // Crear un módulo temporal para evaluar el código
     const module = { exports: {} };
@@ -47,12 +49,15 @@ export const loadProjects = async (forceRefresh = false) => {
     // Evaluar el código JavaScript de manera segura
     const evalCode = jsCode.replace(/import\s+.*?from\s+.*?;?\n?/g, ''); // Remover imports
     const projectsMatch = evalCode.match(/export const projects = ({[\s\S]*?});/);
+    console.log('DEBUG: Match encontrado:', !!projectsMatch);
     
     if (projectsMatch) {
+      console.log('DEBUG: Cargando demos...');
       // Usar los demos estáticos como fallback
       const { cinevisionDemo } = await import('./demos/cinevision-demo');
       const { crealabDemo } = await import('./demos/crealab-demo');  
       const { portfolioDemo } = await import('./demos/portfolio-demo');
+      console.log('DEBUG: Demos cargados exitosamente');
       
       // Evaluar el código con el contexto de los demos
       const projectsData = new Function('BASE', 'portfolioDemo', 'cinevisionDemo', 'crealabDemo', 'return ' + projectsMatch[1])(
@@ -61,6 +66,11 @@ export const loadProjects = async (forceRefresh = false) => {
         cinevisionDemo, 
         crealabDemo
       );
+      
+      console.log('DEBUG: Proyectos procesados:', {
+        web: projectsData.web?.length,
+        games: projectsData.games?.length
+      });
       
       // Actualizar cache
       cachedProjects = projectsData;
