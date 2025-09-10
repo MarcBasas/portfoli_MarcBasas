@@ -55,7 +55,6 @@ const ProjectPage = () => {
   const project = useMemo(() => {
     const allProjects = [...projects.web, ...projects.games];
     const foundProject = allProjects.find((p) => p.slug === slug);
-    console.log('ProjectPage: Project found for slug', slug, ':', foundProject?.title);
     return foundProject;
   }, [slug, projects]);
 
