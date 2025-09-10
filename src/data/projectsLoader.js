@@ -12,16 +12,13 @@ const CACHE_DURATION = 5 * 60 * 1000; // 5 minutos
 /**
  * Carga proyectos dinámicamente desde el servidor con fallback estático
  * @param {boolean} forceRefresh - Forzar actualización ignorando cache
- * @returns {Promise<Object>} Objeto con { projects, source }
+ * @returns {Promise<Object>} Objeto con proyectos web y games
  */
 export const loadProjects = async (forceRefresh = false) => {
   // Si hay cache válido y no se fuerza refresh, usar cache
   if (!forceRefresh && cachedProjects && (Date.now() - lastFetchTime) < CACHE_DURATION) {
     console.log('USANDO PROYECTOS DESDE CACHE');
-    return {
-      projects: cachedProjects,
-      source: 'cache'
-    };
+    return cachedProjects;
   }
 
   try {
@@ -56,34 +53,24 @@ export const loadProjects = async (forceRefresh = false) => {
       cachedProjects = data.projects;
       lastFetchTime = Date.now();
       
-      return {
-        projects: data.projects,
-        source: 'server'
-      };
+      return data.projects;
     } else {
       throw new Error('Respuesta del servidor inválida');
     }
 
   } catch (error) {
-    console.warn('ERROR CARGANDO DESDE SERVIDOR, USANDO FALLBACK:', error.message);
+    console.warn('ERROR CARGANDO DESDE SERVIDOR, USANDO FALLBACK ESTÁTICO:', error.message);
     
     // Usar proyectos estáticos como fallback solo si no hay cache
     if (!cachedProjects) {
-      console.log('USANDO FALLBACK ESTÁTICO');
       cachedProjects = staticProjects;
       lastFetchTime = Date.now();
-      return {
-        projects: staticProjects,
-        source: 'static'
-      };
+      return staticProjects;
     }
     
     // Si hay cache, usarlo aunque sea viejo
     console.log('USANDO CACHE EXISTENTE DEBIDO A ERROR DE SERVIDOR');
-    return {
-      projects: cachedProjects,
-      source: 'cache'
-    };
+    return cachedProjects;
   }
 };
 

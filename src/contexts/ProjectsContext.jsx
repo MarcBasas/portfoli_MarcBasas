@@ -20,41 +20,56 @@ export const ProjectsProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [isFromServer, setIsFromServer] = useState(false);
-  const [dataSource, setDataSource] = useState('static'); // 'static', 'server', 'cache'
 
   // Función para cargar proyectos
   const loadProjectsData = async (forceRefresh = false) => {
-    console.log('CARGANDO PROYECTOS - forceRefresh:', forceRefresh);
     setLoading(true);
     setError(null);
     
     try {
-      const result = await loadProjects(forceRefresh);
+      const projectsData = await loadProjects(forceRefresh);
       
-      // loadProjects ahora retorna { projects, source }
-      const projectsData = result.projects || result;
-      const source = result.source || 'unknown';
-      
-      console.log('PROYECTOS CARGADOS - source:', source, 'proyectos:', {
-        web: projectsData.web?.length || 0,
-        games: projectsData.games?.length || 0
+      // Solo actualizar si los datos realmente cambiaron
+      setProjects(prevProjects => {
+        // Comparación básica para evitar re-renders innecesarios
+        const prevJson = JSON.stringify(prevProjects);
+        const newJson = JSON.stringify(projectsData);
+        
+        if (prevJson === newJson) {
+          console.log('ProjectsContext: Los datos son iguales, evitando re-render');
+          return prevProjects; // Mantener la referencia anterior
+        }
+        
+        console.log('ProjectsContext: Datos diferentes, actualizando projects');
+        console.log('ProjectsContext: Previous projects count - web:', prevProjects?.web?.length, 'games:', prevProjects?.games?.length);
+        console.log('ProjectsContext: New projects count - web:', projectsData?.web?.length, 'games:', projectsData?.games?.length);
+        
+        // Comparar específicamente el proyecto que nos interesa (crealab)
+        const prevCrealab = prevProjects?.web?.find(p => p.slug === 'crealab');
+        const newCrealab = projectsData?.web?.find(p => p.slug === 'crealab');
+        
+        if (prevCrealab && newCrealab) {
+          console.log('ProjectsContext: Crealab comparison:');
+          console.log('  - Previous ID:', prevCrealab.id, 'Title:', prevCrealab.title);
+          console.log('  - New ID:', newCrealab.id, 'Title:', newCrealab.title);
+          console.log('  - Files changed:', 
+            prevCrealab.files?.html !== newCrealab.files?.html ||
+            prevCrealab.files?.css !== newCrealab.files?.css ||
+            prevCrealab.files?.js !== newCrealab.files?.js
+          );
+        }
+        
+        return projectsData;
       });
       
-      setProjects(projectsData);
-      setDataSource(source);
-      
-      // Mejorar la lógica de detección del servidor
-      const fromServer = source === 'server' || source === 'cache';
-      setIsFromServer(fromServer);
-      
-      console.log('ESTADO ACTUALIZADO - isFromServer:', fromServer, 'dataSource:', source);
+      // Determinar si los datos vienen del servidor o son estáticos
+      setIsFromServer(projectsData !== staticProjects);
       
     } catch (err) {
       console.error('Error cargando proyectos:', err);
       setError(err.message);
       // En caso de error, mantener los proyectos estáticos
       setProjects(staticProjects);
-      setDataSource('static');
       setIsFromServer(false);
     } finally {
       setLoading(false);
@@ -89,7 +104,6 @@ export const ProjectsProvider = ({ children }) => {
     loading,
     error,
     isFromServer,
-    dataSource,
     refresh,
     refreshAfterAdminChange,
     // Funciones de utilidad
