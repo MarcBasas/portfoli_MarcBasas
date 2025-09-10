@@ -392,10 +392,18 @@ app.post('/api/admin/save-projects', authenticateToken, async (req, res) => {
       console.warn('No se pudo leer directorio de demos:', error.message);
     }
     
+    // Mapear nombres de archivos a nombres de exportación
+    const fileToExportMap = {
+      'cinevision-demo': 'cinevisionDemo',
+      'crealab-demo': 'crealabDemo',
+      'portfolio-demo': 'portfolioDemo'
+    };
+    
     const imports = demoFiles
       .map(file => {
         const fileName = path.parse(file).name; // nombre sin extensión
-        return `import { ${fileName} } from './demos/${fileName}';`;
+        const exportName = fileToExportMap[fileName] || fileName;
+        return `import { ${exportName} } from './demos/${fileName}';`;
       })
       .join('\n');
 
@@ -465,13 +473,15 @@ app.post('/api/admin/save-projects', authenticateToken, async (req, res) => {
           });
           
           if (matchingImport) {
-            const demoReference = path.parse(matchingImport).name;
+            const fileName = path.parse(matchingImport).name;
+            const demoReference = fileToExportMap[fileName] || fileName;
             lines.push(`      files: ${demoReference},`);
             console.log(`CONVERTIDO objeto serializado a referencia: ${demoReference} para proyecto ${project.title}`);
           } else {
             console.warn(`No se pudo encontrar referencia para proyecto ${project.title} (${project.slug}) - tiene contenido serializado`);
 
-            const fallbackDemo = demoFiles[0] ? path.parse(demoFiles[0]).name : 'ejemploDemo';
+            const fallbackFileName = demoFiles[0] ? path.parse(demoFiles[0]).name : 'ejemploDemo';
+            const fallbackDemo = fileToExportMap[fallbackFileName] || fallbackFileName;
             lines.push(`      files: ${fallbackDemo},`);
           }
         } else {
