@@ -10,7 +10,7 @@ const About = () => {
     <>
       <Helmet>
         {/* Título, descripción, autor*/}
-        <title>Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona</title>
+        <title>About | Marc Basas - Web Developer & Game Developer Barcelona</title>
         <meta 
           name="description" 
           content="Conoce a Marc Basas, programador web autónomo en Barcelona especializado en desarrollo frontend y fullstack. Experiencia en servicios de programación web para empresas, desarrollo de aplicaciones a medida y soluciones digitales. Freelancer con formación en desarrollo web y videojuegos."
@@ -22,7 +22,7 @@ const About = () => {
         <meta name="author" content="Marc Basas" />
 
         {/* Open Graph*/}
-        <meta property="og:title" content="Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona" />
+        <meta property="og:title" content="About | Marc Basas - Web Developer & Game Developer Barcelona" />
         <meta property="og:description" content="Conoce la experiencia y formación de Marc Basas, programador web autónomo en Barcelona. Especializado en desarrollo frontend y fullstack, con servicios de programación para empresas." />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://www.marcbasas.com/about" />
@@ -31,7 +31,7 @@ const About = () => {
 
         {/* Twitter*/}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Sobre Mí | Marc Basas - Programador Web Autónomo Barcelona" />
+        <meta name="twitter:title" content="About | Marc Basas - Web Developer & Game Developer Barcelona" />
         <meta name="twitter:description" content="Programador web autónomo en Barcelona con experiencia en desarrollo frontend y fullstack. Servicios de programación web para empresas y proyectos personalizados." />
         <meta name="twitter:url" content="https://www.marcbasas.com/about" />
 
@@ -60,19 +60,19 @@ const About = () => {
               id="about-title"
               itemProp="name"
             >
-              Sobre mí
+              About
             </h2>
             <p>
-              Soy un programador web autónomo con base en Barcelona, especializado en el desarrollo frontend y fullstack. Creo sitios web funcionales utilizando tecnologías fundamentales como HTML, CSS y JavaScript, además de herramientas modernas como React, Angular o Vue cuando aportan valor y eficiencia al proyecto.
+              I'm a freelance web developer based in Barcelona, specializing in frontend and fullstack development. I create functional websites using fundamental technologies like HTML, CSS, and JavaScript, along with modern tools like React, Angular, or Vue when they add value and efficiency to the project.
             </p>
             <p>
-              Como programador autónomo, me enfoco en ofrecer soluciones prácticas que ayuden a empresas y creativos a materializar sus proyectos.
+              As a freelance developer, I focus on providing practical solutions that help businesses and creatives materialize their projects.
             </p>
             <p>
-              En mi tiempo libre desarrollo pequeños juegos con Unity, Pygame o JavaScript puro por diversión.
+              In my free time, I develop small games with Unity, Pygame, or pure JavaScript for fun.
             </p>
             <p>
-              También trabajé durante dos años en una consultora. El primer año desarrollando sistemas backend en Java, y el segundo trabajando en aplicaciones web con React y Node.js a partir de diseños de Figma. Esta experiencia me consolidó como programador web antes de convertirme en freelance.
+              I also worked for two years at a consulting company. The first year I developed backend systems in Java, and the second year I worked on web applications with React and Node.js from Figma designs. This experience solidified me as a web developer before becoming a freelancer.
             </p>
           </section>
 
@@ -85,22 +85,30 @@ const About = () => {
               id="experience-title"
               itemProp="jobTitle"
             >
-              Formación y Experiencia
+              Education and Experience
             </h2>
             <p>
-              2024–2025, Actualmente trabajando como programador web autónomo en Barcelona.
+              2024–2025, Currently working as a freelance web developer in Barcelona.
             </p>
             <p>
               2023-2024, NTTDATA<br/>
-              Desarrollador Backend & Frontend. Experiencia que me preparó para mi carrera como programador autónomo.
+              Frontend Developer. <br/>
+              Developed web applications using React, JavaScript/TypeScript. 
+              Collaborated with design and backend teams to ensure seamless UX/UI.
             </p>
             <p>
-              2021–2023, Universitat Oberta de Catalunya<br/>
-              Máster en Diseño y Programación de Videojuegos.
+              2022-2023, NTTDATA<br/>
+              Backend Developer. <br/>
+              Built microservices with Spring Boot, Apache Kafka, and MongoDB.
+              Automated CI/CD pipelines with Jenkins for deployment.
+            </p>
+            <p>
+              2023–Present, Universitat Oberta de Catalunya<br/>
+              Master's Degree in Design and Programming of Video Games.
             </p>
             <p>
               2015 - 2019, Universitat de Vic<br/>
-              Grado en Multimedia. Aplicaciones y Videojuegos.
+              Bachelor’s Degree in Multimedia, Applications and Video Games.
             </p>
           </section>
         </div>

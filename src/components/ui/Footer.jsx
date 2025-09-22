@@ -46,7 +46,7 @@ const Footer = () => {
             aria-expanded={showContact}
             aria-controls="about-content"
             itemProp="name"
-          >CONTACTO</button>
+          >CONTACT</button>
         </div>
         <div 
           className="footer__right"
@@ -61,7 +61,7 @@ const Footer = () => {
               aria-label="Go to Home page - Marc Basas Portfolio"
               itemProp="url"
             >
-              INICIO
+              HOME
             </Link>
           ) : (
             <p 
@@ -94,9 +94,9 @@ const Footer = () => {
               className="visually-hidden"
               itemProp="name"
             >
-              Marc Basas - Contact Information - Portfolio Details - Web Developer - REACT Developer - FrontEnd Developer - Web Designer
+              Marc Basas - Contact Information - Portfolio Details - Web Developer - REACT Developer - FrontEnd Developer - Web Designer - Game Developer
             </h2>
-            <p itemProp="description">Para consultas y encargos:<br/>
+            <p itemProp="description">For inquiries and orders:<br/>
             <p><br/></p>
               <a 
                 href="mailto:marcbasasdev@gmail.com"
@@ -119,7 +119,7 @@ const Footer = () => {
                 https://github.com/MarcBasas <br />
               </a>
             </p>
-            <p itemProp="description">¡Gracias por visitar!</p>
+            <p itemProp="description">¡Thanks for visiting!</p>
           </div>
         </div>
       )}

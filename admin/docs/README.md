@@ -21,8 +21,8 @@ El sistema de administración permite gestionar de forma completa los proyectos 
 ```
 admin/
 ├── server/
-│   ├── server.js           # Servidor Express principal
-│   ├── package.json        # Dependencias del servidor
+│   ├── server.js          # Servidor Express principal
+│   ├── package.json       # Dependencias del servidor
 │   ├── Procfile           # Configuración para Render.com
 │   ├── render.yaml        # Configuración de despliegue
 │   └── .env               # Variables de entorno (crear manualmente)
@@ -51,7 +51,7 @@ SESSION_DURATION_HOURS=24
 PORT=3001
 ```
 
-**Generar JWT_SECRET seguro:**
+**Generación de JWT_SECRET seguro:**
 ```bash
 node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
 ```
@@ -320,6 +320,22 @@ El servidor muestra información detallada sobre:
 npm run check-server
 ```
 
+### Configuración Técnica del Servidor
+
+#### Multer Storage
+- **Imágenes/Videos:** Timestamp + nombre sanitizado
+- **Demos:** `{slug}-demo.js` en `src/data/demos/`
+
+#### CORS y Static Files
+- CORS habilitado para localhost:5173
+- Static serving: `/uploads` → `public/`
+
+#### Detección Automática de Demos
+El servidor escanea `src/data/demos/` y mapea:
+- `crealab-demo.js` → `crealabDemo`
+- `cinevision-demo.js` → `cinevisionDemo`
+- Conversión automática kebab-case → camelCase
+
 ## Despliegue en Producción
 
 ### Render.com
@@ -355,7 +371,7 @@ npm install --legacy-peer-deps
 
 #### Token Expirado
 - El token JWT expira automáticamente
-- Volver a hacer login con el PIN
+- Es necesario volver a hacer login con el PIN
 - Verificar configuración de `SESSION_DURATION_HOURS`
 
 #### Archivos No Se Suben
