@@ -141,7 +141,7 @@ const Landing = () => {
     <>
       <Helmet>
         {/* Título, descripción, autor*/}
-        <title>Marc Basas - Programador Web Autónomo Barcelona | Portfolio Frontend y Fullstack</title>
+        <title>Marc Basas - Web Developer & Game Developer Barcelona | Portfolio Frontend & Fullstack</title>
         <meta name="description" content="Portfolio de Marc Basas, programador web autónomo en Barcelona. Especializado en desarrollo frontend y fullstack, servicios de programación web para empresas y proyectos personalizados. Descubre mis proyectos de desarrollo web y aplicaciones interactivas." />
         <meta name="keywords" content="programador autonomo, programador web autonomo, programador barcelona, portfolio programador, desarrollo web barcelona, programador freelance barcelona, servicios programacion web, frontend barcelona, fullstack barcelona, proyectos web barcelona, Marc Basas, desarrollador independiente" />
         <meta name="author" content="Marc Basas" />

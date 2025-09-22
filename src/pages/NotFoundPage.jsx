@@ -8,8 +8,8 @@ const NotFoundPage = () => (
     <meta name="robots" content="noindex, nofollow" />
   </Helmet>
   <div className="notfound-container">
-    <h1 className="notfound-title">Página no encontrada</h1>
-    <p className="notfound-text">Lo siento, la página que buscas no existe o ha sido eliminada.</p>
+    <h1 className="notfound-title">Page not found</h1>
+    <p className="notfound-text">Sorry, the page you are looking for does not exist or has been deleted.</p>
   </div>  
   </>
 );
