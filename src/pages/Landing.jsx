@@ -37,6 +37,15 @@ const Landing = () => {
 
   // Actualizar proyectos visibles cuando cambien los datos
   useEffect(() => {
+    // Pausar ScrollSmoother temporalmente durante la actualización de proyectos
+    if (smootherRef.current && !isMobile) {
+      try {
+        smootherRef.current.paused(true);
+      } catch (error) {
+        console.warn('Error pausing ScrollSmoother:', error);
+      }
+    }
+
     const newWebProjects = [...projects.web, ...projects.web];
     const newGameProjects = [...projects.games, ...projects.games];
     const newMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
@@ -44,46 +53,85 @@ const Landing = () => {
     setVisibleWebProjects(newWebProjects);
     setVisibleGameProjects(newGameProjects);
     setVisibleMobileProjects(newMobileProjects);
-  }, [projects]);
+
+    // Reactivar ScrollSmoother después de un pequeño delay
+    if (smootherRef.current && !isMobile) {
+      setTimeout(() => {
+        try {
+          if (smootherRef.current) {
+            smootherRef.current.paused(false);
+          }
+        } catch (error) {
+          console.warn('Error resuming ScrollSmoother:', error);
+        }
+      }, 100);
+    }
+  }, [projects, isMobile]);
 
   useEffect(() => {
     if (isMobile) return; // No inicializar GSAP ni sincronización en móvil
-    // GSAP ScrollSmoother
-    if (!smootherRef.current) {
-      smootherRef.current = ScrollSmoother.create({
-        content: '#smooth-content-landing',
-        smooth: 1.2
-      });
-      // Hacer disponible globalmente para ScrollToTop
-      window.ScrollSmoother = ScrollSmoother;
-    }
-
-    // Sincronización de scroll
-    const panelA = leftColumnRef.current;
-    const panelB = rightColumnRef.current;
-
-    const sync = (source, target, flagSource, flagTarget) => {
-      if (!flagSource.current) {
-        flagTarget.current = true;
-        const pct = source.scrollTop / (source.scrollHeight - source.clientHeight);
-        target.scrollTop = pct * (target.scrollHeight - target.clientHeight);
-        flagTarget.current = false;
+    
+    // Delay para asegurar que el DOM esté completamente renderizado
+    const initTimer = setTimeout(() => {
+      // GSAP ScrollSmoother
+      if (!smootherRef.current) {
+        try {
+          // Verificar que los elementos existen antes de crear ScrollSmoother
+          const wrapper = document.getElementById('smooth-wrapper-landing');
+          const content = document.getElementById('smooth-content-landing');
+          
+          if (wrapper && content) {
+            smootherRef.current = ScrollSmoother.create({
+              content: '#smooth-content-landing',
+              smooth: 1.2,
+              normalizeScroll: true
+            });
+            // Hacer disponible globalmente para ScrollToTop
+            window.ScrollSmoother = ScrollSmoother;
+          }
+        } catch (error) {
+          console.warn('Error creating ScrollSmoother:', error);
+        }
       }
-    };
 
-    const handleScrollA = () => sync(panelA, panelB, syncingA, syncingB);
-    const handleScrollB = () => sync(panelB, panelA, syncingB, syncingA);
+      // Sincronización de scroll
+      const panelA = leftColumnRef.current;
+      const panelB = rightColumnRef.current;
 
-    panelA.addEventListener('scroll', handleScrollA, { passive: true });
-    panelB.addEventListener('scroll', handleScrollB, { passive: true });
+      if (panelA && panelB) {
+        const sync = (source, target, flagSource, flagTarget) => {
+          if (!flagSource.current && source && target) {
+            flagTarget.current = true;
+            const pct = source.scrollTop / (source.scrollHeight - source.clientHeight);
+            target.scrollTop = pct * (target.scrollHeight - target.clientHeight);
+            flagTarget.current = false;
+          }
+        };
+
+        const handleScrollA = () => sync(panelA, panelB, syncingA, syncingB);
+        const handleScrollB = () => sync(panelB, panelA, syncingB, syncingA);
+
+        panelA.addEventListener('scroll', handleScrollA, { passive: true });
+        panelB.addEventListener('scroll', handleScrollB, { passive: true });
+
+        // Cleanup function
+        return () => {
+          if (panelA) panelA.removeEventListener('scroll', handleScrollA);
+          if (panelB) panelB.removeEventListener('scroll', handleScrollB);
+        };
+      }
+    }, 100);
 
     return () => {
+      clearTimeout(initTimer);
       if (smootherRef.current) {
-        smootherRef.current.kill();
-        smootherRef.current = null;
+        try {
+          smootherRef.current.kill();
+          smootherRef.current = null;
+        } catch (error) {
+          console.warn('Error killing ScrollSmoother:', error);
+        }
       }
-      panelA.removeEventListener('scroll', handleScrollA);
-      panelB.removeEventListener('scroll', handleScrollB);
     };
   }, [isMobile]);
 
@@ -115,7 +163,7 @@ const Landing = () => {
       if (left) left.removeEventListener("scroll", handleLeftScroll);
       if (right) right.removeEventListener("scroll", handleRightScroll);
     };
-  }, [leftColumnRef, rightColumnRef, setVisibleWebProjects, setVisibleGameProjects, isMobile]);
+  }, [projects, isMobile]);
 
   // Scroll infinito para móvil
   useEffect(() => {

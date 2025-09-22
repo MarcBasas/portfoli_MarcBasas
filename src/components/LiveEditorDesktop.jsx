@@ -175,47 +175,61 @@ const LiveEditorDesktop = ({ project }) => {
     // Reset initialization when project changes
     initializedRef.current = false;
     
-    if (initializedRef.current) return;
-    initializedRef.current = true;
+    if (initializedRef.current || !project?.files) return;
     
-    const createEditor = (initialCode, language, parentId, ref) => {
-      const parentElement = document.getElementById(parentId);
-      if (!parentElement) {
-        console.error(`LiveEditor: parent element ${parentId} not found`);
-        return;
-      }
+    // Pequeño delay para asegurar que el DOM esté completamente listo
+    const initTimer = setTimeout(() => {
+      initializedRef.current = true;
       
-      const view = new EditorView({
-        state: EditorState.create({
-          doc: initialCode,
-          extensions: [
-            basicSetup,
-            language,
-            baseTheme,
-            EditorView.updateListener.of((v) => {
-              if (v.docChanged) updateIframe();
-            }),
-          ],
-        }),
-        parent: parentElement,
-      });
-      ref.current = view;
-    };
-    
-    createEditor(project.files.html, html(), "html-editor", htmlRef);
-    createEditor(project.files.css, css(), "css-editor", cssRef);
-    createEditor(project.files.js, javascript(), "js-editor", jsRef);
-    
-    setTimeout(updateIframe, 100);
+      const createEditor = (initialCode, language, parentId, ref) => {
+        const parentElement = document.getElementById(parentId);
+        if (!parentElement) {
+          console.error(`LiveEditor: parent element ${parentId} not found`);
+          return;
+        }
+        
+        // Limpiar contenido previo del contenedor
+        parentElement.innerHTML = '';
+        
+        const view = new EditorView({
+          state: EditorState.create({
+            doc: initialCode,
+            extensions: [
+              basicSetup,
+              language,
+              baseTheme,
+              EditorView.updateListener.of((v) => {
+                if (v.docChanged) updateIframe();
+              }),
+            ],
+          }),
+          parent: parentElement,
+        });
+        ref.current = view;
+      };
+      
+      createEditor(project.files.html || '', html(), "html-editor", htmlRef);
+      createEditor(project.files.css || '', css(), "css-editor", cssRef);
+      createEditor(project.files.js || '', javascript(), "js-editor", jsRef);
+      
+      setTimeout(updateIframe, 150);
+    }, 50);
 
     // Cleanup function to destroy editors when component unmounts
     return () => {
-      htmlRef.current?.destroy();
-      cssRef.current?.destroy();
-      jsRef.current?.destroy();
-      htmlRef.current = null;
-      cssRef.current = null;
-      jsRef.current = null;
+      clearTimeout(initTimer);
+      if (htmlRef.current) {
+        htmlRef.current.destroy();
+        htmlRef.current = null;
+      }
+      if (cssRef.current) {
+        cssRef.current.destroy();
+        cssRef.current = null;
+      }
+      if (jsRef.current) {
+        jsRef.current.destroy();
+        jsRef.current = null;
+      }
     };
   }, [project?.files?.html, project?.files?.css, project?.files?.js]);
 

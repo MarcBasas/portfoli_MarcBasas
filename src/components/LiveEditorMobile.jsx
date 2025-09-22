@@ -38,36 +38,41 @@ const LiveEditorMobile = ({ project }) => {
 
   const updateIframe = () => {
     const iframe = iframeRef.current;
-    if (!iframe) return;
-    iframe.src = 'about:blank';
-    setTimeout(() => {
-      const doc = iframe.contentDocument;
-      if (!doc) return;
-      const htmlContent = project.files.html || "";
-      const cssContent = project.files.css || "";
-      const jsContent = project.files.js || "";
-      const fullHtml = `
-        <html>
-          <head>
-            <meta charset=\"UTF-8\">
-            <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-            <style>
-              * { box-sizing: border-box; margin: 0; padding: 0; }
-              body { width: 100%; max-width: 100%; overflow-x: hidden; }
-              img { max-width: 100%; height: auto; }
-              ${cssContent}
-            </style>
-          </head>
-          <body>
-            ${htmlContent}
-            <script>${jsContent}<\/script>
-          </body>
-        </html>
-      `;
-      doc.open();
-      doc.write(fullHtml);
-      doc.close();
-    }, 10);
+    if (!iframe || !project?.files) return;
+    
+    try {
+      iframe.src = 'about:blank';
+      setTimeout(() => {
+        const doc = iframe.contentDocument;
+        if (!doc) return;
+        const htmlContent = project.files.html || "";
+        const cssContent = project.files.css || "";
+        const jsContent = project.files.js || "";
+        const fullHtml = `
+          <html>
+            <head>
+              <meta charset=\"UTF-8\">
+              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+              <style>
+                * { box-sizing: border-box; margin: 0; padding: 0; }
+                body { width: 100%; max-width: 100%; overflow-x: hidden; }
+                img { max-width: 100%; height: auto; }
+                ${cssContent}
+              </style>
+            </head>
+            <body>
+              ${htmlContent}
+              <script>${jsContent}<\/script>
+            </body>
+          </html>
+        `;
+        doc.open();
+        doc.write(fullHtml);
+        doc.close();
+      }, 10);
+    } catch (error) {
+      console.warn('LiveEditorMobile: Error updating iframe:', error);
+    }
   };
 
   useEffect(() => {
