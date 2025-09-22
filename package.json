@@ -32,8 +32,18 @@
     ],
     "removeStyleTags": false,
     "puppeteerArgs": [
-      "--no-sandbox"
-    ]
+      "--no-sandbox",
+      "--disable-features=VizDisplayCompositor",
+      "--disable-dev-shm-usage"
+    ],
+    "waitForSelector": "body",
+    "skipThirdPartyRequests": true,
+    "concurrency": 1,
+    "timeout": 30000,
+    "viewport": {
+      "width": 1200,
+      "height": 800
+    }
   },
   "dependencies": {
     "@babel/runtime": "^7.27.0",
