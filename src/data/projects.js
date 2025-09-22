@@ -16,7 +16,7 @@ export const projects = {
       titleMin: "Kumo Creative Project",
       slug: "kumo-creative-project",
       finished: true,
-      description:"Kumo Creative es una productora de videos. Para este proyecto, me pidieron ayudar con el desarrollo responsivo del sitio web. El sitio ya estaba construido, así que me enfoqué en hacer que se viera bien en todos los dispositivos.",
+      description:"Kumo Creative is a video production company. For this project, they asked me to help with the responsive development of the website. The site was already built, so I focused on making it look good on all devices.",
       previewImage: BASE + "img/LandingPreview_KumoCreative.webp",
       video: BASE + "vids/KumoCreativeProject.webm",
       poster: BASE + "vids/PosterKumoCreativeProject.webp",
@@ -30,7 +30,7 @@ export const projects = {
       titleMin: "Crealab",
       slug: "crealab",
       finished: true,
-      description:"Crealab es un estudio publicitario y de branding imaginario. Esta demo presenta una cuarícula infinita de proyectos, con modales para ver los detalles de cada uno. Es un sitio web mas creativo y diferente, pero simple al mismo tiempo",
+      description:"Crealab is an imaginary advertising and branding studio. This demo features an infinite grid of projects, with modals to view the details of each one. It's a more creative and different website, but simple at the same time",
       previewImage: BASE + "img/LandingPreview_Crealab.webp",
       files: crealabDemo,
       keywords: "Crealab, Crealab Project, Research, Development, Software, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Crealab Project Website, Crealab Project Website Demo, Crealab Project Website React, Crealab Project Website HTML, Crealab Project Website CSS, Crealab Project Website JavaScript"
@@ -42,7 +42,7 @@ export const projects = {
       titleMin: "CineVision Studios",
       slug: "cinevision-studios",
       finished: true,
-      description:"CineVision Studios es un estudio indie imaginario que produce películas y series. Esta es una demo de su sitio web donde puedes ver su código. Es un sitio web simple y clásico con datos necesarios para el cliente.",
+      description:"CineVision Studios is an imaginary indie studio that produces movies and series. This is a demo of their website where you can see their code. It's a simple and classic website with necessary data for the client.",
       previewImage: BASE + "img/LandingPreview_CineVision.webp",
       files: cinevisionDemo,
       keywords: "Video production, Videos, Movie Studio, Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, CineVision Studios, CineVision Studios Website, CineVision Studios Website Demo, CineVision Studios Website React, CineVision Studios Website HTML, CineVision Studios Website CSS, CineVision Studios Website JavaScript"
@@ -54,7 +54,7 @@ export const projects = {
       titleMin: "Portfolio",
       slug: "portfolio-demo",
       finished: true,
-      description:"Esta es una demo de un sitio web de portfolio. Las imágenes funcionan como un carrusel y los detalles se ocultan en un modal. Esta solución está basada en el portfolio de Esmeralda Devlin.",
+      description:"This is a demo of a portfolio website. The images work as a carousel and the details are hidden in a modal. This solution is based on Esmeralda Devlin's portfolio.",
       previewImage: BASE + "img/LandingPreview_Portfolio.webp",
       files: portfolioDemo,
       keywords: "Portfolio, Web Development, Responsive Design, HTML, CSS, JavaScript, React, Portfolio Demo, Portfolio Website, Portfolio Website Demo, Portfolio Website React, Portfolio Website HTML, Portfolio Website CSS, Portfolio Website JavaScript"
@@ -64,10 +64,10 @@ export const projects = {
     {
       id: 5,
       title: "CONSTELLATIONS",
-      titleMin: "Constelations",
+      titleMin: "Constellations",
       slug: "constellations",
       finished: true,
-      description:"Este pequeño juego de Pygame dibuja puntos en movimiento y conecta aquellos que están dentro de una cierta distancia. El usuario puede ajustar la velocidad, el número de puntos y la distancia de conexión. Con Pygbag, puede ejecutarse como una aplicación WebAssembly.",
+      description:"This small Pygame game draws moving points and connects those that are within a certain distance. The user can adjust the speed, number of points, and connection distance. With Pygbag, it can run as a WebAssembly application.",
       previewImage: BASE + "img/LandingPreview_Constellations.webp",
       video: BASE + "vids/ProjectVideo_Constellations.webm",
       poster: BASE + "img/LandingPreview_Constellations.webp",
@@ -81,7 +81,7 @@ export const projects = {
       titleMin: "ChessExcel",
       slug: "chessExcel",
       finished: true,
-      description:"Este juego de ajedrez basado en Excel desarrollado en VBA permite a los usuarios jugar ajedrez en un entorno diferente. Empaquetado como un libro de trabajo, intenta demostrar las capacidades de Excel.",
+      description:"This Excel-based chess game developed in VBA allows users to play chess in a different environment. Packaged as a workbook, it attempts to demonstrate Excel's capabilities.",
       previewImage: BASE + "img/LandingPreview_ChessExcel.webp",
       video: BASE + "vids/ChessExcell.webm",
       poster: BASE + "img/LandingPreview_ChessExcel.webp",
@@ -94,7 +94,7 @@ export const projects = {
       titleMin: "Hobo",
       slug: "hobo",
       finished: false,
-      description:"Hobo es un juego de plataformas 2D basado en Unity desarrollado en C# que genera procedimentalmente un mapa aleatorio en cada sesión, permite a los jugadores correr, saltar y navegar por plataformas para recoger todos los elementos de comida esparcidos por el nivel.",
+      description:"Hobo is a 2D platformer game based on Unity developed in C# that procedurally generates a random map in each session, allowing players to run, jump and navigate through platforms to collect all the food items scattered throughout the level.",
       previewImage: BASE + "img/LandingPreview_Hobo.webp",
       keywords: "Unity, C#, Game, Portfolio, Video Game, Games Development, Hobo, Unity C#, Unity C# Game, Unity C# Hobo, map generation, random map, platformer, 2D platformer"
     }

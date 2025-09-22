@@ -16,7 +16,7 @@ import ExternalLinkIcon from "../components/ExternalLinkIcon";
 const componentModules = import.meta.glob("../components/projectComponents/*.{jsx,js}");
 
 const LoadingFallback = () => (
-  <div className="loading-fallback">Cargando componente…</div>
+  <div className="loading-fallback">Loading component…</div>
 );
 
 const ProjectLink = ({ url }) => (
@@ -26,7 +26,7 @@ const ProjectLink = ({ url }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Visita la web <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+    Visit the web <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 
@@ -41,7 +41,7 @@ const ProjectGitLink = ({ git }) => (
     rel="noopener noreferrer"
     className="project-link"
   >
-    Aquí está el código en GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
+    Here is the code in GitHub <ExternalLinkIcon style={{ marginLeft: 4, verticalAlign: 'middle' }} />
   </a>
 );
 
@@ -58,14 +58,12 @@ const ProjectPage = () => {
     return foundProject;
   }, [slug, projects]);
 
-  // Crear una versión estable del proyecto para evitar re-renders innecesarios del LiveEditor
   const stableProject = useMemo(() => {
     if (!project) return null;
     
-    // Solo crear un nuevo objeto si realmente cambió el contenido
+
     return {
       ...project,
-      // Asegurar que las propiedades clave sean estables
       files: project.files ? { ...project.files } : undefined
     };
   }, [
