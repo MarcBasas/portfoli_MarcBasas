@@ -3,12 +3,7 @@ import { Helmet } from "react-helmet-async";
 import ProjectCard from "../components/ProjectCard";
 import { useProjects } from "../contexts/ProjectsContext";
 import "./Landing.css";
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import useIsMobile from "../utils/UseIsMobile";
-
-gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
 /**
  * Componente Landing que muestra los proyectos en dos columnas con scroll infinito
@@ -19,7 +14,6 @@ gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 const Landing = () => {
   const leftColumnRef = useRef(null);
   const rightColumnRef = useRef(null);
-  const smootherRef = useRef(null);
   const syncingA = useRef(false);
   const syncingB = useRef(false);
   const isMobile = useIsMobile();
@@ -37,15 +31,6 @@ const Landing = () => {
 
   // Actualizar proyectos visibles cuando cambien los datos
   useEffect(() => {
-    // Pausar ScrollSmoother temporalmente durante la actualización de proyectos
-    if (smootherRef.current && !isMobile) {
-      try {
-        smootherRef.current.paused(true);
-      } catch (error) {
-        console.warn('Error pausing ScrollSmoother:', error);
-      }
-    }
-
     const newWebProjects = [...projects.web, ...projects.web];
     const newGameProjects = [...projects.games, ...projects.games];
     const newMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
@@ -53,47 +38,13 @@ const Landing = () => {
     setVisibleWebProjects(newWebProjects);
     setVisibleGameProjects(newGameProjects);
     setVisibleMobileProjects(newMobileProjects);
-
-    // Reactivar ScrollSmoother después de un pequeño delay
-    if (smootherRef.current && !isMobile) {
-      setTimeout(() => {
-        try {
-          if (smootherRef.current) {
-            smootherRef.current.paused(false);
-          }
-        } catch (error) {
-          console.warn('Error resuming ScrollSmoother:', error);
-        }
-      }, 100);
-    }
   }, [projects, isMobile]);
 
   useEffect(() => {
-    if (isMobile) return; // No inicializar GSAP ni sincronización en móvil
+    if (isMobile) return; // No inicializar sincronización en móvil
     
     // Delay para asegurar que el DOM esté completamente renderizado
     const initTimer = setTimeout(() => {
-      // GSAP ScrollSmoother
-      if (!smootherRef.current) {
-        try {
-          // Verificar que los elementos existen antes de crear ScrollSmoother
-          const wrapper = document.getElementById('smooth-wrapper-landing');
-          const content = document.getElementById('smooth-content-landing');
-          
-          if (wrapper && content) {
-            smootherRef.current = ScrollSmoother.create({
-              content: '#smooth-content-landing',
-              smooth: 1.2,
-              normalizeScroll: true
-            });
-            // Hacer disponible globalmente para ScrollToTop
-            window.ScrollSmoother = ScrollSmoother;
-          }
-        } catch (error) {
-          console.warn('Error creating ScrollSmoother:', error);
-        }
-      }
-
       // Sincronización de scroll
       const panelA = leftColumnRef.current;
       const panelB = rightColumnRef.current;
@@ -124,14 +75,6 @@ const Landing = () => {
 
     return () => {
       clearTimeout(initTimer);
-      if (smootherRef.current) {
-        try {
-          smootherRef.current.kill();
-          smootherRef.current = null;
-        } catch (error) {
-          console.warn('Error killing ScrollSmoother:', error);
-        }
-      }
     };
   }, [isMobile]);
 
@@ -229,43 +172,39 @@ const Landing = () => {
           ))}
         </div>
       ) : (
-        <div id="smooth-wrapper-landing">
-          <div id="smooth-content-landing">
-            <div 
-              className="landing-container"
-              role="main"
-              aria-label="Lista de proyectos"
-            >
-              <div
-                className="column left-column"
-                ref={leftColumnRef}
-                role="region"
-                aria-label="Proyectos web"
-              >
-                {visibleWebProjects.map((project, index) => (
-                  <ProjectCard 
-                    key={`web-${index}`} 
-                    data={project}
-                    aria-label={`Proyecto web: ${project.title}`}
-                  />
-                ))}
-              </div>
+        <div 
+          className="landing-container"
+          role="main"
+          aria-label="Lista de proyectos"
+        >
+          <div
+            className="column left-column"
+            ref={leftColumnRef}
+            role="region"
+            aria-label="Proyectos web"
+          >
+            {visibleWebProjects.map((project, index) => (
+              <ProjectCard 
+                key={`web-${index}`} 
+                data={project}
+                aria-label={`Proyecto web: ${project.title}`}
+              />
+            ))}
+          </div>
 
-              <div
-                className="column right-column"
-                ref={rightColumnRef}
-                role="region"
-                aria-label="Proyectos de videojuegos"
-              >
-                {visibleGameProjects.map((project, index) => (
-                  <ProjectCard 
-                    key={`game-${index}`} 
-                    data={project}
-                    aria-label={`Proyecto de videojuego: ${project.title}`}
-                  />
-                ))}
-              </div>
-            </div>
+          <div
+            className="column right-column"
+            ref={rightColumnRef}
+            role="region"
+            aria-label="Proyectos de videojuegos"
+          >
+            {visibleGameProjects.map((project, index) => (
+              <ProjectCard 
+                key={`game-${index}`} 
+                data={project}
+                aria-label={`Proyecto de videojuego: ${project.title}`}
+              />
+            ))}
           </div>
         </div>
       )}

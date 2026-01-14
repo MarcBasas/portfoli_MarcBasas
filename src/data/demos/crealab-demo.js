@@ -17,9 +17,21 @@ export const crealabDemo = {
         </div>
 
     <nav class="bottom-menu">
-        <a href="#about">About</a>
-        <a href="#contacto">Contacto</a>
+        <a href="#about">ABOUT</a>
+        <a href="#contacto">CONTACTO</a>
     </nav>
+
+    <!-- Mensaje de bienvenida -->
+    <div id="welcome-message" class="welcome-overlay">
+        <div class="welcome-content">
+            <div class="drag-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 9l-3 3 3 3M9 5l3-3 3 3M15 19l-3 3-3-3M19 9l3 3-3 3M2 12h20M12 2v20"/>
+                </svg>
+            </div>
+            <p class="welcome-text">¡Desplázate!</p>
+        </div>
+    </div>
 
     <!-- Modal de proyecto -->
     <div id="project-modal" class="modal-overlay">
@@ -104,7 +116,7 @@ export const crealabDemo = {
 
   .site-title {
     font-family: 'Arial', sans-serif;
-    font-weight: bold;
+    font-weight: 900;
     font-size: 2.5rem;
     color: #000000;
     margin: 0;
@@ -274,12 +286,14 @@ export const crealabDemo = {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 18px;
-    font-weight: bold;
+    font-size: 20px;
+    font-weight: normal;
+    line-height: 1;
     cursor: pointer;
     z-index: 10001;
     color: #333;
     transition: all 0.2s ease;
+    font-family: Arial, sans-serif;
   }
 
   .close-btn:hover {
@@ -489,7 +503,7 @@ export const crealabDemo = {
   /* Modal Contacto */
   .contact-card {
     background: #2a2a2a;
-    width: 500px;
+    width: 350px;
     max-width: 90vw;
     border-radius: 12px;
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
@@ -504,17 +518,18 @@ export const crealabDemo = {
   }
 
   .contact-content {
-    padding: 40px 30px 40px 30px;
+    padding: 50px 25px;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 100%;
   }
 
   .contact-info {
     display: flex;
+    flex-direction: column;
     justify-content: center;
-    gap: 60px;
+    align-items: center;
+    gap: 20px;
     width: 100%;
   }
 
@@ -538,20 +553,87 @@ export const crealabDemo = {
     font-weight: 400;
   }
 
+  /* Mensaje de bienvenida */
+  .welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9998;
+    pointer-events: none;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+    background: rgba(0, 0, 0, 0.5);
+  }
+
+  .welcome-overlay.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.6s ease, visibility 0s linear 0.6s;
+  }
+
+  .welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 25px 35px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 15px;
+  }
+
+  .drag-icon {
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drag-icon svg {
+    animation: dragAnimation 1s ease-in-out 1;
+  }
+
+  .welcome-text {
+    font-family: 'Arial', sans-serif;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #ffffff;
+    margin: 0;
+  }
+
+  @keyframes dragAnimation {
+    0%, 100% {
+      transform: scale(1) rotate(0deg);
+    }
+    25% {
+      transform: scale(1.1) rotate(5deg);
+    }
+    75% {
+      transform: scale(1.1) rotate(-5deg);
+    }
+  }
+
   /* Responsive para modal de contacto */
   @media (max-width: 768px) {
     .contact-card {
-      width: 95vw;
+      width: 90vw;
+      max-width: 350px;
       margin: 0 auto;
     }
     
     .contact-content {
-      padding: 30px 20px 30px 20px;
+      padding: 40px 20px;
     }
     
     .contact-info {
-      flex-direction: column;
-      gap: 25px;
+      gap: 18px;
     }
     
     .contact-value {
@@ -573,6 +655,39 @@ export const crealabDemo = {
   @media (max-width: 480px) {
     .site-title {
       font-size: 1.5rem;
+    }
+  }
+
+  /* Responsive para mensaje de bienvenida */
+  @media (max-width: 768px) {
+    .welcome-content {
+      padding: 22px 30px;
+      gap: 10px;
+    }
+    
+    .drag-icon svg {
+      width: 35px;
+      height: 35px;
+    }
+    
+    .welcome-text {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .welcome-content {
+      padding: 20px 28px;
+      gap: 8px;
+    }
+    
+    .drag-icon svg {
+      width: 32px;
+      height: 32px;
+    }
+    
+    .welcome-text {
+      font-size: 0.95rem;
     }
   }
   `,
@@ -687,6 +802,22 @@ const projects = urls.map((url, i) => ({
     imgs.forEach(img => obs.observe(img));
   }
   
+  // — Manejo del mensaje de bienvenida —
+  let welcomeHidden = false;
+  
+  function hideWelcomeMessage() {
+    if (!welcomeHidden) {
+      const welcomeMsg = document.getElementById('welcome-message');
+      if (welcomeMsg) {
+        welcomeMsg.classList.add('hidden');
+        welcomeHidden = true;
+      }
+    }
+  }
+  
+  // Ocultar después de 1.8 segundos
+  setTimeout(hideWelcomeMessage, 1500);
+  
   // — Previene el scroll con rueda, dejando solo drag —
   viewport.addEventListener('wheel', e => e.preventDefault(), { passive: false });
   
@@ -716,6 +847,7 @@ const projects = urls.map((url, i) => ({
     if (!hasDragged && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) {
       hasDragged = true;
       viewport.classList.add('drag-active');
+      hideWelcomeMessage(); // Ocultar mensaje al empezar a arrastrar
     }
   
     if (hasDragged) {

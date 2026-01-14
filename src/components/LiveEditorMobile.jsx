@@ -41,35 +41,36 @@ const LiveEditorMobile = ({ project }) => {
     if (!iframe || !project?.files) return;
     
     try {
-      iframe.src = 'about:blank';
-      setTimeout(() => {
-        const doc = iframe.contentDocument;
-        if (!doc) return;
-        const htmlContent = project.files.html || "";
-        const cssContent = project.files.css || "";
-        const jsContent = project.files.js || "";
-        const fullHtml = `
-          <html>
-            <head>
-              <meta charset=\"UTF-8\">
-              <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
-              <style>
-                * { box-sizing: border-box; margin: 0; padding: 0; }
-                body { width: 100%; max-width: 100%; overflow-x: hidden; }
-                img { max-width: 100%; height: auto; }
-                ${cssContent}
-              </style>
-            </head>
-            <body>
-              ${htmlContent}
-              <script>${jsContent}<\/script>
-            </body>
-          </html>
-        `;
-        doc.open();
-        doc.write(fullHtml);
-        doc.close();
-      }, 10);
+      const htmlContent = project.files.html || "";
+      const cssContent = project.files.css || "";
+      const jsContent = project.files.js || "";
+      const fullHtml = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { width: 100%; max-width: 100%; overflow-x: hidden; }
+img { max-width: 100%; height: auto; }
+${cssContent}
+</style>
+</head>
+<body>
+${htmlContent}
+<script>${jsContent}<\/script>
+</body>
+</html>`;
+      
+      // Usar Blob con encoding UTF-8 explícito para mejor manejo de caracteres especiales
+      const blob = new Blob(['\ufeff', fullHtml], { type: 'text/html;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      iframe.src = url;
+      
+      // Limpiar URL después de cargar
+      iframe.onload = () => {
+        URL.revokeObjectURL(url);
+      };
     } catch (error) {
       console.warn('LiveEditorMobile: Error updating iframe:', error);
     }
