@@ -95,7 +95,7 @@ const Header = () => {
               aria-current={location.pathname === "/" ? "page" : undefined}
               itemProp="url"
             >
-              <img src="/img/Logo.webp" alt="Logo" style={{ width: '64px', marginTop: '10px' }} />
+              <img src="/img/Logo_temporal_web_marc-03_converted.webp" alt="Logo" style={{ width: '64px', marginTop: '10px' }} />
             </Link>
           )}
 

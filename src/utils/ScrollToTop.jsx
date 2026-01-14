@@ -18,16 +18,17 @@ const ScrollToTop = () => {
           window.scrollTo({ top: 0, left: 0, behavior: "instant" });
         }
         
-        // 2. Reset del ScrollSmoother de GSAP (Landing page desktop)
-        // Buscar instancia de ScrollSmoother en el DOM
-        const smootherElements = document.querySelectorAll('#smooth-wrapper-landing, #smooth-content-landing');
-        if (smootherElements.length > 0) {
-          // Intentar acceder a ScrollSmoother si está disponible
-          if (typeof window !== 'undefined' && window.ScrollSmoother) {
-            const smoother = window.ScrollSmoother.get();
-            if (smoother) {
-              smoother.scrollTo(0, false);
-            }
+        // 2. Reset de las columnas de Landing (desktop)
+        if (!isMobile && pathname === '/') {
+          const leftColumn = document.querySelector('.left-column');
+          const rightColumn = document.querySelector('.right-column');
+          if (leftColumn) {
+            leftColumn.scrollTo({ top: 0, behavior: "instant" });
+            leftColumn.scrollTop = 0;
+          }
+          if (rightColumn) {
+            rightColumn.scrollTo({ top: 0, behavior: "instant" });
+            rightColumn.scrollTop = 0;
           }
         }
         
@@ -47,21 +48,7 @@ const ScrollToTop = () => {
           }
         }
         
-        // 4. Reset de contenedores con scroll específico (columnas de Landing) - solo si es Landing
-        if (pathname === '/') {
-          const leftColumn = document.querySelector('.left-column');
-          const rightColumn = document.querySelector('.right-column');
-          if (leftColumn) {
-            leftColumn.scrollTo({ top: 0, behavior: "instant" });
-            leftColumn.scrollTop = 0;
-          }
-          if (rightColumn) {
-            rightColumn.scrollTo({ top: 0, behavior: "instant" });
-            rightColumn.scrollTop = 0;
-          }
-        }
-        
-        // 5. En móvil, reset general de contenedores con overflow
+        // 4. En móvil, reset general de contenedores con overflow
         if (isMobile) {
           const scrollableElements = document.querySelectorAll('[style*="overflow-y: auto"], [style*="overflow: auto"]');
           scrollableElements.forEach(element => {
