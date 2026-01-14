@@ -134,6 +134,8 @@ export const crealabDemo = {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    background: white;
   }
   .grid {
     /* Cada bloque es un grid 3×3 que ocupa todo el viewport */
@@ -143,8 +145,6 @@ export const crealabDemo = {
     gap: 10px;           /* aquí el gap que quieras */
     width: 100vw;
     height: 100vh;
-    border: 5px solid white;
-    
     overflow: visible;
   }
   .item {
