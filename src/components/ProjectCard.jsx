@@ -17,7 +17,8 @@ const ProjectCard = ({ data }) => {
         <img
           src={previewImage}
           alt={`Preview of ${title} project - Marc Basas Portfolio - Web Developer Portfolio`}
-          loading="lazy"
+          loading="eager"
+          decoding="async"
           className="project-image"
           itemProp="image"
         />

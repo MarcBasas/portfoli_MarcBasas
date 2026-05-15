@@ -6,6 +6,12 @@ import "./Landing.css";
 import useIsMobile from "../utils/UseIsMobile";
 
 const COPIES = 3;
+// Toggle desde la consola: window.__SCROLL_DEBUG__ = true
+const dbg = (...args) => {
+  if (typeof window !== "undefined" && window.__SCROLL_DEBUG__) {
+    console.log("[scroll]", ...args);
+  }
+};
 
 const repeat = (arr, n) => Array.from({ length: n }, () => arr).flat();
 
@@ -33,69 +39,108 @@ const Landing = () => {
     const right = rightColumnRef.current;
     if (!left || !right) return;
 
-    // Keep scrollTop within the middle copy [copyH, 2*copyH)
+    // copyH = clientHeight × (cards en una copia). Evita el redondeo de scrollHeight/COPIES.
+    const copyHOf = (el) => el.clientHeight * (el.children.length / COPIES);
+
+    // Mantiene scrollTop dentro de [copyH, 2*copyH)
     const wrapToMiddle = (top, copyH) => {
       const offset = top - copyH;
       const wrapped = ((offset % copyH) + copyH) % copyH;
       return copyH + wrapped;
     };
 
-    // Center on middle copy so wrap works in both directions
+    // Centra en la copia del medio
     const initTimer = setTimeout(() => {
-      const lch = left.scrollHeight / COPIES;
-      const rch = right.scrollHeight / COPIES;
+      const lch = copyHOf(left);
+      const rch = copyHOf(right);
       suppressLeft.current = true;
       suppressRight.current = true;
       left.scrollTop = lch;
       right.scrollTop = rch;
       prevLeftTop.current = left.scrollTop;
       prevRightTop.current = right.scrollTop;
+      dbg("init", { lch, rch, leftTop: left.scrollTop, rightTop: right.scrollTop });
     }, 50);
 
-    const handle = (source, target, sourcePrev, targetPrev, suppressSource, suppressTarget) => {
+    const handle = (label, source, target, sourcePrev, targetPrev, suppressSource, suppressTarget) => {
       if (suppressSource.current) {
         suppressSource.current = false;
         sourcePrev.current = source.scrollTop;
+        dbg(label, "echo consumed", { top: source.scrollTop });
         return;
       }
 
-      const sourceCopyH = source.scrollHeight / COPIES;
-      const targetCopyH = target.scrollHeight / COPIES;
+      const sourceCopyH = copyHOf(source);
+      const targetCopyH = copyHOf(target);
       const newSourceTop = source.scrollTop;
       const delta = newSourceTop - sourcePrev.current;
       sourcePrev.current = newSourceTop;
 
-      // Mirror the same pixel delta on the other column (with its own wrap)
+      // Espejo del delta en el otro panel (cada uno con su propio wrap)
       const targetWanted = wrapToMiddle(target.scrollTop + delta, targetCopyH);
+      const targetBefore = target.scrollTop;
       if (targetWanted !== target.scrollTop) {
         suppressTarget.current = true;
         target.scrollTop = targetWanted;
         targetPrev.current = targetWanted;
       }
 
-      // Wrap source silently if it crossed its boundary
+      // Wrap silencioso del propio source si cruzó su frontera
       const sourceWanted = wrapToMiddle(newSourceTop, sourceCopyH);
-      if (sourceWanted !== newSourceTop) {
+      const sourceWrapped = sourceWanted !== newSourceTop;
+      if (sourceWrapped) {
         suppressSource.current = true;
         source.scrollTop = sourceWanted;
         sourcePrev.current = sourceWanted;
       }
+
+      dbg(label, {
+        delta: delta.toFixed(2),
+        srcTop: newSourceTop.toFixed(2),
+        srcWrap: sourceWrapped ? `${newSourceTop.toFixed(1)}→${sourceWanted.toFixed(1)}` : "—",
+        tgtBefore: targetBefore.toFixed(2),
+        tgtAfter: targetWanted.toFixed(2),
+        srcCopyH: sourceCopyH,
+        tgtCopyH: targetCopyH,
+      });
     };
 
-    const handleLeft = () =>
-      handle(left, right, prevLeftTop, prevRightTop, suppressLeft, suppressRight);
-    const handleRight = () =>
-      handle(right, left, prevRightTop, prevLeftTop, suppressRight, suppressLeft);
+    // rAF throttle: scroll events sólo marcan pending; la mirror corre 1x por frame.
+    // Esto evita que cada wheel tick fuerce un reflow sincrónico que el navegador
+    // compensa coalesciendo los siguientes eventos en uno con delta gigante.
+    let pendingLeft = false;
+    let pendingRight = false;
+    let rafId = 0;
+
+    const flush = () => {
+      rafId = 0;
+      if (pendingLeft) {
+        pendingLeft = false;
+        handle("L", left, right, prevLeftTop, prevRightTop, suppressLeft, suppressRight);
+      }
+      if (pendingRight) {
+        pendingRight = false;
+        handle("R", right, left, prevRightTop, prevLeftTop, suppressRight, suppressLeft);
+      }
+    };
+
+    const scheduleFlush = () => {
+      if (rafId === 0) rafId = requestAnimationFrame(flush);
+    };
+
+    const handleLeft = () => { pendingLeft = true; scheduleFlush(); };
+    const handleRight = () => { pendingRight = true; scheduleFlush(); };
 
     left.addEventListener("scroll", handleLeft, { passive: true });
     right.addEventListener("scroll", handleRight, { passive: true });
 
     return () => {
       clearTimeout(initTimer);
+      if (rafId !== 0) cancelAnimationFrame(rafId);
       left.removeEventListener("scroll", handleLeft);
       right.removeEventListener("scroll", handleRight);
     };
-  }, [isMobile, webProjects, gameProjects]);
+  }, [isMobile]);
 
   // Mobile: silent modulo wrap on a single column
   useEffect(() => {
@@ -103,23 +148,35 @@ const Landing = () => {
     const container = document.getElementById("mobile-scroll-container");
     if (!container) return;
 
+    const copyHOf = (el) => el.clientHeight * (el.children.length / COPIES);
+
     const initTimer = setTimeout(() => {
-      const copyH = container.scrollHeight / COPIES;
-      container.scrollTop = copyH;
+      container.scrollTop = copyHOf(container);
     }, 50);
 
+    let rafId = 0;
+    const flush = () => {
+      rafId = 0;
+      const copyH = copyHOf(container);
+      if (container.scrollTop >= 2 * copyH) {
+        dbg("M wrap down", { from: container.scrollTop, to: container.scrollTop - copyH });
+        container.scrollTop -= copyH;
+      } else if (container.scrollTop < copyH) {
+        dbg("M wrap up", { from: container.scrollTop, to: container.scrollTop + copyH });
+        container.scrollTop += copyH;
+      }
+    };
     const handleScroll = () => {
-      const copyH = container.scrollHeight / COPIES;
-      if (container.scrollTop >= 2 * copyH) container.scrollTop -= copyH;
-      else if (container.scrollTop < copyH) container.scrollTop += copyH;
+      if (rafId === 0) rafId = requestAnimationFrame(flush);
     };
 
     container.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
       clearTimeout(initTimer);
+      if (rafId !== 0) cancelAnimationFrame(rafId);
       container.removeEventListener("scroll", handleScroll);
     };
-  }, [isMobile, mobileProjects]);
+  }, [isMobile]);
 
   return (
     <>
