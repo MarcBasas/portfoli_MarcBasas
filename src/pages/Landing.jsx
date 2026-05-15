@@ -1,132 +1,125 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import ProjectCard from "../components/ProjectCard";
 import { useProjects } from "../contexts/ProjectsContext";
 import "./Landing.css";
 import useIsMobile from "../utils/UseIsMobile";
 
-/**
- * Componente Landing que muestra los proyectos en dos columnas con scroll infinito
- * @component
- * @description Muestra proyectos web y de videojuegos en dos columnas con scroll infinito
- * @returns {JSX.Element} El componente Landing renderizado
- */
+const COPIES = 3;
+
+const repeat = (arr, n) => Array.from({ length: n }, () => arr).flat();
+
 const Landing = () => {
   const leftColumnRef = useRef(null);
   const rightColumnRef = useRef(null);
-  const syncingA = useRef(false);
-  const syncingB = useRef(false);
+  const suppressLeft = useRef(false);
+  const suppressRight = useRef(false);
+  const prevLeftTop = useRef(0);
+  const prevRightTop = useRef(0);
   const isMobile = useIsMobile();
   const { projects } = useProjects();
 
-  const initialWebProjects = [...projects.web, ...projects.web]; 
-  const initialGameProjects = [...projects.games, ...projects.games];
+  const webProjects = useMemo(() => repeat(projects.web, COPIES), [projects.web]);
+  const gameProjects = useMemo(() => repeat(projects.games, COPIES), [projects.games]);
+  const mobileProjects = useMemo(
+    () => repeat([...projects.web, ...projects.games], COPIES),
+    [projects.web, projects.games]
+  );
 
-  // Para móvil: lista combinada de proyectos (web primero, luego juegos)
-  const initialMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
-  const [visibleMobileProjects, setVisibleMobileProjects] = useState(initialMobileProjects);
-
-  const [visibleWebProjects, setVisibleWebProjects] = useState(initialWebProjects);
-  const [visibleGameProjects, setVisibleGameProjects] = useState(initialGameProjects);
-
-  // Actualizar proyectos visibles cuando cambien los datos
+  // Desktop: sync delta-based + silent modulo wrap
   useEffect(() => {
-    const newWebProjects = [...projects.web, ...projects.web];
-    const newGameProjects = [...projects.games, ...projects.games];
-    const newMobileProjects = [...projects.web, ...projects.games, ...projects.web, ...projects.games];
-    
-    setVisibleWebProjects(newWebProjects);
-    setVisibleGameProjects(newGameProjects);
-    setVisibleMobileProjects(newMobileProjects);
-  }, [projects, isMobile]);
+    if (isMobile) return;
+    const left = leftColumnRef.current;
+    const right = rightColumnRef.current;
+    if (!left || !right) return;
 
-  useEffect(() => {
-    if (isMobile) return; // No inicializar sincronización en móvil
-    
-    // Delay para asegurar que el DOM esté completamente renderizado
+    // Keep scrollTop within the middle copy [copyH, 2*copyH)
+    const wrapToMiddle = (top, copyH) => {
+      const offset = top - copyH;
+      const wrapped = ((offset % copyH) + copyH) % copyH;
+      return copyH + wrapped;
+    };
+
+    // Center on middle copy so wrap works in both directions
     const initTimer = setTimeout(() => {
-      // Sincronización de scroll
-      const panelA = leftColumnRef.current;
-      const panelB = rightColumnRef.current;
+      const lch = left.scrollHeight / COPIES;
+      const rch = right.scrollHeight / COPIES;
+      suppressLeft.current = true;
+      suppressRight.current = true;
+      left.scrollTop = lch;
+      right.scrollTop = rch;
+      prevLeftTop.current = left.scrollTop;
+      prevRightTop.current = right.scrollTop;
+    }, 50);
 
-      if (panelA && panelB) {
-        const sync = (source, target, flagSource, flagTarget) => {
-          if (!flagSource.current && source && target) {
-            flagTarget.current = true;
-            const pct = source.scrollTop / (source.scrollHeight - source.clientHeight);
-            target.scrollTop = pct * (target.scrollHeight - target.clientHeight);
-            flagTarget.current = false;
-          }
-        };
-
-        const handleScrollA = () => sync(panelA, panelB, syncingA, syncingB);
-        const handleScrollB = () => sync(panelB, panelA, syncingB, syncingA);
-
-        panelA.addEventListener('scroll', handleScrollA, { passive: true });
-        panelB.addEventListener('scroll', handleScrollB, { passive: true });
-
-        // Cleanup function
-        return () => {
-          if (panelA) panelA.removeEventListener('scroll', handleScrollA);
-          if (panelB) panelB.removeEventListener('scroll', handleScrollB);
-        };
+    const handle = (source, target, sourcePrev, targetPrev, suppressSource, suppressTarget) => {
+      if (suppressSource.current) {
+        suppressSource.current = false;
+        sourcePrev.current = source.scrollTop;
+        return;
       }
-    }, 100);
+
+      const sourceCopyH = source.scrollHeight / COPIES;
+      const targetCopyH = target.scrollHeight / COPIES;
+      const newSourceTop = source.scrollTop;
+      const delta = newSourceTop - sourcePrev.current;
+      sourcePrev.current = newSourceTop;
+
+      // Mirror the same pixel delta on the other column (with its own wrap)
+      const targetWanted = wrapToMiddle(target.scrollTop + delta, targetCopyH);
+      if (targetWanted !== target.scrollTop) {
+        suppressTarget.current = true;
+        target.scrollTop = targetWanted;
+        targetPrev.current = targetWanted;
+      }
+
+      // Wrap source silently if it crossed its boundary
+      const sourceWanted = wrapToMiddle(newSourceTop, sourceCopyH);
+      if (sourceWanted !== newSourceTop) {
+        suppressSource.current = true;
+        source.scrollTop = sourceWanted;
+        sourcePrev.current = sourceWanted;
+      }
+    };
+
+    const handleLeft = () =>
+      handle(left, right, prevLeftTop, prevRightTop, suppressLeft, suppressRight);
+    const handleRight = () =>
+      handle(right, left, prevRightTop, prevLeftTop, suppressRight, suppressLeft);
+
+    left.addEventListener("scroll", handleLeft, { passive: true });
+    right.addEventListener("scroll", handleRight, { passive: true });
 
     return () => {
       clearTimeout(initTimer);
+      left.removeEventListener("scroll", handleLeft);
+      right.removeEventListener("scroll", handleRight);
     };
-  }, [isMobile]);
+  }, [isMobile, webProjects, gameProjects]);
 
-  useEffect(() => {
-    if (isMobile) return; // No listeners de columnas en móvil
-    const left = leftColumnRef.current;
-    const right = rightColumnRef.current;
-
-    const handleLeftScroll = (e) => {
-      // Carga infinita
-      const { scrollTop, scrollHeight, clientHeight } = e.target;
-      if (scrollTop + clientHeight >= scrollHeight * 0.7) {
-        setVisibleWebProjects((prev) => [...prev, ...projects.web]);
-      }
-    };
-
-    const handleRightScroll = (e) => {
-      // Carga infinita
-      const { scrollTop, scrollHeight, clientHeight } = e.target;
-      if (scrollTop + clientHeight >= scrollHeight * 0.7) {
-        setVisibleGameProjects((prev) => [...prev, ...projects.games]);
-      }
-    };
-
-    if (left) left.addEventListener("scroll", handleLeftScroll, { passive: true });
-    if (right) right.addEventListener("scroll", handleRightScroll, { passive: true });
-
-    return () => {
-      if (left) left.removeEventListener("scroll", handleLeftScroll);
-      if (right) right.removeEventListener("scroll", handleRightScroll);
-    };
-  }, [projects, isMobile]);
-
-  // Scroll infinito para móvil
+  // Mobile: silent modulo wrap on a single column
   useEffect(() => {
     if (!isMobile) return;
-    const handleScroll = (e) => {
-      const { scrollTop, scrollHeight, clientHeight } = e.target;
-      if (scrollTop + clientHeight >= scrollHeight * 0.7) {
-        setVisibleMobileProjects((prev) => [
-          ...prev,
-          ...projects.web,
-          ...projects.games
-        ]);
-      }
-    };
     const container = document.getElementById("mobile-scroll-container");
-    if (container) container.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      if (container) container.removeEventListener("scroll", handleScroll);
+    if (!container) return;
+
+    const initTimer = setTimeout(() => {
+      const copyH = container.scrollHeight / COPIES;
+      container.scrollTop = copyH;
+    }, 50);
+
+    const handleScroll = () => {
+      const copyH = container.scrollHeight / COPIES;
+      if (container.scrollTop >= 2 * copyH) container.scrollTop -= copyH;
+      else if (container.scrollTop < copyH) container.scrollTop += copyH;
     };
-  }, [isMobile, setVisibleMobileProjects]);
+
+    container.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      clearTimeout(initTimer);
+      container.removeEventListener("scroll", handleScroll);
+    };
+  }, [isMobile, mobileProjects]);
 
   return (
     <>
@@ -162,7 +155,7 @@ const Landing = () => {
           role="main"
           aria-label="Lista de proyectos"
         >
-          {visibleMobileProjects.map((project, index) => (
+          {mobileProjects.map((project, index) => (
             <ProjectCard
               key={`mobile-${index}`}
               data={project}
@@ -183,7 +176,7 @@ const Landing = () => {
             role="region"
             aria-label="Proyectos web"
           >
-            {visibleWebProjects.map((project, index) => (
+            {webProjects.map((project, index) => (
               <ProjectCard 
                 key={`web-${index}`} 
                 data={project}
@@ -198,7 +191,7 @@ const Landing = () => {
             role="region"
             aria-label="Proyectos de videojuegos"
           >
-            {visibleGameProjects.map((project, index) => (
+            {gameProjects.map((project, index) => (
               <ProjectCard 
                 key={`game-${index}`} 
                 data={project}
