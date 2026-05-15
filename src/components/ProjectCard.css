@@ -20,6 +20,12 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  /* Promueve la imagen a su propia capa GPU. Necesario para imágenes muy grandes
+     dentro de columnas con transform: rotate — sin esto el compositor re-rasteriza
+     la textura durante el scroll y aparece un lag visible entre la card y la imagen. */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  will-change: transform;
 }
 
 .overlay {
